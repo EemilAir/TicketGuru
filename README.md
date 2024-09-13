@@ -16,6 +16,22 @@ tekniikoita käytetään ja mitä konkreettisesti on valmiina, kun projekti pä�
 
 ## Järjestelmän määrittely
 
+TicketGuru-järjestelmässä on useita selkeitä keskeisiä käyttäjärooleja.
+
+1. Lipunmyyjä
+- Myy ja tulostaa liput. Tarkastaa liput ovella ja merkitsee ne käytetyiksi järjestelmään koodin apuna.
+
+2. Asiakas
+- Ostaa lippuja paikan päältä, jatkossa myös verkkokaupasta. Paikan päällä saa itselleen tulostetun lipun, verkkokaupasta tilattuna sähköpostitse.
+
+3. Järjestelmän ylläpitäjä
+- Vastaa järjestelmän teknisestä ylläpidosta. Toimii myös teknisenä tukena.
+
+4. Tapahtumien ylläpitäjä
+- Vastaa tapahtumien lisäämisestä, poistamisesta ja muokkaamisesta järjestelmässä. Voi tulostaa myös erilaisia raportteja lippuihin ja niiden myyntiin liittyen.
+
+
+
 Määrittelyssä järjestelmää tarkastellaan käyttäjän näkökulmasta. Järjestelmän
 toiminnot hahmotellaan käyttötapausten tai käyttäjätarinoiden kautta, ja kuvataan järjestelmän
 käyttäjäryhmät.
