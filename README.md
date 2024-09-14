@@ -1,6 +1,6 @@
-# Projektin nimi
+# Lipunmyyntijärjestelmä
 
-Tiimi: Etunimi Sukunimi, Etunimi Sukunimi
+Tiimi: Jere Holopainen, Miikka Vartiainen, Jami Norja, Eemil Airaksinen, Anton Asikainen
 
 ## Johdanto
 
