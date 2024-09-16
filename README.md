@@ -29,20 +29,43 @@ Lopputuloksena on käyttövalmis TicketGuru-järjestelmä lipputoimistolle, joka
 
 ## Järjestelmän määrittely
 
-TicketGuru-järjestelmässä on useita selkeitä keskeisiä käyttäjärooleja.
+TicketGuru-järjestelmässä on useita selkeitä keskeisiä käyttäjärooleja. 
+Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytään syventymään roolien tarpeisiin ja järjestelmän tavoitteisiin.
 
-1. Lipunmyyjä
+1. **Lipunmyyjä**
 - Myy ja tulostaa liput. Tarkastaa liput ovella ja merkitsee ne käytetyiksi järjestelmään koodin apuna.
 
-2. Asiakas
+    >*Käyttäjätarinat:*
+    > - Lipunmyyjänä haluan myydä lippuja asiakkaille ja tulostaa ne järjestelmästä, jotta asiakas saa lipun heti mukaansa paikan päälle.
+    >>
+    > - Lipunmyyjänä haluan merkitä tarkastetut liput käytetyiksi järjestelmässä, jotta samaa lippua ei voida käyttää uudelleen ja estää väärinkäytökset.
+
+2. **Asiakas**
 - Ostaa lippuja paikan päältä, jatkossa myös verkkokaupasta. Paikan päällä saa itselleen tulostetun lipun, verkkokaupasta tilattuna sähköpostitse.
 
-3. Järjestelmän ylläpitäjä
+    >*Käyttäjätarinat:*
+    > - Asiakkaana haluan ostaa lipun paikan päältä lipunmyyntipisteeltä, jotta voin osallistua haluamaani tapahtumaan heti.
+    >>
+    > - Asiakkaana haluan saada verkkokaupasta ostetun lipun sähköpostiini, jotta voin tallentaa sen sähköisesti ja esittää sen tapahtuman ovella puhelimesta.
+
+3. **Järjestelmän ylläpitäjä**
 - Vastaa järjestelmän teknisestä ylläpidosta. Toimii myös teknisenä tukena.
 
-4. Tapahtumien ylläpitäjä
+    >*Käyttäjätarinat:*
+    > - Järjestelmän ylläpitäjänä haluan ylläpitää järjestelmän teknisiä toimintoja, jotta TicketGuru toimii luotettavasti ja tehokkaasti kaikille käyttäjille.
+    >>
+    > - Järjestelmän ylläpitäjänä haluan tarjota teknistä tukea järjestelmän käyttäjille, jotta voin ratkaista mahdolliset ongelmat nopeasti ja minimoida käyttökatkokset.
+
+
+4. **Tapahtumien ylläpitäjä**
 - Vastaa tapahtumien lisäämisestä, poistamisesta ja muokkaamisesta järjestelmässä. Voi tulostaa myös erilaisia raportteja lippuihin ja niiden myyntiin liittyen.
 
+    >*Käyttäjätarinat:*
+    > - Tapahtumien ylläpitäjänä haluan lisätä uusia tapahtumia järjestelmään, jotta lipunmyynti voi alkaa ajoissa ja asiakkaat voivat ostaa lippuja.
+    >>
+    > - Tapahtumien ylläpitäjänä haluan muokata olemassa olevien tapahtumien tietoja, jotta voin päivittää esimerkiksi tapahtuma-ajan tai -paikan muutokset.
+    >>
+    > - Tapahtumien ylläpitäjänä haluan poistaa peruutetut tapahtumat järjestelmästä, jotta virheelliset tapahtumat eivät ole näkyvissä asiakkaille ja vältetään sekaannukset.
 
 
 Määrittelyssä järjestelmää tarkastellaan käyttäjän näkökulmasta. Järjestelmän
