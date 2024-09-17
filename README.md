@@ -77,10 +77,10 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 
 
 ## Käyttöliittymä
-
-Esitetään käyttöliittymän tärkeimmät (vain ne!) näkymät sekä niiden väliset siirtymät käyttöliittymäkaaviona. 
-
-Jos näkymän tarkoitus ei ole itsestään selvä, se pitää kuvata lyhyesti.
+- Käyttöliittymäkaavio
+![](Images/käyttöliittymäkaava.png)
+- Tapahtumasivulta siirtyminen tapahtumien raportteihin ja myyntitapahtumiin
+![](Images/käyttöliittymäkaava2.png)
 
 ## Tietokanta
 
