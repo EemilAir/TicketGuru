@@ -79,11 +79,11 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 ## Käyttöliittymä
 - Käyttöliittymäkaavio
 
-![Käyttöliittymäkaavio](./Images/käyttöliittymäkaava.png)
+![Käyttöliittymäkaavio](./Images/Kayttoliittymakaavio.png)
 
 - Tapahtumasivulta siirtyminen tapahtumien raportteihin ja myyntitapahtumiin
 
-![Käyttöliittymäkaavio](./Images/käyttöliittymäkaava2.png)
+![Käyttöliittymäkaavio](./Images/Kayttoliittymakaavio2.png)
 
 ## Tietokanta
 
