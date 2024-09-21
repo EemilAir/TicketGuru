@@ -1,36 +1,57 @@
 package bugivelhot.ticketguru.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import java.time.LocalDateTime;
 
 @Entity
 public class Lippu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long lippu_id;
+    private Long id;
     private double hinta;
-    private Long maksutapa;
-    private String myyntiaika;
-    private Long myyntikanava;
+    private LocalDateTime myyntiaika;
     private String koodi;
     private String paikka;
-    private String luontiaika;
-    private String alkupvm;
-    private String loppupvm;
-    private Long lipputyyppi;
-    private Long tila;
+    private LocalDateTime luontiaika;
+    private LocalDateTime alkupvm;
+    private LocalDateTime loppupvm;
     private Long kayttaja_id;
     private Long tapahtuma_id;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Maksutapa maksutapa;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Myyntikanava myyntikanava;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Tila tila;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Lipputyyppi lipputyyppi;
 
     public Lippu() {
     }
 
-    public Lippu(Long lippu_id, double hinta, Long maksutapa, String myyntiaika, Long myyntikanava, String koodi, String paikka, String luontiaika, String alkupvm, String loppupvm, Long lipputyyppi, Long tila, Long kayttaja_id, Long tapahtuma_id) {
-        this.lippu_id = lippu_id;
+    public Lippu(Long lippu_id, double hinta, Maksutapa maksutapa, LocalDateTime myyntiaika, 
+                Myyntikanava myyntikanava, String koodi, String paikka, LocalDateTime luontiaika, LocalDateTime alkupvm, 
+                LocalDateTime loppupvm, Lipputyyppi lipputyyppi, Tila tila, Long kayttaja_id, Long tapahtuma_id) {
+        this.id = lippu_id;
         this.hinta = hinta;
         this.maksutapa = maksutapa;
         this.myyntiaika = myyntiaika;
@@ -47,11 +68,11 @@ public class Lippu {
     }
 
     public Long getLippu_id() {
-        return lippu_id;
+        return id;
     }
 
     public void setLippu_id(Long lippu_id) {
-        this.lippu_id = lippu_id;
+        this.id = lippu_id;
     }
 
     public double getHinta() {
@@ -62,27 +83,27 @@ public class Lippu {
         this.hinta = hinta;
     }
 
-    public Long getMaksutapa() {
+    public Maksutapa getMaksutapa() {
         return maksutapa;
     }
 
-    public void setMaksutapa(Long maksutapa) {
+    public void setMaksutapa(Maksutapa maksutapa) {
         this.maksutapa = maksutapa;
     }
 
-    public String getMyyntiaika() {
+    public LocalDateTime getMyyntiaika() {
         return myyntiaika;
     }
 
-    public void setMyyntiaika(String myyntiaika) {
+    public void setMyyntiaika(LocalDateTime myyntiaika) {
         this.myyntiaika = myyntiaika;
     }
 
-    public Long getMyyntikanava() {
+    public Myyntikanava getMyyntikanava() {
         return myyntikanava;
     }
 
-    public void setMyyntikanava(Long myyntikanava) {
+    public void setMyyntikanava(Myyntikanava myyntikanava) {
         this.myyntikanava = myyntikanava;
     }
 
@@ -102,43 +123,35 @@ public class Lippu {
         this.paikka = paikka;
     }
 
-    public String getLuontiaika() {
+    public LocalDateTime getLuontiaika() {
         return luontiaika;
     }
 
-    public void setLuontiaika(String luontiaika) {
+    public void setLuontiaika(LocalDateTime luontiaika) {
         this.luontiaika = luontiaika;
     }
 
-    public String getAlkupvm() {
+    public LocalDateTime getAlkupvm() {
         return alkupvm;
     }
 
-    public void setAlkupvm(String alkupvm) {
+    public void setAlkupvm(LocalDateTime alkupvm) {
         this.alkupvm = alkupvm;
     }
 
-    public String getLoppupvm() {
+    public LocalDateTime getLoppupvm() {
         return loppupvm;
     }
 
-    public void setLoppupvm(String loppupvm) {
+    public void setLoppupvm(LocalDateTime loppupvm) {
         this.loppupvm = loppupvm;
     }
 
-    public Long getLipputyyppi() {
-        return lipputyyppi;
-    }
-
-    public void setLipputyyppi(Long lipputyyppi) {
-        this.lipputyyppi = lipputyyppi;
-    }
-
-    public Long getTila() {
+    public Tila getTila() {
         return tila;
     }
 
-    public void setTila(Long tila) {
+    public void setTila(Tila tila) {
         this.tila = tila;
     }
 
@@ -156,5 +169,13 @@ public class Lippu {
 
     public void setTapahtuma_id(Long tapahtuma_id) {
         this.tapahtuma_id = tapahtuma_id;
+    }
+
+    public Lipputyyppi getLipputyyppi() {
+        return lipputyyppi;
+    }
+
+    public void setLipputyyppi(Lipputyyppi lipputyyppi) {
+        this.lipputyyppi = lipputyyppi;
     }
 }
