@@ -27,22 +27,22 @@ public class Lippu {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "maksutapa_id")
     private Maksutapa maksutapa;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "myyntikanava_id")
     private Myyntikanava myyntikanava;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "tila_id")
     private Tila tila;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "lipputyyppi_id")
     private Lipputyyppi lipputyyppi;
 
     public Lippu() {
