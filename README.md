@@ -88,14 +88,11 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 ## Tietokanta
 - TicketGuru-tietokannan UML-luokkakaavio
 
-<<<<<<< HEAD
 ![UML-luokkakaavio](./Images/UMLclass.png)
 
 > Linkki UML-luokkakaavion sivuille:
 > https://lucid.app/lucidchart/cc73c021-a71b-40e2-b45e-cc985ebd1832/edit?viewport_loc=-2463%2C-161%2C2984%2C1477%2CHWEp-vi-RSFO&invitationId=inv_80605f74-82a3-4fa1-99c2-f3d2ad5d97b4
-=======
 # Tietohakemisto
->>>>>>> tietohakemisto
 
 <details>
 <summary>Tietohakemiston taulut</summary>
@@ -224,6 +221,8 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | tila_id           | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Tilan tunniste                                                                                  |
 > | tila_nimi         | VARCHAR(50) NOT NULL                                               | Tilan nimi                                                                                      |
+
+</details>
 
 ## Tekninen kuvaus
 
