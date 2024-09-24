@@ -1,6 +1,5 @@
 package bugivelhot.ticketguru.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,15 +12,12 @@ public class Osoite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "osoite_id")
     private Long osoiteId;
 
-    private String osoite;
     private String postino;
     private String postitmp;
 
-    public Osoite(String osoite, String postino, String postitmp) {
-        this.osoite = osoite;
+    public Osoite(String postino, String postitmp) {
         this.postino = postino;
         this.postitmp = postitmp;
     }
@@ -35,14 +31,6 @@ public class Osoite {
 
     public void setOsoiteId(Long osoiteId) {
         this.osoiteId = osoiteId;
-    }
-
-    public String getOsoite() {
-        return osoite;
-    }
-
-    public void setOsoite(String osoite) {
-        this.osoite = osoite;
     }
 
     public String getPostino() {
