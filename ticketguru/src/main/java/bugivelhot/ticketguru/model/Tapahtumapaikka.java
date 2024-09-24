@@ -20,6 +20,9 @@ public class Tapahtumapaikka {
     @Column(name = "TP_id")
     private Long id;
 
+    @Column(name = "katuosoite", nullable = false, length = 100)
+    private String katuosoite;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tapahtuma_id", nullable = false)
     private Tapahtuma tapahtuma;
@@ -31,7 +34,8 @@ public class Tapahtumapaikka {
     public Tapahtumapaikka() {
     }
 
-    public Tapahtumapaikka(Tapahtuma tapahtuma, Osoite osoite) {
+    public Tapahtumapaikka(String katuosoite, Tapahtuma tapahtuma, Osoite osoite) {
+        this.katuosoite = katuosoite;
         this.tapahtuma = tapahtuma;
         this.osoite = osoite;
     }
@@ -42,6 +46,14 @@ public class Tapahtumapaikka {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getKatuosoite() {
+        return katuosoite;
+    }
+
+    public void setKatuosoite(String katuosoite) {
+        this.katuosoite = katuosoite;
     }
 
     public Tapahtuma getTapahtuma() {

@@ -5,10 +5,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "myyntitapahtumat")
 public class Myyntitapahtuma {
 
     @Id

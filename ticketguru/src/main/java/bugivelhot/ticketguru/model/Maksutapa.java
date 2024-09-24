@@ -3,9 +3,11 @@ package bugivelhot.ticketguru.model;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 
 @Entity
+@Table(name = "maksutavat")
 public class Maksutapa {
 
     @Id

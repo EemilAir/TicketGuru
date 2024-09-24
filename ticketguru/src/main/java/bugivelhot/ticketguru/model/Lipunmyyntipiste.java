@@ -3,6 +3,7 @@ package bugivelhot.ticketguru.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "lipunmyyntipisteet")
 public class Lipunmyyntipiste {
 
     @Id
@@ -12,6 +13,9 @@ public class Lipunmyyntipiste {
 
     @Column(name = "myyntipiste_nimi", nullable = false, length = 100)
     private String myyntipisteNimi;
+
+    @Column(name = "katuosoite", nullable = false, length = 100)
+    private String katuosoite;
 
     @ManyToOne
     @JoinColumn(name = "osoite_id", nullable = false)
@@ -24,8 +28,9 @@ public class Lipunmyyntipiste {
     public Lipunmyyntipiste() {
     }
 
-    public Lipunmyyntipiste(String myyntipisteNimi, Osoite osoite, Kayttaja myyja) {
+    public Lipunmyyntipiste(String myyntipisteNimi, String katuosoite, Osoite osoite, Kayttaja myyja) {
         this.myyntipisteNimi = myyntipisteNimi;
+        this.katuosoite = katuosoite;
         this.osoite = osoite;
         this.myyja = myyja;
     }
@@ -44,6 +49,14 @@ public class Lipunmyyntipiste {
 
     public void setMyyntipisteNimi(String myyntipisteNimi) {
         this.myyntipisteNimi = myyntipisteNimi;
+    }
+
+    public String getKatuosoite() {
+        return katuosoite;
+    }
+
+    public void setKatuosoite(String katuosoite) {
+        this.katuosoite = katuosoite;
     }
 
     public Osoite getOsoite() {
