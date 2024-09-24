@@ -20,22 +20,17 @@ public class Myyntitapahtuma {
     private double summa;
 
     @ManyToOne
-    @JoinColumn(name = "tapahtuma_id")
-    private Tapahtuma tapahtuma;
-
-    @ManyToOne
     @JoinColumn(name = "lippu_id")
     private Lippu lippu;
 
     public Myyntitapahtuma() {
     }
 
-    public Myyntitapahtuma(Long myyntitapahtuma_id, LocalDateTime maksupvm, double summa, Tapahtuma tapahtuma,
+    public Myyntitapahtuma(Long myyntitapahtuma_id, LocalDateTime maksupvm, double summa,
             Lippu lippu) {
         this.id = myyntitapahtuma_id;
         this.maksupvm = maksupvm;
         this.summa = summa;
-        this.tapahtuma = tapahtuma;
         this.lippu = lippu;
     }
 
@@ -61,14 +56,6 @@ public class Myyntitapahtuma {
 
     public void setSumma(double summa) {
         this.summa = summa;
-    }
-
-    public Tapahtuma getTapahtuma() {
-        return tapahtuma;
-    }
-
-    public void setTapahtuma(Tapahtuma tapahtuma) {
-        this.tapahtuma = tapahtuma;
     }
 
     public Lippu getLippu() {
