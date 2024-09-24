@@ -1,16 +1,14 @@
 package bugivelhot.ticketguru.model;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,16 +29,22 @@ public class Tapahtuma {
     @Column(name = "paivamaara")
     private LocalDateTime paivamaara;
 
-    @OneToMany(mappedBy = "tapahtuma", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Tapahtumapaikka> tapahtumaPaikat;
+    @Column(name = "katuosoite", nullable = false, length = 100)
+    private String katuosoite;
+
+    @ManyToOne
+    @JoinColumn(name = "osoite_id", nullable = false)
+    private Osoite osoite;
 
     public Tapahtuma() {
     }
 
-    public Tapahtuma(String nimi, String kuvaus, LocalDateTime paivamaara) {
+    public Tapahtuma(String nimi, String kuvaus, LocalDateTime paivamaara, String katuosoite, Osoite osoite) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
         this.paivamaara = paivamaara;
+        this.katuosoite = katuosoite;
+        this.osoite = osoite;
     }
 
     public Long getTapahtumaId() {
@@ -75,12 +79,19 @@ public class Tapahtuma {
         this.paivamaara = paivamaara;
     }
 
-    public Set<Tapahtumapaikka> getTapahtumaPaikat() {
-        return tapahtumaPaikat;
+    public String getKatuosoite() {
+        return katuosoite;
     }
 
-    public void setTapahtumaPaikat(Set<Tapahtumapaikka> tapahtumaPaikat) {
-        this.tapahtumaPaikat = tapahtumaPaikat;
+    public void setKatuosoite(String katuosoite) {
+        this.katuosoite = katuosoite;
     }
 
+    public Osoite getOsoite() {
+        return osoite;
+    }
+
+    public void setOsoite(Osoite osoite) {
+        this.osoite = osoite;
+    }
 }

@@ -86,10 +86,12 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 ![Käyttöliittymäkaavio](./Images/Kayttoliittymakaavio2.PNG)
 
 ## Tietokanta
+- TicketGuru-tietokannan UML-luokkakaavio
 
-Järjestelmään säilöttävä ja siinä käsiteltävät tiedot ja niiden väliset suhteet
-kuvataan käsitekaaviolla. Käsitemalliin sisältyy myös taulujen välisten viiteyhteyksien ja avainten
-määritykset. Tietokanta kuvataan käyttäen jotain kuvausmenetelmää, joko ER-kaaviota ja UML-luokkakaaviota.
+![UML-luokkakaavio](./Images/UMLclass.png)
+
+> Linkki UML-luokkakaavion sivuille:
+> https://lucid.app/lucidchart/cc73c021-a71b-40e2-b45e-cc985ebd1832/edit?viewport_loc=-2463%2C-161%2C2984%2C1477%2CHWEp-vi-RSFO&invitationId=inv_80605f74-82a3-4fa1-99c2-f3d2ad5d97b4
 
 Lisäksi kukin järjestelmän tietoelementti ja sen attribuutit kuvataan
 tietohakemistossa. Tietohakemisto tarkoittaa yksinkertaisesti vain jokaisen elementin (taulun) ja niiden
