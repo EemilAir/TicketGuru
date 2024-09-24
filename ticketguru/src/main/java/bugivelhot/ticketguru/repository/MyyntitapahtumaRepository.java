@@ -1,9 +1,8 @@
 package bugivelhot.ticketguru.repository;
 
-import org.springframework.data.repository.CrudRepository;
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import bugivelhot.ticketguru.model.Myyntitapahtuma;
 
-public interface MyyntitapahtumaRepository extends CrudRepository<Myyntitapahtuma, Long> {
+public interface MyyntitapahtumaRepository extends JpaRepository<Myyntitapahtuma, Long> {
 
 }

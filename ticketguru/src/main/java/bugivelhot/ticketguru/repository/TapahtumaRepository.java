@@ -1,5 +1,8 @@
 package bugivelhot.ticketguru.repository;
 
-public class TapahtumaRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import bugivelhot.ticketguru.model.Tapahtuma;
+
+public interface TapahtumaRepository extends JpaRepository<Tapahtuma, Long> {
 
 }
