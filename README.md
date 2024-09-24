@@ -222,6 +222,16 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > | tila_id           | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Tilan tunniste                                                                                  |
 > | tila_nimi         | VARCHAR(50) NOT NULL                                               | Tilan nimi                                                                                      |
 
+---
+
+> ### _Myyntitapahtuma_
+> _Myyntitapahtuma-taulu sisältää tiedon ostettujen lippujen maksupäivämääräärästä, kokonaissummasta, sekä muusta tarvittavasta lippuihin kohdistuvasta tiedosta. Taulu mahdollistaa lippujen tulostamisen asiakkaille, sekä lippumyynnin seuraamisen._
+> | Kenttä            | Tyyppi                                                             | Kuvaus
+> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
+> | myyntitapahtuma_id           | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Myyntitapahtuman tunniste                                                                                  |
+> | maksupvm         | DATETIME NOT NULL                                               | Lippujen ostopäivämäärä
+> | summa           | DECIMAL(10,2) NOT NULL                           | Lippujen yhteissumma
+> | lippu_id           | INT NOT NULL FOREIGN KEY REFERENCES liput(lippu_id)                            | Lipun tunniste
 </details>
 
 ## Tekninen kuvaus
