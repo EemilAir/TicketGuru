@@ -224,8 +224,8 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 
 ---
 
-> ### _Myyntitapahtuma_
-> _Myyntitapahtuma-taulu sisältää tiedon ostettujen lippujen maksupäivämääräärästä, kokonaissummasta, sekä muusta tarvittavasta lippuihin kohdistuvasta tiedosta. Taulu mahdollistaa lippujen tulostamisen asiakkaille, sekä lippumyynnin seuraamisen._
+> ### _Myyntitapahtumat_
+> _Myyntitapahtumat-taulu sisältää tiedon ostettujen lippujen maksupäivämääräärästä, kokonaissummasta, sekä muusta tarvittavasta lippuihin kohdistuvasta tiedosta. Taulu mahdollistaa lippujen tulostamisen asiakkaille, sekä lippumyynnin seuraamisen._
 > | Kenttä            | Tyyppi                                                             | Kuvaus
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | myyntitapahtuma_id           | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Myyntitapahtuman tunniste                                                                                  |
