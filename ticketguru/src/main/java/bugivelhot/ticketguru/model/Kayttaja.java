@@ -2,43 +2,44 @@ package bugivelhot.ticketguru.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "kayttajat")
 public class Kayttaja {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "kayttaja_id")
     private Long kayttajaId;
 
     private String etunimi;
     private String sukunimi;
     private String puhelinno;
     private String sposti;
-
-    @Column(name = "syntyma_aika")
+    private String katuosoite;
     private LocalDate syntymaAika;
-    @Column(name = "salasana_hash")
     private String salasanaHash;
 
     @ManyToOne
     @JoinColumn(name = "osoite_id")
     private Osoite osoite;
 
-    @ManyToOne
-    @JoinColumn(name = "rooli_id")
-    private Kayttajarooli kayttajarooli;
+    @ManyToMany
+    @JoinTable(name = "kayttajan_roolit", // välitaulun nimi
+            joinColumns = @JoinColumn(name = "kayttaja_id"), inverseJoinColumns = @JoinColumn(name = "rooli_id"))
+    private Set<Kayttajarooli> kayttajaroolit = new HashSet<>();
 
     public Kayttaja(String etunimi, String sukunimi, String puhelinno, String sposti, LocalDate syntymaAika,
-            String salasanaHash, Osoite osoite, Kayttajarooli kayttajarooli) {
+            String salasanaHash, String katuosoite, Osoite osoite) {
         this.etunimi = etunimi;
         this.sukunimi = sukunimi;
         this.puhelinno = puhelinno;
         this.sposti = sposti;
         this.syntymaAika = syntymaAika;
         this.salasanaHash = salasanaHash;
+        this.katuosoite = katuosoite;
         this.osoite = osoite;
-        this.kayttajarooli = kayttajarooli;
     }
 
     public Kayttaja() {
@@ -100,6 +101,14 @@ public class Kayttaja {
         this.salasanaHash = salasanaHash;
     }
 
+    public String getKatuosoite() {
+        return katuosoite;
+    }
+
+    public void setKatuosoite(String katuosoite) {
+        this.katuosoite = katuosoite;
+    }
+
     public Osoite getOsoite() {
         return osoite;
     }
@@ -108,12 +117,11 @@ public class Kayttaja {
         this.osoite = osoite;
     }
 
-    public Kayttajarooli getKayttajarooli() {
-        return kayttajarooli;
+    public Set<Kayttajarooli> getKayttajaroolit() {
+        return kayttajaroolit;
     }
 
-    public void setKayttajarooli(Kayttajarooli kayttajarooli) {
-        this.kayttajarooli = kayttajarooli;
+    public void setKayttajaroolit(Set<Kayttajarooli> kayttajaroolit) {
+        this.kayttajaroolit = kayttajaroolit;
     }
-
 }

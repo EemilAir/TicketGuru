@@ -1,17 +1,21 @@
 package bugivelhot.ticketguru.model;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "kayttajaroolit")
 public class Kayttajarooli {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "rooli_id")
     private Long rooliId;
 
-    @Column(name = "rooli_nimi")
     private String roolinNimi;
+
+    @ManyToMany(mappedBy = "kayttajaroolit")
+    private Set<Kayttaja> kayttajat = new HashSet<>();
 
     public Kayttajarooli(String roolinNimi) {
         this.roolinNimi = roolinNimi;
@@ -34,6 +38,14 @@ public class Kayttajarooli {
 
     public void setRoolinNimi(String roolinNimi) {
         this.roolinNimi = roolinNimi;
+    }
+
+    public Set<Kayttaja> getKayttajat() {
+        return kayttajat;
+    }
+
+    public void setKayttajat(Set<Kayttaja> kayttajat) {
+        this.kayttajat = kayttajat;
     }
 
 }
