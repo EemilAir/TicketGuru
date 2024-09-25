@@ -1,5 +1,7 @@
 package bugivelhot.ticketguru.model;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -8,31 +10,23 @@ public class Lipunmyyntipiste {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "myyntipiste_id")
     private Long myyntipisteId;
-
-    @Column(name = "myyntipiste_nimi", nullable = false, length = 100)
-    private String myyntipisteNimi;
-
-    @Column(name = "katuosoite", nullable = false, length = 100)
+    private String myyntipiste;
     private String katuosoite;
 
     @ManyToOne
     @JoinColumn(name = "osoite_id", nullable = false)
     private Osoite osoite;
 
-    @ManyToOne
-    @JoinColumn(name = "myyja_id", nullable = false)
-    private Kayttaja myyja;
+    @OneToMany(mappedBy = "lipunmyyntipiste")
+    private List<Kayttaja> myyjat;
 
-    public Lipunmyyntipiste() {
+    public Lipunmyyntipiste(String myyntipiste, String katuosoite) {
+        this.myyntipiste = myyntipiste;
+        this.katuosoite = katuosoite;
     }
 
-    public Lipunmyyntipiste(String myyntipisteNimi, String katuosoite, Osoite osoite, Kayttaja myyja) {
-        this.myyntipisteNimi = myyntipisteNimi;
-        this.katuosoite = katuosoite;
-        this.osoite = osoite;
-        this.myyja = myyja;
+    public Lipunmyyntipiste() {
     }
 
     public Long getMyyntipisteId() {
@@ -43,12 +37,12 @@ public class Lipunmyyntipiste {
         this.myyntipisteId = myyntipisteId;
     }
 
-    public String getMyyntipisteNimi() {
-        return myyntipisteNimi;
+    public String getMyyntipiste() {
+        return myyntipiste;
     }
 
-    public void setMyyntipisteNimi(String myyntipisteNimi) {
-        this.myyntipisteNimi = myyntipisteNimi;
+    public void setMyyntipiste(String myyntipiste) {
+        this.myyntipiste = myyntipiste;
     }
 
     public String getKatuosoite() {
@@ -67,11 +61,12 @@ public class Lipunmyyntipiste {
         this.osoite = osoite;
     }
 
-    public Kayttaja getMyyja() {
-        return myyja;
+    public List<Kayttaja> getMyyjat() {
+        return myyjat;
     }
 
-    public void setMyyja(Kayttaja myyja) {
-        this.myyja = myyja;
+    public void setMyyjat(List<Kayttaja> myyjat) {
+        this.myyjat = myyjat;
     }
+
 }
