@@ -9,16 +9,17 @@ Tiimi: Jere Holopainen, Miikka Vartiainen, Jami Norja, Eemil Airaksinen, Anton A
 ### Toteutus- ja toimintaympäristö
 - **Palvelinpuolen ratkaisut ja teknologiat:**
     - Palvelinpuoli toteutetaan **Spring Boot** -kehystä käyttäen
-    - **Tietokannan suunnittelu** *
+    - **Tietokannan suunnittelu UML-Kaaviota käyttäen**
     - **REST API** *
-    - **Rajapinta ja olioiden väliset yhteydet** *
+    - **Rajapinta ja olioiden väliset yhteydet JPA:ta käyttäen**
     - **Vastauskoodit ja virhetilanteiden käsittely** *
     - **Autentikointi ja auktorisointi** *
-    - **Tietokanta ja julkaisu** *
+    - **Tietokanta MySQL:n avulla ja julkaisu** *
 
 - **Käyttöliittymäratkaisut ja teknologiat:**
     - Järjestelmä suunnitellaan **desktop-laitteille**, mutta se on responsiivinen, jolloin se toimii myös tabletilla ja mobiililaitteilla. 
-    - **Web-ohjelmointi** *
+    - **Web-ohjelmointi ReactJS-kirjastoa apuna käyttäen**
+    
 `NOTE: [tähdellä (*) merkittyjen kohtien tarkemmat tiedot lisätään kurssin edetessä.]`
 
 ### Projektin lopputulos
