@@ -2,14 +2,19 @@ package bugivelhot.ticketguru.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tapahtumat")
@@ -17,34 +22,36 @@ public class Tapahtuma {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "tapahtuma_id")
     private Long tapahtumaId;
-
-    @Column(nullable = false, length = 100)
     private String nimi;
-
-    @Column(length = 500)
     private String kuvaus;
-
-    @Column(name = "paivamaara")
-    private LocalDateTime paivamaara;
-
-    @Column(name = "katuosoite", nullable = false, length = 100)
+    private LocalDateTime aloituspvm;
+    private LocalDateTime lopetuspvm;
     private String katuosoite;
+    private int lippuja_jaljella;
 
     @ManyToOne
-    @JoinColumn(name = "osoite_id", nullable = false)
+    @JoinColumn(name = "osoite_id")
     private Osoite osoite;
 
-    public Tapahtuma() {
-    }
+    @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
+    private List<Lippu> liput;
 
-    public Tapahtuma(String nimi, String kuvaus, LocalDateTime paivamaara, String katuosoite, Osoite osoite) {
+    @ManyToMany
+    @JoinTable(name = "tapahtuman_lipputyypit", joinColumns = @JoinColumn(name = "tapahtuma_id"), inverseJoinColumns = @JoinColumn(name = "lipputyyppi_id"))
+    private List<Lipputyyppi> lipputyypit;
+
+    public Tapahtuma(String nimi, String kuvaus, LocalDateTime aloituspvm, LocalDateTime lopetuspvm, String katuosoite,
+            int lippuja_jaljella) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
-        this.paivamaara = paivamaara;
+        this.aloituspvm = aloituspvm;
+        this.lopetuspvm = lopetuspvm;
         this.katuosoite = katuosoite;
-        this.osoite = osoite;
+        this.lippuja_jaljella = lippuja_jaljella;
+    }
+
+    public Tapahtuma() {
     }
 
     public Long getTapahtumaId() {
@@ -71,12 +78,20 @@ public class Tapahtuma {
         this.kuvaus = kuvaus;
     }
 
-    public LocalDateTime getPaivamaara() {
-        return paivamaara;
+    public LocalDateTime getAloituspvm() {
+        return aloituspvm;
     }
 
-    public void setPaivamaara(LocalDateTime paivamaara) {
-        this.paivamaara = paivamaara;
+    public void setAloituspvm(LocalDateTime aloituspvm) {
+        this.aloituspvm = aloituspvm;
+    }
+
+    public LocalDateTime getLopetuspvm() {
+        return lopetuspvm;
+    }
+
+    public void setLopetuspvm(LocalDateTime lopetuspvm) {
+        this.lopetuspvm = lopetuspvm;
     }
 
     public String getKatuosoite() {
@@ -87,6 +102,14 @@ public class Tapahtuma {
         this.katuosoite = katuosoite;
     }
 
+    public int getLippuja_jaljella() {
+        return lippuja_jaljella;
+    }
+
+    public void setLippuja_jaljella(int lippuja_jaljella) {
+        this.lippuja_jaljella = lippuja_jaljella;
+    }
+
     public Osoite getOsoite() {
         return osoite;
     }
@@ -94,4 +117,21 @@ public class Tapahtuma {
     public void setOsoite(Osoite osoite) {
         this.osoite = osoite;
     }
+
+    public List<Lippu> getLiput() {
+        return liput;
+    }
+
+    public void setLiput(List<Lippu> liput) {
+        this.liput = liput;
+    }
+
+    public List<Lipputyyppi> getLipputyypit() {
+        return lipputyypit;
+    }
+
+    public void setLipputyypit(List<Lipputyyppi> lipputyypit) {
+        this.lipputyypit = lipputyypit;
+    }
+
 }

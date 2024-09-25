@@ -15,39 +15,36 @@ public class Myyntitapahtuma {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private LocalDateTime maksupvm;
+    private Long myyntitapahtumaId;
     private double summa;
+    private LocalDateTime maksupvm;
 
     @ManyToOne
-    @JoinColumn(name = "lippu_id")
-    private Lippu lippu;
+    @JoinColumn(name = "maksutapa_id")
+    private Maksutapa maksutapa;
+
+    @ManyToOne
+    @JoinColumn(name = "myyntikanava_id")
+    private Myyntikanava myyntikanava;
+
+    @ManyToOne
+    @JoinColumn(name = "myyja_id")
+    private Kayttaja kayttaja;
+
+    public Myyntitapahtuma(double summa, LocalDateTime maksupvm) {
+        this.summa = summa;
+        this.maksupvm = maksupvm;
+    }
 
     public Myyntitapahtuma() {
     }
 
-    public Myyntitapahtuma(Long myyntitapahtuma_id, LocalDateTime maksupvm, double summa,
-            Lippu lippu) {
-        this.id = myyntitapahtuma_id;
-        this.maksupvm = maksupvm;
-        this.summa = summa;
-        this.lippu = lippu;
+    public Long getMyyntitapahtumaId() {
+        return myyntitapahtumaId;
     }
 
-    public Long getMyyntitapahtuma_id() {
-        return id;
-    }
-
-    public void setMyyntitapahtuma_id(Long myyntitapahtuma_id) {
-        this.id = myyntitapahtuma_id;
-    }
-
-    public LocalDateTime getMaksupvm() {
-        return maksupvm;
-    }
-
-    public void setMaksupvm(LocalDateTime maksupvm) {
-        this.maksupvm = maksupvm;
+    public void setMyyntitapahtumaId(Long myyntitapahtumaId) {
+        this.myyntitapahtumaId = myyntitapahtumaId;
     }
 
     public double getSumma() {
@@ -58,11 +55,36 @@ public class Myyntitapahtuma {
         this.summa = summa;
     }
 
-    public Lippu getLippu() {
-        return lippu;
+    public LocalDateTime getMaksupvm() {
+        return maksupvm;
     }
 
-    public void setLippu(Lippu lippu) {
-        this.lippu = lippu;
+    public void setMaksupvm(LocalDateTime maksupvm) {
+        this.maksupvm = maksupvm;
     }
+
+    public Maksutapa getMaksutapa() {
+        return maksutapa;
+    }
+
+    public void setMaksutapa(Maksutapa maksutapa) {
+        this.maksutapa = maksutapa;
+    }
+
+    public Myyntikanava getMyyntikanava() {
+        return myyntikanava;
+    }
+
+    public void setMyyntikanava(Myyntikanava myyntikanava) {
+        this.myyntikanava = myyntikanava;
+    }
+
+    public Kayttaja getKayttaja() {
+        return kayttaja;
+    }
+
+    public void setKayttaja(Kayttaja kayttaja) {
+        this.kayttaja = kayttaja;
+    }
+
 }

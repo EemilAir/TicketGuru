@@ -1,50 +1,58 @@
 package bugivelhot.ticketguru.model;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import org.hibernate.annotations.ManyToAny;
+
+// importit
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "kayttajat")
+@Table(name = "kayttajat") // Määrittää, että tämä entiteetti vastaa tietokantataulua "kayttajat"
 public class Kayttaja {
 
+    // Tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long kayttajaId;
+    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että kayttajaId on pääavain ja generoidaan
+                                                    // automaattisesti
+    private Long kayttajaId; // Pääavain, käyttäjän yksilöivä tunniste tietokantataulussa (kayttaja_id)
+    private String kayttajanimi; // Käyttäjän tunnus, jota käytetään sisäänkirjautumiseen (kayttajanimi)
+    private String sposti; // Käyttäjän sähköpostiosoite (sposti)
+    private String salasanaHash; // Käyttäjän salasanan tiiviste (hash), tallennetaan turvallisuuden vuoksi
+                                 // tiivistettynä (salasana_hash)
 
-    private String etunimi;
-    private String sukunimi;
-    private String puhelinno;
-    private String sposti;
-    private String katuosoite;
-    private LocalDate syntymaAika;
-    private String salasanaHash;
+    // Käyttäjäroolit
+    public enum Rooli {
+        ADMIN, // Ylläpitäjä, jolla on korkeammat oikeudet järjestelmässä
+        MYYJA // Käyttäjä, joka toimii myyjänä, rajoitetummat oikeudet kuin adminilla
+    }
+
+    @Enumerated(EnumType.STRING) // Tallennetaan rooli tietokantaan merkkijonona (esim. 'ADMIN' tai 'MYYJA')
+    private Rooli kayttajarooli; // Käyttäjän rooli, joka määrittää käyttöoikeudet järjestelmässä (kayttajarooli)
 
     @ManyToOne
-    @JoinColumn(name = "osoite_id")
-    private Osoite osoite;
+    @JoinColumn(name = "myyntipiste_id")
+    private Lipunmyyntipiste lipunmyyntipiste;
 
-    @ManyToMany
-    @JoinTable(name = "kayttajan_roolit", // välitaulun nimi
-            joinColumns = @JoinColumn(name = "kayttaja_id"), inverseJoinColumns = @JoinColumn(name = "rooli_id"))
-    private Set<Kayttajarooli> kayttajaroolit = new HashSet<>();
-
-    public Kayttaja(String etunimi, String sukunimi, String puhelinno, String sposti, LocalDate syntymaAika,
-            String salasanaHash, String katuosoite, Osoite osoite) {
-        this.etunimi = etunimi;
-        this.sukunimi = sukunimi;
-        this.puhelinno = puhelinno;
+    // Konstruktorit
+    public Kayttaja(String kayttajanimi, String sposti, String salasanaHash, Rooli kayttajarooli) {
+        this.kayttajanimi = kayttajanimi;
         this.sposti = sposti;
-        this.syntymaAika = syntymaAika;
         this.salasanaHash = salasanaHash;
-        this.katuosoite = katuosoite;
-        this.osoite = osoite;
+        this.kayttajarooli = kayttajarooli;
     }
 
     public Kayttaja() {
     }
 
+    // Getterit ja Setterit, jotka mahdollistavat kenttien arvon lukemisen ja
+    // muuttamisen
     public Long getKayttajaId() {
         return kayttajaId;
     }
@@ -53,28 +61,12 @@ public class Kayttaja {
         this.kayttajaId = kayttajaId;
     }
 
-    public String getEtunimi() {
-        return etunimi;
+    public String getKayttajanimi() {
+        return kayttajanimi;
     }
 
-    public void setEtunimi(String etunimi) {
-        this.etunimi = etunimi;
-    }
-
-    public String getSukunimi() {
-        return sukunimi;
-    }
-
-    public void setSukunimi(String sukunimi) {
-        this.sukunimi = sukunimi;
-    }
-
-    public String getPuhelinno() {
-        return puhelinno;
-    }
-
-    public void setPuhelinno(String puhelinno) {
-        this.puhelinno = puhelinno;
+    public void setKayttajanimi(String kayttajanimi) {
+        this.kayttajanimi = kayttajanimi;
     }
 
     public String getSposti() {
@@ -85,14 +77,6 @@ public class Kayttaja {
         this.sposti = sposti;
     }
 
-    public LocalDate getSyntymaAika() {
-        return syntymaAika;
-    }
-
-    public void setSyntymaAika(LocalDate syntymaAika) {
-        this.syntymaAika = syntymaAika;
-    }
-
     public String getSalasanaHash() {
         return salasanaHash;
     }
@@ -101,27 +85,22 @@ public class Kayttaja {
         this.salasanaHash = salasanaHash;
     }
 
-    public String getKatuosoite() {
-        return katuosoite;
+    public Rooli getKayttajarooli() {
+        return kayttajarooli;
     }
 
-    public void setKatuosoite(String katuosoite) {
-        this.katuosoite = katuosoite;
+    public void setKayttajarooli(Rooli kayttajarooli) {
+        this.kayttajarooli = kayttajarooli;
     }
 
-    public Osoite getOsoite() {
-        return osoite;
+    public Lipunmyyntipiste getLipunmyyntipiste() {
+        return lipunmyyntipiste;
     }
 
-    public void setOsoite(Osoite osoite) {
-        this.osoite = osoite;
+    public void setLipunmyyntipiste(Lipunmyyntipiste lipunmyyntipiste) {
+        this.lipunmyyntipiste = lipunmyyntipiste;
     }
 
-    public Set<Kayttajarooli> getKayttajaroolit() {
-        return kayttajaroolit;
-    }
+    
 
-    public void setKayttajaroolit(Set<Kayttajarooli> kayttajaroolit) {
-        this.kayttajaroolit = kayttajaroolit;
-    }
 }

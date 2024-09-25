@@ -1,7 +1,8 @@
 package bugivelhot.ticketguru.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -16,81 +17,42 @@ public class Lippu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private double hinta;
-    private LocalDateTime myyntiaika;
+    private Long lippuId;
     private String koodi;
-    private String paikka;
     private LocalDateTime luontiaika;
-    private LocalDateTime alkupvm;
-    private LocalDateTime loppupvm;
-    private Long kayttaja_id;
-    private Long tapahtuma_id;
+    private LocalDateTime myyntiaika;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "maksutapa_id")
-    private Maksutapa maksutapa;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "myyntikanava_id")
-    private Myyntikanava myyntikanava;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "tila_id")
-    private Tila tila;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "lipputyyppi_id")
-    private Lipputyyppi lipputyyppi;
-
-    public Lippu() {
+    public enum Tila {
+        AKTIIVINEN,
+        KAYTETTY
     }
 
-    public Lippu(Long lippu_id, double hinta, Maksutapa maksutapa, LocalDateTime myyntiaika, 
-                Myyntikanava myyntikanava, String koodi, String paikka, LocalDateTime luontiaika, LocalDateTime alkupvm, 
-                LocalDateTime loppupvm, Lipputyyppi lipputyyppi, Tila tila, Long kayttaja_id, Long tapahtuma_id) {
-        this.id = lippu_id;
-        this.hinta = hinta;
-        this.maksutapa = maksutapa;
-        this.myyntiaika = myyntiaika;
-        this.myyntikanava = myyntikanava;
+    @Enumerated(EnumType.STRING)
+    private Tila lipunTila;
+    
+    @ManyToOne
+    @JoinColumn(name = "tapahtuma_id")
+    private Tapahtuma tapahtuma;
+
+    @ManyToOne
+    @JoinColumn(name = "myyntitapahtuma_id")
+    private Myyntitapahtuma myyntitapahtuma;
+
+    public Lippu(String koodi, LocalDateTime luontiaika, LocalDateTime myyntiaika, Tila lipunTila) {
         this.koodi = koodi;
-        this.paikka = paikka;
         this.luontiaika = luontiaika;
-        this.alkupvm = alkupvm;
-        this.loppupvm = loppupvm;
-        this.lipputyyppi = lipputyyppi;
-        this.tila = tila;
-        this.kayttaja_id = kayttaja_id;
-        this.tapahtuma_id = tapahtuma_id;
+        this.myyntiaika = myyntiaika;
+        this.lipunTila = lipunTila;
     }
 
-    public Long getLippu_id() {
-        return id;
+    public Lippu(){}
+
+    public Long getLippuId() {
+        return lippuId;
     }
 
-    public void setLippu_id(Long lippu_id) {
-        this.id = lippu_id;
-    }
-
-    public double getHinta() {
-        return hinta;
-    }
-
-    public void setHinta(double hinta) {
-        this.hinta = hinta;
-    }
-
-    public Maksutapa getMaksutapa() {
-        return maksutapa;
-    }
-
-    public void setMaksutapa(Maksutapa maksutapa) {
-        this.maksutapa = maksutapa;
+    public void setLippuId(Long lippuId) {
+        this.lippuId = lippuId;
     }
 
     public LocalDateTime getMyyntiaika() {
@@ -101,28 +63,12 @@ public class Lippu {
         this.myyntiaika = myyntiaika;
     }
 
-    public Myyntikanava getMyyntikanava() {
-        return myyntikanava;
-    }
-
-    public void setMyyntikanava(Myyntikanava myyntikanava) {
-        this.myyntikanava = myyntikanava;
-    }
-
     public String getKoodi() {
         return koodi;
     }
 
     public void setKoodi(String koodi) {
         this.koodi = koodi;
-    }
-
-    public String getPaikka() {
-        return paikka;
-    }
-
-    public void setPaikka(String paikka) {
-        this.paikka = paikka;
     }
 
     public LocalDateTime getLuontiaika() {
@@ -133,51 +79,28 @@ public class Lippu {
         this.luontiaika = luontiaika;
     }
 
-    public LocalDateTime getAlkupvm() {
-        return alkupvm;
+    public Tila getLipunTila() {
+        return lipunTila;
     }
 
-    public void setAlkupvm(LocalDateTime alkupvm) {
-        this.alkupvm = alkupvm;
+    public void setLipunTila(Tila lipunTila) {
+        this.lipunTila = lipunTila;
     }
 
-    public LocalDateTime getLoppupvm() {
-        return loppupvm;
+    public Tapahtuma getTapahtuma() {
+        return tapahtuma;
     }
 
-    public void setLoppupvm(LocalDateTime loppupvm) {
-        this.loppupvm = loppupvm;
+    public void setTapahtuma(Tapahtuma tapahtuma) {
+        this.tapahtuma = tapahtuma;
     }
 
-    public Tila getTila() {
-        return tila;
+    public Myyntitapahtuma getMyyntitapahtuma() {
+        return myyntitapahtuma;
     }
 
-    public void setTila(Tila tila) {
-        this.tila = tila;
+    public void setMyyntitapahtuma(Myyntitapahtuma myyntitapahtuma) {
+        this.myyntitapahtuma = myyntitapahtuma;
     }
 
-    public Long getKayttaja_id() {
-        return kayttaja_id;
-    }
-
-    public void setKayttaja_id(Long kayttaja_id) {
-        this.kayttaja_id = kayttaja_id;
-    }
-
-    public Long getTapahtuma_id() {
-        return tapahtuma_id;
-    }
-
-    public void setTapahtuma_id(Long tapahtuma_id) {
-        this.tapahtuma_id = tapahtuma_id;
-    }
-
-    public Lipputyyppi getLipputyyppi() {
-        return lipputyyppi;
-    }
-
-    public void setLipputyyppi(Lipputyyppi lipputyyppi) {
-        this.lipputyyppi = lipputyyppi;
-    }
 }

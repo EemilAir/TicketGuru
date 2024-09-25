@@ -1,9 +1,13 @@
 package bugivelhot.ticketguru.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,11 +18,17 @@ public class Osoite {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long osoiteId;
 
-    private String postino;
+    private String postinumero;
     private String postitmp;
 
-    public Osoite(String postino, String postitmp) {
-        this.postino = postino;
+    @OneToMany(mappedBy = "osoite", cascade = CascadeType.ALL)
+    private List<Lipunmyyntipiste> Lipunmyyntipisteet;
+
+    @OneToMany(mappedBy = "osoite", cascade = CascadeType.ALL)
+    private List<Tapahtuma> tapahtumat;
+
+    public Osoite(String postinumero, String postitmp) {
+        this.postinumero = postinumero;
         this.postitmp = postitmp;
     }
 
@@ -33,12 +43,12 @@ public class Osoite {
         this.osoiteId = osoiteId;
     }
 
-    public String getPostino() {
-        return postino;
+    public String getPostinumero() {
+        return postinumero;
     }
 
-    public void setPostino(String postino) {
-        this.postino = postino;
+    public void setPostinumero(String postinumero) {
+        this.postinumero = postinumero;
     }
 
     public String getPostitmp() {
@@ -48,5 +58,23 @@ public class Osoite {
     public void setPostitmp(String postitmp) {
         this.postitmp = postitmp;
     }
+
+    public List<Lipunmyyntipiste> getLipunmyyntipisteet() {
+        return Lipunmyyntipisteet;
+    }
+
+    public void setLipunmyyntipisteet(List<Lipunmyyntipiste> lipunmyyntipisteet) {
+        Lipunmyyntipisteet = lipunmyyntipisteet;
+    }
+
+    public List<Tapahtuma> getTapahtumat() {
+        return tapahtumat;
+    }
+
+    public void setTapahtumat(List<Tapahtuma> tapahtumat) {
+        this.tapahtumat = tapahtumat;
+    }
+
+    
 
 }
