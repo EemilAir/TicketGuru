@@ -99,49 +99,26 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 <summary>Tietohakemiston taulut</summary>
 
 > ### _Kayttajat_
-> _Kayttajat-taulu sisältää järjestelmän käyttäjätiedot. Jokaisella käyttäjällä on uniikki tunniste, ja taulu tallentaa käyttäjän nimen, yhteystiedot ja osoitteen._
+> _Kayttajat-taulu sisältää järjestelmän käyttäjätiedot. Jokaisella käyttäjällä on uniikki tunniste, ja taulu tallentaa käyttäjänimen, yhteystiedot ja osoitteen._
 > | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | kayttaja_id       | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Käyttäjän tunniste                                                                              |
-> | etunimi           | VARCHAR(50) NOT NULL                                               | Käyttäjän etunimi                                                                               |
-> | sukunimi          | VARCHAR(50) NOT NULL                                               | Käyttäjän sukunimi                                                                              |
-> | syntyma_aika      | DATE                                                               | Käyttäjän syntymäaika                                                                           |
-> | puhelinno         | VARCHAR(20) NOT NULL                                               | Käyttäjän puhelinnumero                                                                         |
-> | sposti            | VARCHAR(100) NOT NULL                                              | Käyttäjän sähköposti                                                                            |
-> | salasanaHash      | VARCHAR(255) NOT NULL                                              | Käyttäjän salasana                                                                              |
-> | katuosoite        | VARCHAR(255) NOT NULL                                              | Käyttäjän kotiosoite                                                                            |
-> | osoite_id         | INT NOT NULL FOREIGN KEY REFERENCES osoitteet(osoite_id)           | postinumero ja postitoimipaikka, viittaus osoitetietoihin [Osoitteet](#osoitteet)-taulussa      |
-
----
-
-> ### _Kayttajaroolit_
-> _Kayttajaroolit-taulu sisältää käyttäjäroolit, kuten admin ja myyjä. Jokaisella roolilla on uniikki tunniste ja nimi, mikä mahdollistaa käyttäjien oikeuksien ja pääsyjen hallinnan järjestelmässä._
-> | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
-> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
-> | rooli_id          | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Käyttäjäroolin tunniste                                                                         |
-> | rooli_nimi        | VARCHAR(50) NOT NULL                                               | Käyttäjäroolin nimi                                                                             |
-
----
-
-> ### _Kayttajan_Roolit_
-> _Kayttajan_Roolit-taulu liittää käyttäjät ja käyttäjäroolit yhteen. Jokaisella käyttäjällä voi olla useita rooleja, kuten admin tai myyjä, ja taulu mahdollistaa käyttäjäroolien hallinnan järjestelmässä._
-> | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
-> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
-> |                   | PRIMARY KEY (kayttaja_id, rooli_id)                                | Käyttäjän ja Käyttäjäroolin tunnisteet yhdistetty pääavaimeksi                                  |
-> | kayttaja_id       | INT NOT NULL FOREIGN KEY REFERENCES kayttajat(kayttaja_id)         | Käyttäjätiedot, Viittaus käyttäjään [Kayttajat](#Kayttajat)-taulussa                            |
-> | rooli_id          | INT NOT NULL FOREIGN KEY REFERENCES kayttajaroolit(rooli_id)       | Käyttäjäroolin tiedot, Viittaus käyttäjärooliin [Kayttajaroolit](#kayttajaroolit)-taulussa      |
+> | kayttajanimi           | VARCHAR(50) NOT NULL                                               | Käyttäjän käyttäjätunnus                                                                               |
+> | sposti          | VARCHAR(100) NOT NULL                                               | Käyttäjän sähköposti                                                                              |
+> | salasanaHash      | VARCHAR(255) NOT NULL                                                               | Käyttäjän salasana                                                                           |
+> | kayttajarooli         | VARCHAR(50) NOT NULL                                               | Käyttäjän rooli                                                                         |
+> | myyntipiste_id            | INT NOT NULL FOREIGN KEY REFERENCES lipunmyyntipiste(myyntipiste_id)                                              | Lipunmyyntipiste, Viittaus lipunmyyntipisteeseen [lipunmyyntipiste](#lipunmyyntipisteet)-taulussa                                                                           |
 
 ---
 
 > ### _Lipunmyyntipisteet_
-> _Lipunmyyntipisteet-taulu sisältää myyntipisteiden tiedot, kuten tunnisteen, nimen ja osoitteen. Jokaisella myyntipisteellä on yhteys osoitetietoihin ja myyjään, mikä mahdollistaa lipunmyynnin hallinnan eri sijainneissa._
+> _Lipunmyyntipisteet-taulu sisältää myyntipisteiden tiedot, kuten tunnisteen ja osoitteen. Jokaisella myyntipisteellä on yhteys osoitetietoihin, mikä mahdollistaa lipunmyynnin hallinnan eri sijainneissa._
 > | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | myyntipiste_id    | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Myyntipisteen tunniste                                                                          |
-> | myyntipiste_nimi  | VARCHAR(5) NOT NULL                                                | Myyntipisteen nimi                                                                              |
+> | myyntipiste  | VARCHAR(100) NOT NULL                                                | Lipun myyntipiste                                                                              |
 > | katuosoite        | VARCHAR(100) NOT NULL                                              | Myyntipisteen katuosoite                                                                        |
 > | osoite_id         | INT NOT NULL FOREIGN KEY REFERENCES osoitteet(osoite_id)           | postinumero ja postitoimipaikka, viittaus osoitetietoihin [Osoitteet](#osoitteet)-taulussa      |
-> | myyja_id          | INT NOT NULL FOREIGN KEY REFERENCES kayttajat(kayttaja_id)         | Myyjän käyttäjätiedot, Viittaus käyttäjään [Kayttajat](#kayttajat)-taulussa                     |
 
 ---
 
@@ -151,9 +128,12 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | tapahtuma_id      | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Tapahtuman tunniste                                                                             |
 > | nimi              | VARCHAR(100) NOT NULL                                              | Tapahtuman nimi                                                                                 |
-> | kuvaus            | VARCHAR(100) NOT NULL                                              | Tapahtuman kuvaus                                                                               |
-> | paivamaara        | DATE                                                               | Tapahtuman päivämäärä                                                                           |
+> | kuvaus            | TEXT                                              | Tapahtuman kuvaus                                                                               |
+> | kategoria            | VARCHAR(255) NOT NULL                                              | Tapahtuman kategoria                                                                               |
+> | alkupvm        | DATE NOT NULL                                                              | Tapahtuman aloituspäivämäärä                                                                           |
+> | loppupvm        | DATE NOT NULL                                                       | Tapahtuman lopetuspäivämäärä                                                                           |
 > | katuosoite        | VARCHAR(100)                                                       | Tapahtuman katuosoite                                                                           |
+> | lippuja_jaljella        | INT                                                       | Tapahtumaan jäljellä olevat liput                                                                           |
 > | osoite_id         | INT FOREIGN KEY REFERENCES osoitteet(osoite_id)                    | postinumero ja postitoimipaikka, viittaus osoitetietoihin [Osoitteet](#osoitteet)-taulussa      |
 
 ---
@@ -169,45 +149,39 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 ---
 
 > ### _Liput_
-> _Liput-taulu sisältää tietoja lipuista, kuten tunnisteen, hinnan ja myyntiajan. Taulu tallentaa myös lipun koodin, alkamispäivämäärän ja loppumispäivämäärän. Liput linkitetään myyntikanaviin, lipputyyppeihin, tiloihin, käyttäjiin ja tapahtumiin, mikä mahdollistaa lipun hallinnan ja seurannan eri myyntikanavissa._
+> _Liput-taulu sisältää tietoja lipuista, kuten tunnisteen ja myyntiajan. Taulu tallentaa myös lipun koodin. Liput linkitetään myyntitapahtumiin ja tapahtumiin, mikä mahdollistaa lipun hallinnan ja myynnin seurannan eri tapahtumissa._
 > | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | lippu_id          | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Lipun tunniste                                                                                  |
-> | hinta             | DECIMAL(10,2) NOT NULL                                             | Lipun hinta                                                                                     |
 > | myyntiaika        | TIMESTAMP NOT NULL                                                 | Lipun myyntiaika                                                                                |
 > | koodi             | VARCHAR(255) NOT NULL                                              | Lipun koodi                                                                                     |
 > | luontiaika        | TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP                       | Lipun luontiaika                                                                                |
-> | alkupvm           | DATE NOT NULL                                                      | Lipun alkamispäivämäärä                                                                         |
-> | loppupvm          | DATE NOT NULL                                                      | Lipun loppumispäivämäärä                                                                        |
-> | myyntikanava_id   | INT NOT NULL FOREIGN KEY REFERENCES myyntikanavat(myyntikanava_id) | Myyntikanava, viittaus myyntikanavaan [Myyntikanavat](#myyntikanavat)-taulussa                  |
-> | lipputyyppi_id    | INT NOT NULL FOREIGN KEY REFERENCES lipputyypit(lipputyyppi_id)    | Lipputyyppi, viittaus lipputyyppiin [Lipputyypit](#lipputyypit)-taulussa                        |
-> | tila_id           | INT NOT NULL FOREIGN KEY REFERENCES tilat(tila_id)                 | Lipun tila, viittaus lipun tilaan [Tilat](#tilat)-taulussa                                      |
-> | kayttaja_id       | INT NOT NULL FOREIGN KEY REFERENCES kayttajat(kayttaja_id)         | Myyjän käyttäjätiedot, viittaus käyttäjään [Käyttäjät](#kayttajat)-taulussa                     |
+> | lipun_tila             | VARCHAR(10)                                              | Lipun tila                                                                                     |
 > | tapahtuma_id      | INT NOT NULL FOREIGN KEY REFERENCES tapahtumat(tapahtuma_id)       | Tapahtumatiedot, viittaus tapahtumatietoihin [Tapahtumat](#tapahtumat)-taulussa                 |
-> | maksutapa_id      | INT NOT NULL FOREIGN KEY REFERENCES maksutavat(maksutapa_id)       | Maksutapa, viittaus maksutapaan [Maksutavat](#maksutavat)-taulussa                              |
+> | myyntitapahtuma_id      | INT NOT NULL FOREIGN KEY REFERENCES myyntitapahtumat(myyntitapahtuma_id)       | Myyntitapahtumat, viittaus myyntitapahtumiin [Myyntitapahtumat](#myyntitapahtumat)-taulussa                 |
 
 ---
 
 > ### _Maksutavat_
-> _Maksutavat-taulu sisältää maksutapojen tiedot, kuten tunnisteen ja nimen. Taulu mahdollistaa eri maksutapojen hallinnan ja käyttömahdollisuuksien määrittämisen järjestelmässä._
+> _Maksutavat-taulu sisältää maksutapojen tiedot, kuten tunnisteen ja maksutavan nimen. Taulu mahdollistaa eri maksutapojen hallinnan ja käyttömahdollisuuksien määrittämisen järjestelmässä._
 > | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | maksutapa_id      | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Maksutavan tunniste                                                                             |
-> | maksutapa_nimi    | DECIMAL(10,2) NOT NULL                                             | Maksutavan nimi                                                                                 |
+> | maksutapa    | VARCHAR(50) NOT NULL                                             | Lipun maksutapa                                                                                 |
 
 ---
 
 > ### _Myyntikanavat_
-> _Myyntikanavat-taulu sisältää myyntikanavien tiedot, kuten tunnisteen ja nimen. Taulu mahdollistaa eri myyntikanavien hallinnan ja määrittämisen järjestelmässä, mikä tukee lipunmyynnin monipuolisuutta._
+> _Myyntikanavat-taulu sisältää myyntikanavien tiedot, kuten tunnisteen ja myyntikanavan nimen. Taulu mahdollistaa eri myyntikanavien hallinnan ja määrittämisen järjestelmässä, mikä tukee lipunmyynnin monipuolisuutta._
 > | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | myyntikanava_id   | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Myyntikanavan tunniste                                                                          |
-> | myyntikanava_nimi | DECIMAL(10,2) NOT NULL                                             | Myyntikanavan nimi                                                                              |
+> | myyntikanava | VARCHAR(50) NOT NULL                                             | Lipun myyntikanava                                                                              |
 
 ---
 
 > ### _Lipputyypit_
-> _Lipputyypit-taulu sisältää eri lipputyyppien tiedot, kuten tunnisteen, nimen ja kuvauksen. Taulu mahdollistaa lipputyyppien hallinnan ja erottelun, mikä auttaa käyttäjiä valitsemaan sopivia lippuja eri tapahtumiin._
+> _Lipputyypit-taulu sisältää eri lipputyyppien tiedot, kuten tunnisteen, nimen ja kuvauksen. Taulu mahdollistaa lipputyyppien hallinnan ja erottelun, mikä auttaa Määrittämään eri lipputyyppejä._
 > | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | lipputyyppi_id    | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Lipputyypin tunniste                                                                            |
@@ -216,12 +190,14 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 
 ---
 
-> ### _Tilat_
-> _Tilat-taulu sisältää tietoja eri tiloista, kuten tunnisteen ja nimen. Taulu mahdollistaa tilojen hallinnan ja erottelun, mikä auttaa järjestämään tapahtumia ja hallitsemaan niiden sijainteja._
+> ### _Tapahtuman_lipputyypit_
+> _Tapahtuman_lipputyypit-taulu sisältää tiedon kyseisen tapahtuman eri lipuista ja niiden hinnoista. Taulu mahdollistaa lippujen hinnoittelun tapahtumaa kohden._
 > | Kenttä            | Tyyppi                                                             | Kuvaus
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
-> | tila_id           | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Tilan tunniste                                                                                  |
-> | tila_nimi         | VARCHAR(50) NOT NULL                                               | Tilan nimi                                                                                      |
+> | lipputyyppi_id, tapahtuma_id           | INT PRIMARY KEY NOT NULL                            | Tapahtuman lipputyypin tunniste                                                                                  |
+> | lipputyyppi_id      | INT NOT NULL FOREIGN KEY REFERENCES lipputyypit(lipputyyppi_id)       | Lipputyyppi, viittaus lipputyyppiin [Lipputyypit](#lipputyypit)-taulussa                              |
+> | tapahtuma_id      | INT NOT NULL FOREIGN KEY REFERENCES tapahtumat(tapahtuma_id)       | Tapahtuma, viittaus tapahtumaan [Tapahtumat](#tapahtumat)-taulussa                              |
+> | hinta       | DECIMAL(10, 2) NOT NULL                                               | Tapahtuman lipputyypin hinta                                                                                |
 
 ---
 
@@ -232,7 +208,10 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > | myyntitapahtuma_id           | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Myyntitapahtuman tunniste                                                                                  |
 > | maksupvm         | DATETIME NOT NULL                                               | Lippujen ostopäivämäärä
 > | summa           | DECIMAL(10,2) NOT NULL                           | Lippujen yhteissumma
-> | lippu_id           | INT NOT NULL FOREIGN KEY REFERENCES liput(lippu_id)                            | Lipun tunniste
+> | maksutapa_id      | INT NOT NULL FOREIGN KEY REFERENCES maksutavat(maksutapa_id)       | Maksutapa, viittaus maksutapaan [Maksutavat](#maksutavat)-taulussa                              |
+> | myyntikanava_id   | INT NOT NULL FOREIGN KEY REFERENCES myyntikanavat(myyntikanava_id) | Myyntikanava, viittaus myyntikanavaan [Myyntikanavat](#myyntikanavat)-taulussa                  |
+> | myyja_id       | INT NOT NULL FOREIGN KEY REFERENCES kayttajat(kayttaja_id)         | Myyjän käyttäjätiedot, viittaus käyttäjään [Käyttäjät](#kayttajat)-taulussa                     |
+
 </details>
 
 ## Tekninen kuvaus
