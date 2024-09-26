@@ -1,13 +1,14 @@
 package bugivelhot.ticketguru.model;
 
-import java.util.List;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.util.List;
 
 @Entity
 @Table(name = "lipputyypit")
@@ -19,8 +20,8 @@ public class Lipputyyppi {
     private String lipputyyppi;
     private String kuvaus;
 
-    @ManyToMany(mappedBy = "lipputyypit")
-    private List<Tapahtuma> tapahtumat;
+    @OneToMany(mappedBy = "lipputyyppi", cascade = CascadeType.ALL)
+    private List<TapahtumanLipputyyppi> tapahtumanLipputyypit;
 
     public Lipputyyppi(String lipputyyppi, String kuvaus) {
         this.lipputyyppi = lipputyyppi;
@@ -54,13 +55,18 @@ public class Lipputyyppi {
         this.kuvaus = kuvaus;
     }
 
-    public List<Tapahtuma> getTapahtumat() {
-        return tapahtumat;
+    public List<TapahtumanLipputyyppi> getTapahtumanLipputyypit() {
+        return tapahtumanLipputyypit;
     }
 
-    public void setTapahtumat(List<Tapahtuma> tapahtumat) {
-        this.tapahtumat = tapahtumat;
+    public void setTapahtumanLipputyypit(List<TapahtumanLipputyyppi> tapahtumanLipputyypit) {
+        this.tapahtumanLipputyypit = tapahtumanLipputyypit;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Lipputyyppi [lipputyyppiId=" + lipputyyppiId + ", lipputyyppi=" + lipputyyppi + ", kuvaus=" + kuvaus
+                + "]";
+    }
+
 }

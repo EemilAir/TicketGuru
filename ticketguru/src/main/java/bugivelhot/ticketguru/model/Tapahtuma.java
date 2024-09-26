@@ -8,8 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -25,10 +23,11 @@ public class Tapahtuma {
     private Long tapahtumaId;
     private String nimi;
     private String kuvaus;
+    private String kategoria;
     private LocalDateTime aloituspvm;
     private LocalDateTime lopetuspvm;
     private String katuosoite;
-    private int lippuja_jaljella;
+    private int lippujaJaljella;
 
     @ManyToOne
     @JoinColumn(name = "osoite_id")
@@ -37,18 +36,18 @@ public class Tapahtuma {
     @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
     private List<Lippu> liput;
 
-    @ManyToMany
-    @JoinTable(name = "tapahtuman_lipputyypit", joinColumns = @JoinColumn(name = "tapahtuma_id"), inverseJoinColumns = @JoinColumn(name = "lipputyyppi_id"))
-    private List<Lipputyyppi> lipputyypit;
+    @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
+    private List<TapahtumanLipputyyppi> tapahtumanLipputyypit;
 
-    public Tapahtuma(String nimi, String kuvaus, LocalDateTime aloituspvm, LocalDateTime lopetuspvm, String katuosoite,
-            int lippuja_jaljella) {
+    public Tapahtuma(String nimi, String kuvaus, String kategoria, LocalDateTime aloituspvm, LocalDateTime lopetuspvm,
+            String katuosoite, int lippujaJaljella) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
+        this.kategoria = kategoria;
         this.aloituspvm = aloituspvm;
         this.lopetuspvm = lopetuspvm;
         this.katuosoite = katuosoite;
-        this.lippuja_jaljella = lippuja_jaljella;
+        this.lippujaJaljella = lippujaJaljella;
     }
 
     public Tapahtuma() {
@@ -78,6 +77,14 @@ public class Tapahtuma {
         this.kuvaus = kuvaus;
     }
 
+    public String getKategoria() {
+        return kategoria;
+    }
+
+    public void setKategoria(String kategoria) {
+        this.kategoria = kategoria;
+    }
+
     public LocalDateTime getAloituspvm() {
         return aloituspvm;
     }
@@ -102,12 +109,12 @@ public class Tapahtuma {
         this.katuosoite = katuosoite;
     }
 
-    public int getLippuja_jaljella() {
-        return lippuja_jaljella;
+    public int getLippujaJaljella() {
+        return lippujaJaljella;
     }
 
-    public void setLippuja_jaljella(int lippuja_jaljella) {
-        this.lippuja_jaljella = lippuja_jaljella;
+    public void setLippujaJaljella(int lippujaJaljella) {
+        this.lippujaJaljella = lippujaJaljella;
     }
 
     public Osoite getOsoite() {
@@ -126,12 +133,19 @@ public class Tapahtuma {
         this.liput = liput;
     }
 
-    public List<Lipputyyppi> getLipputyypit() {
-        return lipputyypit;
+    public List<TapahtumanLipputyyppi> getTapahtumanLipputyypit() {
+        return tapahtumanLipputyypit;
     }
 
-    public void setLipputyypit(List<Lipputyyppi> lipputyypit) {
-        this.lipputyypit = lipputyypit;
+    public void setTapahtumanLipputyypit(List<TapahtumanLipputyyppi> tapahtumanLipputyypit) {
+        this.tapahtumanLipputyypit = tapahtumanLipputyypit;
+    }
+
+    @Override
+    public String toString() {
+        return "Tapahtuma [tapahtumaId=" + tapahtumaId + ", nimi=" + nimi + ", kuvaus=" + kuvaus + ", kategoria="
+                + kategoria + ", aloituspvm=" + aloituspvm + ", lopetuspvm=" + lopetuspvm + ", katuosoite=" + katuosoite
+                + ", lippujaJaljella=" + lippujaJaljella + "]";
     }
 
 }
