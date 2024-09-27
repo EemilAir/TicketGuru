@@ -7,17 +7,20 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public class TapahtumanLipputyyppiId implements Serializable {
 
+    // tietokantataulun kentät
     private Long tapahtumaId;
     private Long lipputyyppiId;
 
-    public TapahtumanLipputyyppiId() {
-    }
-
+    // konstruktorit
     public TapahtumanLipputyyppiId(Long tapahtumaId, Long lipputyyppiId) {
         this.tapahtumaId = tapahtumaId;
         this.lipputyyppiId = lipputyyppiId;
     }
+    
+    public TapahtumanLipputyyppiId() {
+    }
 
+    // getterit ja setterit
     public Long getTapahtumaId() {
         return tapahtumaId;
     }

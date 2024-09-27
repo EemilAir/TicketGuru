@@ -12,24 +12,26 @@ import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "liput")
+@Table(name = "liput") // Määrittää, että tämä entiteetti vastaa tietokantataulua "liput"
 public class Lippu {
 
+    // Tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että lippuId on pääavain ja se generoidaan automaattisesti
     private Long lippuId;
     private String koodi;
     private LocalDateTime luontiaika;
     private LocalDateTime myyntiaika;
 
+    // lipun tilat
     public enum Tila {
         AKTIIVINEN,
         KAYTETTY
     }
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // Tallennetaan tila tietokantaan merkkijonona (esim. 'AKTIIVINEN' tai 'KAYTETTY')
     private Tila lipunTila;
-    
+
     @ManyToOne
     @JoinColumn(name = "tapahtuma_id")
     private Tapahtuma tapahtuma;
@@ -38,15 +40,17 @@ public class Lippu {
     @JoinColumn(name = "myyntitapahtuma_id")
     private Myyntitapahtuma myyntitapahtuma;
 
-    public Lippu(String koodi, LocalDateTime luontiaika, LocalDateTime myyntiaika, Tila lipunTila) {
+    // konstruktorit
+    public Lippu(String koodi, LocalDateTime luontiaika, LocalDateTime myyntiaika) {
         this.koodi = koodi;
         this.luontiaika = luontiaika;
         this.myyntiaika = myyntiaika;
-        this.lipunTila = lipunTila;
     }
 
-    public Lippu(){}
+    public Lippu() {
+    }
 
+    // getterit ja setterit
     public Long getLippuId() {
         return lippuId;
     }
@@ -101,6 +105,13 @@ public class Lippu {
 
     public void setMyyntitapahtuma(Myyntitapahtuma myyntitapahtuma) {
         this.myyntitapahtuma = myyntitapahtuma;
+    }
+
+    @Override
+    public String toString() {
+        return "Lippu [lippuId=" + lippuId + ", koodi=" + koodi + ", luontiaika=" + luontiaika + ", myyntiaika="
+                + myyntiaika + ", lipunTila=" + lipunTila + ", tapahtuma=" + tapahtuma + ", myyntitapahtuma="
+                + myyntitapahtuma + "]";
     }
 
 }

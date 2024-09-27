@@ -11,21 +11,26 @@ import jakarta.persistence.Entity;
 import java.util.List;
 
 @Entity
-@Table(name = "maksutavat")
+@Table(name = "maksutavat") // Määrittää, että tämä entiteetti vastaa tietokantataulua "maksutavat"
 public class Maksutapa {
 
+    // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että maksutapaId on pääavain ja se generoidaan automaattisesti
     private Long maksutapaId;
     private String maksutapa;
 
     @OneToMany(mappedBy = "maksutapa", cascade = CascadeType.ALL)
     private List<Myyntitapahtuma> myyntitapahtumat;
 
+    // konstruktorit
     public Maksutapa(String maksutapa) {
         this.maksutapa = maksutapa;
     }
 
+    public Maksutapa(){}
+
+    // getterit ja setterit
     public Long getMaksutapaId() {
         return maksutapaId;
     }
@@ -50,6 +55,10 @@ public class Maksutapa {
         this.myyntitapahtumat = myyntitapahtumat;
     }
 
-
+    @Override
+    public String toString() {
+        return "Maksutapa [maksutapaId=" + maksutapaId + ", maksutapa=" + maksutapa + ", myyntitapahtumat="
+                + myyntitapahtumat + "]";
+    }
 
 }

@@ -1,6 +1,5 @@
 package bugivelhot.ticketguru.model;
 
-// importit
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,40 +16,36 @@ public class Kayttaja {
 
     // Tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että kayttajaId on pääavain ja generoidaan
-                                                    // automaattisesti
-    private Long kayttajaId; // Pääavain, käyttäjän yksilöivä tunniste tietokantataulussa (kayttaja_id)
-    private String kayttajanimi; // Käyttäjän tunnus, jota käytetään sisäänkirjautumiseen (kayttajanimi)
-    private String sposti; // Käyttäjän sähköpostiosoite (sposti)
-    private String salasanaHash; // Käyttäjän salasanan tiiviste (hash), tallennetaan turvallisuuden vuoksi
-                                 // tiivistettynä (salasana_hash)
+    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että kayttajaId on pääavain ja se generoidaan automaattisesti
+    private Long kayttajaId;
+    private String kayttajanimi;
+    private String sposti;
+    private String salasanaHash; 
 
     // Käyttäjäroolit
     public enum Rooli {
-        ADMIN, // Ylläpitäjä, jolla on korkeammat oikeudet järjestelmässä
-        MYYJA // Käyttäjä, joka toimii myyjänä, rajoitetummat oikeudet kuin adminilla
+        ADMIN,
+        MYYJA;
     }
 
     @Enumerated(EnumType.STRING) // Tallennetaan rooli tietokantaan merkkijonona (esim. 'ADMIN' tai 'MYYJA')
-    private Rooli kayttajarooli; // Käyttäjän rooli, joka määrittää käyttöoikeudet järjestelmässä (kayttajarooli)
+    private Rooli kayttajarooli;
 
     @ManyToOne
     @JoinColumn(name = "myyntipiste_id")
     private Lipunmyyntipiste lipunmyyntipiste;
 
     // Konstruktorit
-    public Kayttaja(String kayttajanimi, String sposti, String salasanaHash, Rooli kayttajarooli) {
+    public Kayttaja(String kayttajanimi, String sposti, String salasanaHash) {
         this.kayttajanimi = kayttajanimi;
         this.sposti = sposti;
         this.salasanaHash = salasanaHash;
-        this.kayttajarooli = kayttajarooli;
     }
 
     public Kayttaja() {
     }
 
-    // Getterit ja Setterit, jotka mahdollistavat kenttien arvon lukemisen ja
-    // muuttamisen
+    // Getterit ja Setterit
     public Long getKayttajaId() {
         return kayttajaId;
     }
@@ -99,6 +94,11 @@ public class Kayttaja {
         this.lipunmyyntipiste = lipunmyyntipiste;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Kayttaja [kayttajaId=" + kayttajaId + ", kayttajanimi=" + kayttajanimi + ", sposti=" + sposti
+                + ", salasanaHash=" + salasanaHash + ", kayttajarooli=" + kayttajarooli + ", lipunmyyntipiste="
+                + lipunmyyntipiste + "]";
+    }
 
 }

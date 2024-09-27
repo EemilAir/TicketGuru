@@ -15,11 +15,12 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "tapahtumat")
+@Table(name = "tapahtumat") // Määrittää, että tämä entiteetti vastaa tietokantataulua "tapahtumat"
 public class Tapahtuma {
 
+    // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että tapahtumaId on pääavain ja se generoidaan automaattisesti
     private Long tapahtumaId;
     private String nimi;
     private String kuvaus;
@@ -39,6 +40,7 @@ public class Tapahtuma {
     @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
     private List<TapahtumanLipputyyppi> tapahtumanLipputyypit;
 
+    // konstruktorit
     public Tapahtuma(String nimi, String kuvaus, String kategoria, LocalDateTime aloituspvm, LocalDateTime lopetuspvm,
             String katuosoite, int lippujaJaljella) {
         this.nimi = nimi;
@@ -53,6 +55,7 @@ public class Tapahtuma {
     public Tapahtuma() {
     }
 
+    // getterit ja setterit
     public Long getTapahtumaId() {
         return tapahtumaId;
     }
