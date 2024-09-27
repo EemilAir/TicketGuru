@@ -7,14 +7,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "myyntitapahtumat")
+@Table(name = "myyntitapahtumat") // Määrittää, että tämä entiteetti vastaa tietokantataulua "myyntitapahtumat"
 public class Myyntitapahtuma {
 
+    // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että myyntitapahtumaId on pääavain ja se generoidaan automaattisesti
     private Long myyntitapahtumaId;
     private double summa;
     private LocalDateTime maksupvm;
@@ -31,6 +33,7 @@ public class Myyntitapahtuma {
     @JoinColumn(name = "myyja_id")
     private Kayttaja kayttaja;
 
+    // konstruktorit
     public Myyntitapahtuma(double summa, LocalDateTime maksupvm) {
         this.summa = summa;
         this.maksupvm = maksupvm;
@@ -39,6 +42,7 @@ public class Myyntitapahtuma {
     public Myyntitapahtuma() {
     }
 
+    // getterit ja setterit
     public Long getMyyntitapahtumaId() {
         return myyntitapahtumaId;
     }
@@ -85,6 +89,12 @@ public class Myyntitapahtuma {
 
     public void setKayttaja(Kayttaja kayttaja) {
         this.kayttaja = kayttaja;
+    }
+
+    @Override
+    public String toString() {
+        return "Myyntitapahtuma [myyntitapahtumaId=" + myyntitapahtumaId + ", summa=" + summa + ", maksupvm=" + maksupvm
+                + ", maksutapa=" + maksutapa + ", myyntikanava=" + myyntikanava + ", kayttaja=" + kayttaja + "]";
     }
 
 }

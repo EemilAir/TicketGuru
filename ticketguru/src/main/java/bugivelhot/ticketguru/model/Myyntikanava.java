@@ -1,7 +1,5 @@
 package bugivelhot.ticketguru.model;
 
-import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,18 +8,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import java.util.List;
+
 @Entity
-@Table(name = "myyntikanavat")
+@Table(name = "myyntikanavat") // Määrittää, että tämä entiteetti vastaa tietokantataulua "myyntikanavat"
 public class Myyntikanava {
 
+    // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että myyntikanavaId on pääavain ja se generoidaan automaattisesti
     private Long myyntikanavaId;
     private String myyntikanava;
 
     @OneToMany(mappedBy = "myyntikanava", cascade = CascadeType.ALL)
     private List<Myyntitapahtuma> myyntitapahtumat;
 
+    // konstruktorit
     public Myyntikanava(String myyntikanava) {
         this.myyntikanava = myyntikanava;
     }
@@ -29,6 +31,7 @@ public class Myyntikanava {
     public Myyntikanava() {
     }
 
+    // getterit ja setterit
     public Long getMyyntikanavaId() {
         return myyntikanavaId;
     }
@@ -51,6 +54,12 @@ public class Myyntikanava {
 
     public void setMyyntitapahtumat(List<Myyntitapahtuma> myyntitapahtumat) {
         this.myyntitapahtumat = myyntitapahtumat;
+    }
+
+    @Override
+    public String toString() {
+        return "Myyntikanava [myyntikanavaId=" + myyntikanavaId + ", myyntikanava=" + myyntikanava
+                + ", myyntitapahtumat=" + myyntitapahtumat + "]";
     }
 
 }

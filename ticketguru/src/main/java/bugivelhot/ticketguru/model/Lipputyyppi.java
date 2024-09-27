@@ -11,11 +11,12 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "lipputyypit")
+@Table(name = "lipputyypit") // Määrittää, että tämä entiteetti vastaa tietokantataulua "lipputyypit"
 public class Lipputyyppi {
 
+    // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että lipputyyppiId on pääavain ja se generoidaan automaattisesti
     private Long lipputyyppiId;
     private String lipputyyppi;
     private String kuvaus;
@@ -23,6 +24,7 @@ public class Lipputyyppi {
     @OneToMany(mappedBy = "lipputyyppi", cascade = CascadeType.ALL)
     private List<TapahtumanLipputyyppi> tapahtumanLipputyypit;
 
+    // konstruktorit
     public Lipputyyppi(String lipputyyppi, String kuvaus) {
         this.lipputyyppi = lipputyyppi;
         this.kuvaus = kuvaus;
@@ -31,6 +33,7 @@ public class Lipputyyppi {
     public Lipputyyppi() {
     }
 
+    // getterit ja setterit
     public Long getLipputyyppiId() {
         return lipputyyppiId;
     }

@@ -18,11 +18,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "tapahtumat")
+@Table(name = "tapahtumat") // Määrittää, että tämä entiteetti vastaa tietokantataulua "tapahtumat"
 public class Tapahtuma {
 
+    // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että tapahtumaId on pääavain ja se generoidaan automaattisesti
     private Long tapahtumaId;
     private String nimi;
     private String kuvaus;
@@ -59,6 +60,7 @@ public class Tapahtuma {
     public Tapahtuma() {
     }
 
+    // getterit ja setterit
     public Long getTapahtumaId() {
         return tapahtumaId;
     }
