@@ -2,6 +2,9 @@ package bugivelhot.ticketguru.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,13 +20,14 @@ public class Osoite {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long osoiteId;
-
     private String postinumero;
     private String postitmp;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "osoite", cascade = CascadeType.ALL)
     private List<Lipunmyyntipiste> Lipunmyyntipisteet;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "osoite", cascade = CascadeType.ALL)
     private List<Tapahtuma> tapahtumat;
 

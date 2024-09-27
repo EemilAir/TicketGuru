@@ -2,6 +2,8 @@ package bugivelhot.ticketguru.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +16,7 @@ public class Lipunmyyntipiste {
     private String myyntipiste;
     private String katuosoite;
 
+   
     @ManyToOne
     @JoinColumn(name = "osoite_id", nullable = false)
     private Osoite osoite;

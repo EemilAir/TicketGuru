@@ -14,6 +14,9 @@ import jakarta.persistence.Table;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "tapahtumat")
 public class Tapahtuma {
@@ -29,6 +32,7 @@ public class Tapahtuma {
     private String katuosoite;
     private int lippujaJaljella;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "osoite_id")
     private Osoite osoite;
@@ -39,15 +43,17 @@ public class Tapahtuma {
     @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
     private List<TapahtumanLipputyyppi> tapahtumanLipputyypit;
 
-    public Tapahtuma(String nimi, String kuvaus, String kategoria, LocalDateTime aloituspvm, LocalDateTime lopetuspvm,
-            String katuosoite, int lippujaJaljella) {
+        public Tapahtuma(String nimi, String kuvaus, String kategoria, LocalDateTime aloituspvm, LocalDateTime lopetuspvm,
+                String katuosoite, Osoite osoite, int lippujaJaljella) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
         this.kategoria = kategoria;
         this.aloituspvm = aloituspvm;
         this.lopetuspvm = lopetuspvm;
         this.katuosoite = katuosoite;
+        this.osoite = osoite;
         this.lippujaJaljella = lippujaJaljella;
+        this.osoite = osoite;
     }
 
     public Tapahtuma() {
