@@ -1,7 +1,5 @@
 package bugivelhot.ticketguru.model;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,7 +26,7 @@ public class Osoite {
 
     @JsonIgnore
     @OneToMany(mappedBy = "osoite", cascade = CascadeType.ALL)
-    private List<Lipunmyyntipiste> Lipunmyyntipisteet;
+    private List<Lipunmyyntipiste> lipunmyyntipisteet;
 
     @JsonBackReference
     @OneToMany(mappedBy = "osoite", cascade = CascadeType.ALL)
@@ -69,11 +67,11 @@ public class Osoite {
     }
 
     public List<Lipunmyyntipiste> getLipunmyyntipisteet() {
-        return Lipunmyyntipisteet;
+        return lipunmyyntipisteet;
     }
 
     public void setLipunmyyntipisteet(List<Lipunmyyntipiste> lipunmyyntipisteet) {
-        Lipunmyyntipisteet = lipunmyyntipisteet;
+        this.lipunmyyntipisteet = lipunmyyntipisteet;
     }
 
     public List<Tapahtuma> getTapahtumat() {
@@ -87,7 +85,7 @@ public class Osoite {
     @Override
     public String toString() {
         return "Osoite [osoiteId=" + osoiteId + ", postinumero=" + postinumero + ", postitmp=" + postitmp
-                + ", Lipunmyyntipisteet=" + Lipunmyyntipisteet + ", tapahtumat=" + tapahtumat + "]";
+                + ", lipunmyyntipisteet=" + lipunmyyntipisteet + ", tapahtumat=" + tapahtumat + "]";
     }
 
 }

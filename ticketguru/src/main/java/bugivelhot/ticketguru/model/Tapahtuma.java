@@ -1,7 +1,5 @@
 package bugivelhot.ticketguru.model;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,8 +11,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -54,7 +52,6 @@ public class Tapahtuma {
         this.katuosoite = katuosoite;
         this.osoite = osoite;
         this.lippujaJaljella = lippujaJaljella;
-        this.osoite = osoite;
     }
 
     public Tapahtuma() {
