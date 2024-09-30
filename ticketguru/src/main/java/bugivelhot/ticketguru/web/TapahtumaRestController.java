@@ -8,8 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -30,6 +34,13 @@ public class TapahtumaRestController {
     @GetMapping("{id}")
     public Optional<Tapahtuma> haeTapahtuma(@PathVariable("id") Long id) {
         return tapahtumaRepository.findById(id);
+    }
+
+    // POST: http://localhost:8080/api/tapahtumat/
+    @PostMapping
+    public ResponseEntity<Tapahtuma> lisaaTapahtuma(@RequestBody Tapahtuma tapahtuma) {
+        Tapahtuma uusiTapahtuma = tapahtumaRepository.save(tapahtuma);
+        return new ResponseEntity<>(uusiTapahtuma, HttpStatus.CREATED);
     }
 
     // DELETE: http://localhost:8080/api/tapahtumat/1
