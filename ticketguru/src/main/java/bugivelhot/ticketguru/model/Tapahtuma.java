@@ -31,11 +31,11 @@ public class Tapahtuma {
     private String katuosoite;
     private int lippujaJaljella;
 
-    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "osoite_id")
     private Osoite osoite;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
     private List<Lippu> liput;
 
