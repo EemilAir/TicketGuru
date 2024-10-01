@@ -1,12 +1,22 @@
 # Näytä tapahtumat
 
-Näytä kaikkien tapahtumien tiedot
+Näytä kaikkien tapahtumien tiedot tai suodata tapahtumia nimen ja/tai kategorian perusteella.
 
 **URL** : `/api/tapahtumat/`
 
 **Metodi** : `GET`
 
 **Oikeudet vaaditaan** : Ei
+
+## Query-parametrit:
+* `nimi` (valinnainen): Tapahtuman nimen suodatus (esim `?nimi=Tapahtuma1`).
+* `kategoria` (valinnainen): Tapahtuman kategorian suodatus (esim `?kategoria=Festivaali`).
+* Voit käyttää kumpaakin parametria yhdessä tai erikseen.
+
+**Esimerkit:**
+* Hae tapahtumat nimen perusteella: `/api/tapahtumat/?nimi=Tapahtuma1`
+* Hae tapahtumat kategorian perusteella: `/api/tapahtumat/?kategoria=Festivaali`
+* Hae tapahtumat nimen ja kategorian perusteella: `/api/tapahtumat/?nimi=Tapahtuma1&kategoria=Festivaali`
 
 ## Onnistuneet vastaukset
 
