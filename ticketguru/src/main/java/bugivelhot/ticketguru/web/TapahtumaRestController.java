@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/tapahtumat/") // Määrittää oletuspolun endpointeille
@@ -24,9 +25,19 @@ public class TapahtumaRestController {
     @Autowired
     private TapahtumaRepository tapahtumaRepository;
 
-    // http://localhost:8080/api/tapahtumat/
+    // Hakee kaikki tai suodatetut tapahtumat nimen ja kategorian perusteella
+    // Esim: http://localhost:8080/api/tapahtumat/?nimi=Tuska&kategoria=Festivaali /TAI/ http://localhost:8080/api/tapahtumat/ /TAI/ http://localhost:8080/api/tapahtumat/?nimi=Tuska
     @GetMapping
-    public List<Tapahtuma> haeKaikkiTapahtumat() {
+    public List<Tapahtuma> haeKaikkiTapahtumat(
+            @RequestParam(required = false) String nimi,
+            @RequestParam(required = false) String kategoria) {
+        if (nimi != null && kategoria != null) {
+            return tapahtumaRepository.findByNimiContainingIgnoreCaseAndKategoriaContainingIgnoreCase(nimi, kategoria);
+        } else if (nimi != null) {
+            return tapahtumaRepository.findByNimiContainingIgnoreCase(nimi);
+        } else if (kategoria != null) {
+            return tapahtumaRepository.findByKategoriaContainingIgnoreCase(kategoria);
+        }
         return tapahtumaRepository.findAll();
     }
 

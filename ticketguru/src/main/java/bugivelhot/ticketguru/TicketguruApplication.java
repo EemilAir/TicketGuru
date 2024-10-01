@@ -30,6 +30,12 @@ public class TicketguruApplication {
 				LocalDateTime.now().plusDays(3), LocalDateTime.now().plusDays(4), "Katuosoite2", osoite2, 200));
 			tapahtumaRepository.save(new Tapahtuma("Tapahtuma 3", "Kuvaus 3", "Kategoria 3", 
 				LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(6), "Katuosoite3", osoite3, 300));
+			tapahtumaRepository.save(new Tapahtuma("Tuska", "Musiikki festivaali", "Festivaali", 
+				LocalDateTime.now().plusDays(120), LocalDateTime.now().plusDays(122), "Suvilahti", osoite1, 1500));
+			tapahtumaRepository.save(new Tapahtuma("Tuska", "Musiikki festivaali", "Festivaali", 
+				LocalDateTime.now().plusDays(420), LocalDateTime.now().plusDays(422), "Suvilahti", osoite1, 2000));
+			tapahtumaRepository.save(new Tapahtuma("Provinssi", "Musiikki festivaali", "Festivaali", 
+				LocalDateTime.now().plusDays(60), LocalDateTime.now().plusDays(63), "Törnävänsaari", osoite1, 1500));
 		};
 	}
 
