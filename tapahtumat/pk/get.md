@@ -1,4 +1,4 @@
-# Nayta tapahtuma
+# Näytä tapahtuma
 
 Nayta haetun tapahtuman tiedot.
 
@@ -6,9 +6,9 @@ Nayta haetun tapahtuman tiedot.
 
 **Metodi** : `GET`
 
-**Autentikointi vaaditaan** : EI
+**Autentikointi vaaditaan** : EI TOISTAISEKSI
 
-**Oikeudet vaaditaan** : Ei
+**Oikeudet vaaditaan** : EI TOISTAISEKSI
 
 ## Onnistunut vastaus
 
@@ -24,11 +24,16 @@ Tapahtuma, jonka id on 3 ja jolle on tallennettu tiedot.
     "nimi": "Tapahtuma 3",
     "kuvaus": "Kuvaus 3",
     "kategoria": "Kategoria 3",
-    "aloituspvm": "2024-10-02T19:33:59.697881",
-    "lopetuspvm": "2024-10-03T19:33:59.697881",
-    "katuosoite": "Osoite 3",
+    "aloituspvm": "2024-10-03T19:21:48.312169",
+    "lopetuspvm": "2024-10-04T19:21:48.312169",
+    "katuosoite": "Katuosoite3",
     "lippujaJaljella": 300,
-    "osoite": null,
+    "osoite": {
+        "osoiteId": 3,
+        "postinumero": "00300",
+        "postitmp": "Vantaa",
+        "lipunmyyntipisteet": []
+    },
     "liput": [],
     "tapahtumanLipputyypit": []
 }
@@ -51,4 +56,5 @@ Tapahtuma, jonka id on 5 ja jolle on tallennettu pakolliset tiedot nimi, alkupä
 
 ## Huomautukset
 
+Autentikointi tullaan lisäämään tulevaisuudessa.
 
