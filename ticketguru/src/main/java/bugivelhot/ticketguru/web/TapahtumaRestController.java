@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +53,31 @@ public class TapahtumaRestController {
     public ResponseEntity<Tapahtuma> lisaaTapahtuma(@RequestBody Tapahtuma tapahtuma) {
         Tapahtuma uusiTapahtuma = tapahtumaRepository.save(tapahtuma);
         return new ResponseEntity<>(uusiTapahtuma, HttpStatus.CREATED);
+    }
+
+     // PUT: http://localhost:8080/api/tapahtumat/id
+    @PutMapping("{id}")
+    public ResponseEntity<Tapahtuma> muokkaaTapahtuma(@PathVariable("id") Long id, @RequestBody Tapahtuma muokattuTapahtuma) {
+        
+        Optional<Tapahtuma> tapahtumaOptional = tapahtumaRepository.findById(id);
+        
+        if (tapahtumaOptional.isPresent()) {
+            Tapahtuma tapahtuma = tapahtumaOptional.get();
+            
+            tapahtuma.setNimi(muokattuTapahtuma.getNimi());
+            tapahtuma.setKuvaus(muokattuTapahtuma.getKuvaus());
+            tapahtuma.setKategoria(muokattuTapahtuma.getKategoria());
+            tapahtuma.setAloituspvm(muokattuTapahtuma.getAloituspvm());
+            tapahtuma.setLopetuspvm(muokattuTapahtuma.getLopetuspvm());
+            tapahtuma.setKatuosoite(muokattuTapahtuma.getKatuosoite());
+            tapahtuma.setLippujaJaljella(muokattuTapahtuma.getLippujaJaljella());
+            tapahtuma.setOsoite(muokattuTapahtuma.getOsoite());
+    
+            tapahtumaRepository.save(tapahtuma);
+            return ResponseEntity.ok(tapahtuma);
+        } else {
+            return ResponseEntity.notFound().build();
+        } 
     }
 
     // DELETE: http://localhost:8080/api/tapahtumat/1

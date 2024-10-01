@@ -11,6 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "liput") // Määrittää, että tämä entiteetti vastaa tietokantataulua "liput"
 public class Lippu {
@@ -32,6 +34,7 @@ public class Lippu {
     @Enumerated(EnumType.STRING) // Tallennetaan tila tietokantaan merkkijonona (esim. 'AKTIIVINEN' tai 'KAYTETTY')
     private Tila lipunTila;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "tapahtuma_id")
     private Tapahtuma tapahtuma;
