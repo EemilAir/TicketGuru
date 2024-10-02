@@ -44,8 +44,13 @@ public class TapahtumaRestController {
 
     // http://localhost:8080/api/tapahtumat/1
     @GetMapping("{id}")
-    public Optional<Tapahtuma> haeTapahtuma(@PathVariable("id") Long id) {
-        return tapahtumaRepository.findById(id);
+    public ResponseEntity<Tapahtuma> haeTapahtuma(@PathVariable("id") Long id) {
+        Optional<Tapahtuma> tapahtuma = tapahtumaRepository.findById(id);
+        if(tapahtuma.isPresent()){
+            return ResponseEntity.ok(tapahtuma.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // POST: http://localhost:8080/api/tapahtumat/
