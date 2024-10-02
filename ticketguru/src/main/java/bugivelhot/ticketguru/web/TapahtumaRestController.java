@@ -27,7 +27,9 @@ public class TapahtumaRestController {
     private TapahtumaRepository tapahtumaRepository;
 
     // Hakee kaikki tai suodatetut tapahtumat nimen ja kategorian perusteella
-    // Esim: http://localhost:8080/api/tapahtumat/?nimi=Tuska&kategoria=Festivaali /TAI/ http://localhost:8080/api/tapahtumat/ /TAI/ http://localhost:8080/api/tapahtumat/?nimi=Tuska
+    // Esim: http://localhost:8080/api/tapahtumat/?nimi=Tuska&kategoria=Festivaali
+    // /TAI/ http://localhost:8080/api/tapahtumat/
+    // /TAI/ http://localhost:8080/api/tapahtumat/?nimi=Tuska
     @GetMapping
     public List<Tapahtuma> haeKaikkiTapahtumat(
             @RequestParam(required = false) String nimi,
@@ -46,7 +48,7 @@ public class TapahtumaRestController {
     @GetMapping("{id}")
     public ResponseEntity<Tapahtuma> haeTapahtuma(@PathVariable("id") Long id) {
         Optional<Tapahtuma> tapahtuma = tapahtumaRepository.findById(id);
-        if(tapahtuma.isPresent()){
+        if (tapahtuma.isPresent()) {
             return ResponseEntity.ok(tapahtuma.get());
         } else {
             return ResponseEntity.notFound().build();
@@ -60,15 +62,16 @@ public class TapahtumaRestController {
         return new ResponseEntity<>(uusiTapahtuma, HttpStatus.CREATED);
     }
 
-     // PUT: http://localhost:8080/api/tapahtumat/id
+    // PUT: http://localhost:8080/api/tapahtumat/id
     @PutMapping("{id}")
-    public ResponseEntity<Tapahtuma> muokkaaTapahtuma(@PathVariable("id") Long id, @RequestBody Tapahtuma muokattuTapahtuma) {
-        
+    public ResponseEntity<Tapahtuma> muokkaaTapahtuma(@PathVariable("id") Long id,
+            @RequestBody Tapahtuma muokattuTapahtuma) {
+
         Optional<Tapahtuma> tapahtumaOptional = tapahtumaRepository.findById(id);
-        
+
         if (tapahtumaOptional.isPresent()) {
             Tapahtuma tapahtuma = tapahtumaOptional.get();
-            
+
             tapahtuma.setNimi(muokattuTapahtuma.getNimi());
             tapahtuma.setKuvaus(muokattuTapahtuma.getKuvaus());
             tapahtuma.setKategoria(muokattuTapahtuma.getKategoria());
@@ -77,17 +80,22 @@ public class TapahtumaRestController {
             tapahtuma.setKatuosoite(muokattuTapahtuma.getKatuosoite());
             tapahtuma.setLippujaJaljella(muokattuTapahtuma.getLippujaJaljella());
             tapahtuma.setOsoite(muokattuTapahtuma.getOsoite());
-    
+
             tapahtumaRepository.save(tapahtuma);
             return ResponseEntity.ok(tapahtuma);
         } else {
             return ResponseEntity.notFound().build();
-        } 
+        }
     }
 
     // DELETE: http://localhost:8080/api/tapahtumat/1
     @DeleteMapping("{id}")
-    public void poistaTapahtuma(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> poistaTapahtuma(@PathVariable("id") Long id) {
+        if (!tapahtumaRepository.existsById(id)) {
+            return ResponseEntity.notFound().build(); // 404 Not Found
+        }
+
         tapahtumaRepository.deleteById(id);
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 }
