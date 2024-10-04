@@ -10,6 +10,8 @@ import jakarta.persistence.Entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "maksutavat") // Määrittää, että tämä entiteetti vastaa tietokantataulua "maksutavat"
 public class Maksutapa {
@@ -21,6 +23,7 @@ public class Maksutapa {
     private String maksutapa;
 
     @OneToMany(mappedBy = "maksutapa", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Myyntitapahtuma> myyntitapahtumat;
 
     // konstruktorit

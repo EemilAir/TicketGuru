@@ -20,8 +20,9 @@ public class Myyntikanava {
     private Long myyntikanavaId;
     private String myyntikanava;
 
-    @OneToMany(mappedBy = "myyntikanava", cascade = CascadeType.ALL)
-    private List<Myyntitapahtuma> myyntitapahtumat;
+    /* @OneToMany(mappedBy = "myyntikanava", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Myyntitapahtuma> myyntitapahtumat; */
 
     // konstruktorit
     public Myyntikanava(String myyntikanava) {
@@ -48,18 +49,18 @@ public class Myyntikanava {
         this.myyntikanava = myyntikanava;
     }
 
-    public List<Myyntitapahtuma> getMyyntitapahtumat() {
+   /*  public List<Myyntitapahtuma> getMyyntitapahtumat() {
         return myyntitapahtumat;
     }
 
     public void setMyyntitapahtumat(List<Myyntitapahtuma> myyntitapahtumat) {
         this.myyntitapahtumat = myyntitapahtumat;
-    }
+    } */
 
     @Override
     public String toString() {
         return "Myyntikanava [myyntikanavaId=" + myyntikanavaId + ", myyntikanava=" + myyntikanava
-                + ", myyntitapahtumat=" + myyntitapahtumat + "]";
+                + ", myyntitapahtumat=" + /* myyntitapahtumat + */ "]";
     }
 
 }
