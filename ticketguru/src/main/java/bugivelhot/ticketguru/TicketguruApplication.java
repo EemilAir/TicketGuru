@@ -1,45 +1,103 @@
 package bugivelhot.ticketguru;
 
+import bugivelhot.ticketguru.model.*;
+import bugivelhot.ticketguru.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import bugivelhot.ticketguru.model.Tapahtuma;
-import bugivelhot.ticketguru.repository.TapahtumaRepository;
+
 import java.time.LocalDateTime;
-import bugivelhot.ticketguru.model.Osoite;
-import bugivelhot.ticketguru.repository.OsoiteRepository;
 
 @SpringBootApplication
 public class TicketguruApplication {
 
-	@Bean
-	public CommandLineRunner loadData(TapahtumaRepository tapahtumaRepository, OsoiteRepository osoiteRepository) {
-		return (args) -> {
-			Osoite osoite1 = new Osoite("00100", "Helsinki");
-			Osoite osoite2 = new Osoite("00200", "Espoo");
-			Osoite osoite3 = new Osoite("00300", "Vantaa");
+    @Autowired
+    private TapahtumaService tapahtumaService;
 
-			osoiteRepository.save(osoite1);
-			osoiteRepository.save(osoite2);
-			osoiteRepository.save(osoite3);
+    @Autowired
+    private KayttajaService kayttajaService;
 
-			tapahtumaRepository.save(new Tapahtuma("Tapahtuma 1", "Kuvaus 1", "Kategoria 1", 
-				LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2), "Katuosoite1", osoite1, 100));
-			tapahtumaRepository.save(new Tapahtuma("Tapahtuma 2", "Kuvaus 2", "Kategoria 2", 
-				LocalDateTime.now().plusDays(3), LocalDateTime.now().plusDays(4), "Katuosoite2", osoite2, 200));
-			tapahtumaRepository.save(new Tapahtuma("Tapahtuma 3", "Kuvaus 3", "Kategoria 3", 
-				LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(6), "Katuosoite3", osoite3, 300));
-			tapahtumaRepository.save(new Tapahtuma("Tuska", "Musiikki festivaali", "Festivaali", 
-				LocalDateTime.now().plusDays(120), LocalDateTime.now().plusDays(122), "Suvilahti", osoite1, 1500));
-			tapahtumaRepository.save(new Tapahtuma("Tuska", "Musiikki festivaali", "Festivaali", 
-				LocalDateTime.now().plusDays(420), LocalDateTime.now().plusDays(422), "Suvilahti", osoite1, 2000));
-			tapahtumaRepository.save(new Tapahtuma("Provinssi", "Musiikki festivaali", "Festivaali", 
-				LocalDateTime.now().plusDays(60), LocalDateTime.now().plusDays(63), "Törnävänsaari", osoite1, 1500));
-		};
-	}
+    @Autowired
+    private OsoiteService osoiteService;
 
-	public static void main(String[] args) {
-		SpringApplication.run(TicketguruApplication.class, args);
-	}
+    @Autowired
+    private LipunmyyntipisteService lipunmyyntipisteService;
+
+    @Autowired
+    private LipputyyppiService lipputyyppiService;
+
+	@Autowired
+	private MaksutapaService maksutapaService;
+
+    public static void main(String[] args) {
+        SpringApplication.run(TicketguruApplication.class, args);
+    }
+
+    @Bean
+    public CommandLineRunner loadData() {
+        return (args) -> {
+
+			// Maksutavat
+			Maksutapa kateinen = maksutapaService.luoJaTallennaMaksutapa("Käteinen");
+			Maksutapa debit = maksutapaService.luoJaTallennaMaksutapa("Debit");
+			Maksutapa credit = maksutapaService.luoJaTallennaMaksutapa("Credit");
+
+            // Osoitteet
+            Osoite osoite1 = osoiteService.luoJaTallennaOsoite("00100", "Helsinki");
+            Osoite osoite2 = osoiteService.luoJaTallennaOsoite("00200", "Helsinki");
+            Osoite osoite3 = osoiteService.luoJaTallennaOsoite("00540", "Helsinki");
+            Osoite osoite4 = osoiteService.luoJaTallennaOsoite("20100", "Turku");
+
+            // Lipunmyyntipisteet
+            Lipunmyyntipiste myyntipiste1 = lipunmyyntipisteService.luoJaTallennaLipunmyyntipiste("Lippupiste 1", "Esimerkkikatu 1", osoite1);
+            Lipunmyyntipiste myyntipiste2 = lipunmyyntipisteService.luoJaTallennaLipunmyyntipiste("Lippupiste 2", "Esimerkkikatu 2", osoite2);
+
+            // Lipputyypit
+            Lipputyyppi normaaliLippu = lipputyyppiService.luoJaTallennaLipputyyppi("Normaali", "Normaali lippu");
+            Lipputyyppi vipLippu = lipputyyppiService.luoJaTallennaLipputyyppi("VIP", "VIP lippu");
+
+            // Tapahtumat
+            Tapahtuma tapahtuma1 = tapahtumaService.luoJaTallennaTapahtuma("Tuska Festival 2025", 
+                "Tuska on Helsingin Suvilahdessa järjestettävä metallimusiikkiin keskittynyt festivaali.", 
+                "Festivaali", 
+                LocalDateTime.of(2025, 6, 27, 12, 0), 
+                LocalDateTime.of(2025, 6, 29, 23, 0), 
+                "Kaasutehtaankatu 1", osoite3, 1000);
+
+            Tapahtuma tapahtuma2 = tapahtumaService.luoJaTallennaTapahtuma("Ruisrock 2025", 
+                "Ruisrock on Turun Ruissalossa järjestettävä musiikkifestivaali.",
+                "Festivaali",
+                LocalDateTime.of(2025, 7, 4, 12, 0),
+                LocalDateTime.of(2025, 7, 6, 23, 0),
+                "Ruissalon puistotie 1", osoite4, 2000);
+
+            Tapahtuma tapahtuma3 = tapahtumaService.luoJaTallennaTapahtuma("Flow Festival 2025",
+                "Flow Festival on Helsingin Suvilahdessa järjestettävä kaupunkikulttuuri- ja musiikkifestivaali.",
+                "Festivaali",
+                LocalDateTime.of(2025, 8, 8, 12, 0),
+                LocalDateTime.of(2025, 8, 10, 23, 0),
+                "Kaasutehtaankatu 1", osoite3, 1500);
+
+            // Tallenna lipputyypit tapahtumille
+            tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma1, normaaliLippu, 25.0);
+            tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma1, vipLippu, 50.0);
+
+			tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma2, normaaliLippu, 30.0);
+			tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma2, vipLippu, 60.0);
+
+			tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma3, normaaliLippu, 35.0);
+			tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma3, vipLippu, 70.0);
+
+            // Käyttäjäroolit
+            Kayttaja.Rooli adminRooli = Kayttaja.Rooli.ADMIN;
+            Kayttaja.Rooli myyjaRooli = Kayttaja.Rooli.MYYJA;
+
+            // Käyttäjät
+            Kayttaja admin = kayttajaService.luoJaTallennaKayttaja("admin", "admin@ticketguru.fi", "salasana", adminRooli, null);
+            Kayttaja myyja1 = kayttajaService.luoJaTallennaKayttaja("myyja1", "myyja1@ticketguru.fi", "salasana", myyjaRooli, myyntipiste1);
+            Kayttaja myyja2 = kayttajaService.luoJaTallennaKayttaja("myyja2", "myyja2@ticketguru.fi", "salasana", myyjaRooli, myyntipiste2);
+        };
+    }
 }
