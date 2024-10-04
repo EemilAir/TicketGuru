@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "myyntitapahtumat") // Määrittää, että tämä entiteetti vastaa tietokantataulua "myyntitapahtumat"
 public class Myyntitapahtuma {
@@ -21,18 +23,22 @@ public class Myyntitapahtuma {
     private double summa;
     private LocalDateTime maksupvm;
 
+    
     @ManyToOne
     @JoinColumn(name = "maksutapa_id")
+    @JsonManagedReference
     private Maksutapa maksutapa;
-
-    @ManyToOne
-    @JoinColumn(name = "myyntikanava_id")
-    private Myyntikanava myyntikanava;
-
+    
     @ManyToOne
     @JoinColumn(name = "myyja_id")
+    @JsonManagedReference
     private Kayttaja kayttaja;
 
+    /* @ManyToOne
+    @JoinColumn(name = "myyntikanava_id")
+    @JsonManagedReference
+    private Myyntikanava myyntikanava; */
+    
     // konstruktorit
     public Myyntitapahtuma(double summa, LocalDateTime maksupvm) {
         this.summa = summa;
@@ -75,13 +81,13 @@ public class Myyntitapahtuma {
         this.maksutapa = maksutapa;
     }
 
-    public Myyntikanava getMyyntikanava() {
+    /* public Myyntikanava getMyyntikanava() {
         return myyntikanava;
     }
 
     public void setMyyntikanava(Myyntikanava myyntikanava) {
         this.myyntikanava = myyntikanava;
-    }
+    } */
 
     public Kayttaja getKayttaja() {
         return kayttaja;
@@ -94,7 +100,7 @@ public class Myyntitapahtuma {
     @Override
     public String toString() {
         return "Myyntitapahtuma [myyntitapahtumaId=" + myyntitapahtumaId + ", summa=" + summa + ", maksupvm=" + maksupvm
-                + ", maksutapa=" + maksutapa + ", myyntikanava=" + myyntikanava + ", kayttaja=" + kayttaja + "]";
+                + ", maksutapa=" + maksutapa + ", myyntikanava=" /* + myyntikanava */ + ", kayttaja=" + kayttaja + "]";
     }
 
 }

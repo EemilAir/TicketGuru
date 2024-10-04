@@ -1,5 +1,11 @@
 package bugivelhot.ticketguru.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -8,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,7 +40,12 @@ public class Kayttaja {
 
     @ManyToOne
     @JoinColumn(name = "myyntipiste_id")
+    @JsonIgnore
     private Lipunmyyntipiste lipunmyyntipiste;
+
+    @OneToMany(mappedBy = "kayttaja", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Myyntitapahtuma> myyntitapahtumat;
 
     // Konstruktorit
     public Kayttaja(String kayttajanimi, String sposti, String salasanaHash) {
