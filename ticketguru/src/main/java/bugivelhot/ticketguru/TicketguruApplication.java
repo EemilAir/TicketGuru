@@ -1,5 +1,6 @@
 package bugivelhot.ticketguru;
 
+import bugivelhot.ticketguru.dto.MyyntitapahtumaDTO;
 import bugivelhot.ticketguru.model.*;
 import bugivelhot.ticketguru.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class TicketguruApplication {
 
 	@Autowired
 	private MaksutapaService maksutapaService;
+
+    @Autowired
+    private MyyntitapahtumaService myyntitapahtumaService;
 
     public static void main(String[] args) {
         SpringApplication.run(TicketguruApplication.class, args);
@@ -98,6 +102,11 @@ public class TicketguruApplication {
             Kayttaja admin = kayttajaService.luoJaTallennaKayttaja("admin", "admin@ticketguru.fi", "salasana", adminRooli, null);
             Kayttaja myyja1 = kayttajaService.luoJaTallennaKayttaja("myyja1", "myyja1@ticketguru.fi", "salasana", myyjaRooli, myyntipiste1);
             Kayttaja myyja2 = kayttajaService.luoJaTallennaKayttaja("myyja2", "myyja2@ticketguru.fi", "salasana", myyjaRooli, myyntipiste2);
+
+            // Myyntitapahtumat - testidataa, koska POST:ia ei ole vielä toteutettu, poistetaan myöhemmin
+            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(1L, 25.0, LocalDateTime.now(), 1L, 1L)); // admin
+            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(2L, 30.0, LocalDateTime.now(), 2L, 2L)); // myyja1
+
         };
     }
 }

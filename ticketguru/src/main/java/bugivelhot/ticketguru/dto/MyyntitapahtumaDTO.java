@@ -15,6 +15,15 @@ public class MyyntitapahtumaDTO {
     public MyyntitapahtumaDTO() {
     }
 
+    public MyyntitapahtumaDTO(Long id, double summa, LocalDateTime maksupvm, Long maksutapaId, /* Long myyntikanavaId, */ Long kayttajaId) {
+        this.id = id;
+        this.summa = summa;
+        this.maksupvm = maksupvm;
+        this.maksutapaId = maksutapaId;
+        // this.myyntikanavaId = myyntikanavaId;
+        this.kayttajaId = kayttajaId;
+    }  
+
     // Getterit ja setterit
     public Long getId() {
         return id;

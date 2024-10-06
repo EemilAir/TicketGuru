@@ -23,6 +23,7 @@ public class MyyntitapahtumaRestController {
     @Autowired
     private MyyntitapahtumaService myyntitapahtumaService;
 
+    @Autowired
     MyyntitapahtumaRepository myyntitapahtumaRepository;
 
     @PostMapping
