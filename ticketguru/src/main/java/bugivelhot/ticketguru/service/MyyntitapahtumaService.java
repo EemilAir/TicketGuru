@@ -34,7 +34,7 @@ public class MyyntitapahtumaService {
         myyntitapahtuma.setSumma(myyntitapahtumaDTO.getSumma());
         myyntitapahtuma.setMaksupvm(myyntitapahtumaDTO.getMaksupvm());
 
-
+    
         Optional<Maksutapa> maksutapa = maksutapaRepository.findById(myyntitapahtumaDTO.getMaksutapaId());
         // Optional<Myyntikanava> myyntikanava = myyntikanavaRepository.findById(myyntitapahtumaDTO.getMyyntikanavaId());
         Optional<Kayttaja> kayttaja = kayttajaRepository.findById(myyntitapahtumaDTO.getKayttajaId());

@@ -20,7 +20,7 @@ public class Myyntitapahtuma {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että myyntitapahtumaId on pääavain ja se generoidaan automaattisesti
     private Long myyntitapahtumaId;
-    private double summa;
+    private Double summa;
     private LocalDateTime maksupvm;
 
     
@@ -40,7 +40,7 @@ public class Myyntitapahtuma {
     private Myyntikanava myyntikanava; */
     
     // konstruktorit
-    public Myyntitapahtuma(double summa, LocalDateTime maksupvm) {
+    public Myyntitapahtuma(Double summa, LocalDateTime maksupvm) {
         this.summa = summa;
         this.maksupvm = maksupvm;
     }
@@ -57,11 +57,11 @@ public class Myyntitapahtuma {
         this.myyntitapahtumaId = myyntitapahtumaId;
     }
 
-    public double getSumma() {
+    public Double getSumma() {
         return summa;
     }
 
-    public void setSumma(double summa) {
+    public void setSumma(Double summa) {
         this.summa = summa;
     }
 

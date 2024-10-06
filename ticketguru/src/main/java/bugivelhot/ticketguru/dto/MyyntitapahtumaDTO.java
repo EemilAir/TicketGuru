@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class MyyntitapahtumaDTO {
 
     private Long id;
-    private double summa;
+    private Double summa; // Muutettu double -> Double
     private LocalDateTime maksupvm;
     private Long maksutapaId;
     // private Long myyntikanavaId;
@@ -15,7 +15,7 @@ public class MyyntitapahtumaDTO {
     public MyyntitapahtumaDTO() {
     }
 
-    public MyyntitapahtumaDTO(Long id, double summa, LocalDateTime maksupvm, Long maksutapaId, /* Long myyntikanavaId, */ Long kayttajaId) {
+    public MyyntitapahtumaDTO(Long id, Double summa, LocalDateTime maksupvm, Long maksutapaId, /* Long myyntikanavaId, */ Long kayttajaId) {
         this.id = id;
         this.summa = summa;
         this.maksupvm = maksupvm;
@@ -33,11 +33,11 @@ public class MyyntitapahtumaDTO {
         this.id = id;
     }
 
-    public double getSumma() {
+    public Double getSumma() {
         return summa;
     }
 
-    public void setSumma(double summa) {
+    public void setSumma(Double summa) {
         this.summa = summa;
     }
 
@@ -56,14 +56,6 @@ public class MyyntitapahtumaDTO {
     public void setMaksutapaId(Long maksutapaId) {
         this.maksutapaId = maksutapaId;
     }
-
-    /* public Long getMyyntikanavaId() {
-        return myyntikanavaId;
-    }
-
-    public void setMyyntikanavaId(Long myyntikanavaId) {
-        this.myyntikanavaId = myyntikanavaId;
-    } */
 
     public Long getKayttajaId() {
         return kayttajaId;

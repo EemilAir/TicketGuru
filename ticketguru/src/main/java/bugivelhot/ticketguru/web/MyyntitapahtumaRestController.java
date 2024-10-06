@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import bugivelhot.ticketguru.model.Myyntitapahtuma;
 import bugivelhot.ticketguru.repository.MyyntitapahtumaRepository;
 import bugivelhot.ticketguru.dto.MyyntitapahtumaDTO;
 import bugivelhot.ticketguru.service.MyyntitapahtumaService;
 import org.springframework.http.ResponseEntity;
+import java.time.LocalDateTime;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -44,8 +46,44 @@ public class MyyntitapahtumaRestController {
     }
 
     @GetMapping
-    public List<Myyntitapahtuma> haeKaikkiMyyntitapahtumat() {
-        return myyntitapahtumaRepository.findAll();
-    }
+    public List<Myyntitapahtuma> haeKaikkiMyyntitapahtumat(
+        @RequestParam(required = false) Double summa,
+        @RequestParam(required = false) String maksutapa,
+        @RequestParam(required = false) String kayttajanimi) {
 
+        List<Myyntitapahtuma> myyntitapahtumat;
+
+        if (maksutapa != null && summa != null) {
+            myyntitapahtumat = myyntitapahtumaRepository.findBySummaAndMaksutapaMaksutapaContainingIgnoreCase(summa, maksutapa);
+        }
+        else if (summa != null) {
+            return myyntitapahtumaRepository.findBySumma(summa);
+        } 
+        else if (maksutapa != null){
+            myyntitapahtumat = myyntitapahtumaRepository.findByMaksutapaMaksutapaContainingIgnoreCase(maksutapa);
+        }
+        else if (kayttajanimi != null) {
+            myyntitapahtumat = myyntitapahtumaRepository.findByKayttajaKayttajanimiContainingIgnoreCase(kayttajanimi);
+        }
+        else {
+            myyntitapahtumat = myyntitapahtumaRepository.findAll();
+        }
+
+        //  Jos summa on null, asetetaan se nollaksi    
+        for (Myyntitapahtuma myyntitapahtuma : myyntitapahtumat) {
+            if (myyntitapahtuma.getSumma() == null) {
+                myyntitapahtuma.setSumma(0.0);
+            }
+        }
+        /* TODO
+        } else if (maksupvm != null) {
+            return myyntitapahtumaRepository.findByMaksupvmContainingIgnoreCase(maksupvm);
+        } else if (maksutapa != null) {
+            return myyntitapahtumaRepository.findByMaksutapaContainingIgnoreCase(maksutapa);
+        } else if (myyntikanava != null) {
+            return myyntitapahtumaRepository.findByMyyntikanavaContainingIgnoreCase(myyntikanava);
+
+         */
+        return myyntitapahtumat;
+    }
 }

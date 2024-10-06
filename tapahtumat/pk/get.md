@@ -2,7 +2,7 @@
 
 Nayta haetun tapahtuman tiedot.
 
-**URL** : `/api/tapahtumat/`
+**URL** : `/api/tapahtumat/{id}`
 
 **Metodi** : `GET`
 
@@ -48,7 +48,7 @@ Tapahtuma, jonka id on 3 ja jolle on tallennettu tiedot.
 
 **Sisältöesimerkit**
 
-Tapahtuma, jonka id on 5 ja jolle on tallennettu pakolliset tiedot nimi, alkupäivämäärä, loppupäivämäärä, sekä osoitetiedot.
+Tapahtuma, jonka id on 5 ja jolle ei ole tallennettu tietoja.
 
 ```json
 {}

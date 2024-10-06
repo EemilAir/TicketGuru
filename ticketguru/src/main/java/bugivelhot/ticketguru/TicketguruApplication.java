@@ -106,6 +106,8 @@ public class TicketguruApplication {
             // Myyntitapahtumat - testidataa, koska POST:ia ei ole vielä toteutettu, poistetaan myöhemmin
             myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(1L, 25.0, LocalDateTime.now(), 1L, 1L)); // admin
             myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(2L, 30.0, LocalDateTime.now(), 2L, 2L)); // myyja1
+            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(3L, 30.0, LocalDateTime.now(), 3L, 3L)); // myyja2
+            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(4L, 35.0, LocalDateTime.now(), 1L, 1L)); // admin
 
         };
     }
