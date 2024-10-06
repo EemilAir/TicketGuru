@@ -6,6 +6,10 @@ Nayta haetun myyntitapahtuman tiedot.
 
 **Metodi** : `GET`
 
+**Quaery-parametrit:** 
+
+`id` (pakollinen): Myyntitapahtuman yksilöivä arvo.
+
 **Autentikointi vaaditaan** : EI TOISTAISEKSI
 
 **Oikeudet vaaditaan** : EI TOISTAISEKSI
@@ -16,7 +20,7 @@ Nayta haetun myyntitapahtuman tiedot.
 
 **Sisältöesimerkit**
 
-Myyntiapahtuma, jonka id on 2 ja jolle on tallennettu vaaditut tiedot.
+Myyntitapahtuma, jonka id on 2 ja jolle on tallennettu vaaditut tiedot.
 
 ```json
 {
@@ -37,16 +41,13 @@ Myyntiapahtuma, jonka id on 2 ja jolle on tallennettu vaaditut tiedot.
 }
 ```
 
-
-
-
 ## Epäonnistunut vastaus
 
 **Koodi** : `404 NOT FOUND`
 
 **Sisältöesimerkit**
 
-Tapahtuma, jonka id on 5 ja jolle ei ole tallennettu tietoja.
+Myyntitapahtuma, jonka id on 5 ja jolle ei ole tallennettu tietoja.
 
 ```json
 {}

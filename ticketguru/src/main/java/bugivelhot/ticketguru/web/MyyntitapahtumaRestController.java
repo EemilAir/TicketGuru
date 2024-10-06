@@ -14,7 +14,6 @@ import bugivelhot.ticketguru.repository.MyyntitapahtumaRepository;
 import bugivelhot.ticketguru.dto.MyyntitapahtumaDTO;
 import bugivelhot.ticketguru.service.MyyntitapahtumaService;
 import org.springframework.http.ResponseEntity;
-import java.time.LocalDateTime;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -75,15 +74,6 @@ public class MyyntitapahtumaRestController {
                 myyntitapahtuma.setSumma(0.0);
             }
         }
-        /* TODO
-        } else if (maksupvm != null) {
-            return myyntitapahtumaRepository.findByMaksupvmContainingIgnoreCase(maksupvm);
-        } else if (maksutapa != null) {
-            return myyntitapahtumaRepository.findByMaksutapaContainingIgnoreCase(maksutapa);
-        } else if (myyntikanava != null) {
-            return myyntitapahtumaRepository.findByMyyntikanavaContainingIgnoreCase(myyntikanava);
-
-         */
         return myyntitapahtumat;
     }
 }

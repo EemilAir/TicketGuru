@@ -6,11 +6,11 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
 
 **Metodi** : `GET`
 
-**Oikeudet vaaditaan** : -
+**Oikeudet vaaditaan** : EI TOISTAISEKSI
 
 ## Query-parametrit:
 * `summa` (valinnainen): Suodatus myyntitapahtuman summan mukaan (esim `?summa=25.0`).
-* `kayttajanimi` (valinnainen): Suodatus myyntitapahtuman kayttajanimen mukaan eli kuka on toteuttanut myyntitapahtuman (esim `?kayttajanimi=myyja1`).
+* `kayttajanimi` (valinnainen): Suodatus myyntitapahtuman käyttäjänimen mukaan eli myyntitapahtuman toteuttaneen käyttäjän mukaan (esim `?kayttajanimi=myyja1`).
 * `maksutapa` (valinnainen): Suodatus maksutavan mukaan (esim. `?maksutapa=Käteinen`).
 * `summa`- ja `maksutapa`-paremetreilla voi hakea, kuinka suuria maksutapahtumia on tehty tietyillä maksutavoilla (esim `?summa=15.0&maksutapa=Credit`).
 
@@ -18,11 +18,11 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
 * Hae myyntitapahtumat summan perusteella: `/api/myyntitapahtumat/?summa=30.0`
 * Hae myyntitapahtumat käyttäjänimen (eli myyjän) perusteella: `/api/myyntitapahtumat/?kayttajanimi=myyja1`
 * Hae myyntitapahtumat maksutavan perusteella: `/api/myyntitapahtumat/?maksutapa=Credit`
-* Hae myyntitapahtumat summan ja maksutavan: `/api/myyntitapahtumat/?summa=30.0&maksutapa=Credit`
+* Hae myyntitapahtumat summan ja maksutavan perusteella `/api/myyntitapahtumat/?summa=30.0&maksutapa=Credit`
 
 ## Onnistuneet vastaukset
 
-**Ehto**: Käyttäjä ei näe mitään tapahtumia.
+**Ehto**: Käyttäjä ei näe yhtään myyntitapahtumaa, joka vastaa annettuja suodatuskriteerejä.
 
 **Koodi** : `200 OK`
 
@@ -30,14 +30,13 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
 
 ### Tai
 
-**Ehto** : Käyttäjä näkee yhden tai useamman tapahtuman.
+**Ehto** : Käyttäjä näkee yhden tai useamman myyntitapahtuman.
 
 **Koodi** : `200 OK`
 
-**Sisältö** : Tässä esimerkissä käyttäjälle näytetään sen hetken kaikki myyntitapahtumat:
+**Sisältö** : Tässä esimerkissä käyttäjälle näytetään neljä eri myyntitapahtumaa.
 
 ```json
-[
 [
     {
         "myyntitapahtumaId": 1,
@@ -107,6 +106,27 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
 
 ```
 
-**Sisältö**
+## Virhevastaukset
 
-Myöhemmin toteutetaan haut myös muille myyntitapahtuman tiedoille, kuten myyntipäivälle.
+**Ehto**: Virheellinen pyyntö (esim. virheelliset query-parametrit, kuten `api/myyntitapahtumat/summa=d`).
+
+**Koodi** : `400 Bad Request`
+
+**Sisältö** : {
+
+```json
+[
+    {
+        "timestamp": "2024-10-06T14:40:03.989+00:00",
+        "status": 400,
+        "error": "Bad Request",
+        "message": "Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: \"summa=d\"",
+        "path": "/api/myyntitapahtumat/summa=d"
+    }
+]
+```
+}
+
+**Huomautukset**
+
+Myöhemmin toteutetaan haut myös muille myyntitapahtuman tiedoille, kuten myyntipäivälle. Samoin myös virheenkäsittely toteutetaan myöhemmin.

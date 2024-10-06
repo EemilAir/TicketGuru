@@ -12,8 +12,7 @@ public interface MyyntitapahtumaRepository extends JpaRepository<Myyntitapahtuma
     List<Myyntitapahtuma> findByKayttajaKayttajanimiContainingIgnoreCase(String kayttaja);
     List<Myyntitapahtuma> findBySummaAndMaksutapaMaksutapaContainingIgnoreCase(Double summa, String maksutapa);
    
-    /*TODO
-    List<Myyntitapahtuma> findByMaksupvmContainingIgnoreCase(String maksupvm);
-    List<Myyntitapahtuma> findByMyyntikanavaContainingIgnoreCase(String myyntikanava);
+    /*TODO:  
+    Muut mahdolliset haut
     */
 }
