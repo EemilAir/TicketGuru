@@ -16,7 +16,6 @@ import bugivelhot.ticketguru.repository.MyyntitapahtumaRepository;
 import bugivelhot.ticketguru.dto.MyyntitapahtumaDTO;
 import bugivelhot.ticketguru.dto.MyyntitapahtumaResponseDTO;
 import bugivelhot.ticketguru.service.MyyntitapahtumaService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
