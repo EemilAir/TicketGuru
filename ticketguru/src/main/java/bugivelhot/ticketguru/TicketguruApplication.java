@@ -44,9 +44,9 @@ public class TicketguruApplication {
         return (args) -> {
 
 			// Maksutavat
-			Maksutapa kateinen = maksutapaService.luoJaTallennaMaksutapa("Käteinen");
-			Maksutapa debit = maksutapaService.luoJaTallennaMaksutapa("Debit");
-			Maksutapa credit = maksutapaService.luoJaTallennaMaksutapa("Credit");
+			maksutapaService.luoJaTallennaMaksutapa("Käteinen");
+			maksutapaService.luoJaTallennaMaksutapa("Debit");
+			maksutapaService.luoJaTallennaMaksutapa("Credit");
 
             // Osoitteet
             Osoite osoite1 = osoiteService.luoJaTallennaOsoite("00100", "Helsinki");
@@ -99,15 +99,18 @@ public class TicketguruApplication {
             Kayttaja.Rooli myyjaRooli = Kayttaja.Rooli.MYYJA;
 
             // Käyttäjät
-            Kayttaja admin = kayttajaService.luoJaTallennaKayttaja("admin", "admin@ticketguru.fi", "salasana", adminRooli, null);
-            Kayttaja myyja1 = kayttajaService.luoJaTallennaKayttaja("myyja1", "myyja1@ticketguru.fi", "salasana", myyjaRooli, myyntipiste1);
-            Kayttaja myyja2 = kayttajaService.luoJaTallennaKayttaja("myyja2", "myyja2@ticketguru.fi", "salasana", myyjaRooli, myyntipiste2);
+            kayttajaService.luoJaTallennaKayttaja("admin", "admin@ticketguru.fi", "salasana", adminRooli, null);
+            kayttajaService.luoJaTallennaKayttaja("myyja1", "myyja1@ticketguru.fi", "salasana", myyjaRooli, myyntipiste1);
+            kayttajaService.luoJaTallennaKayttaja("myyja2", "myyja2@ticketguru.fi", "salasana", myyjaRooli, myyntipiste2);
 
-            // Myyntitapahtumat - testidataa, koska POST:ia ei ole vielä toteutettu, poistetaan myöhemmin
-            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(1L, 25.0, LocalDateTime.now(), 1L, 1L)); // admin
-            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(2L, 30.0, LocalDateTime.now(), 2L, 2L)); // myyja1
-            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(3L, 30.0, LocalDateTime.now(), 3L, 3L)); // myyja2
-            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(4L, 35.0, LocalDateTime.now(), 1L, 1L)); // admin
+            // MyyntitapahtumaId:tä ei lisätä näihin, koska ne generoidaan automaattisesti
+            // MyyntitapahtumaService-luokassa määritellään summalle, maksupvm:lle ja maksutavalle oletusarvot, joten niitä ei lisätä suoraan tähän
+            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(2L)); // myyjä1
+            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(2L)); // myyjä1
+            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(3L)); // myyjä2
+
+            
+            
 
         };
     }

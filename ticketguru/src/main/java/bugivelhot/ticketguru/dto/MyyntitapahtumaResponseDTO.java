@@ -2,25 +2,26 @@ package bugivelhot.ticketguru.dto;
 
 import java.time.LocalDateTime;
 
-public class MyyntitapahtumaDTO {
-
+public class MyyntitapahtumaResponseDTO {
+    private Long id;
     private Double summa;
     private LocalDateTime maksupvm;
     private Long maksutapaId;
-    private Long myyntikanavaId;
     private Long kayttajaId;
 
-    // Konstruktorit
-    public MyyntitapahtumaDTO() {
-    }
-
-    // Myyntitapahtuman id:tä ei tarvita konstruktoriin, koska se generoidaan automaattisesti
-    // Konstuktorille annetaan pelkästään käyttäjän id, sillä muut tiedot voivat muuttua lippujen lisäämisen yhteydessä. Muille tiedoille lisätään oletusarvot MyyntitapahtumaService-luokassa.
-    public MyyntitapahtumaDTO(Long kayttajaId) {
-        this.kayttajaId = kayttajaId;
+    // konstruktorit
+    public MyyntitapahtumaResponseDTO() {
     }
 
     // getterit ja setterit
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Double getSumma() {
         return summa;
     }
@@ -43,14 +44,6 @@ public class MyyntitapahtumaDTO {
 
     public void setMaksutapaId(Long maksutapaId) {
         this.maksutapaId = maksutapaId;
-    }
-
-    public Long getMyyntikanavaId() {
-        return myyntikanavaId;
-    }
-
-    public void setMyyntikanavaId(Long myyntikanavaId) {
-        this.myyntikanavaId = myyntikanavaId;
     }
 
     public Long getKayttajaId() {
