@@ -1,6 +1,6 @@
 # Luo myyntitapahtuma
 
-Luo uusi myyntitapahtuma
+Luo uusi myyntitapahtuma, jossa on liput
 
 **URL** : `/api/myyntitapahtumat/`
 
@@ -12,47 +12,95 @@ Luo uusi myyntitapahtuma
 
 **Reunaehdot**
 
-Myyntitapahtumalla on oltava kayttajaId
+Myyntitapahtumalla on oltava maksutapaId, maksupvm, kayttajaId, ja liput joissa tapahtumaId, lipputyyppiId ja maara
 
 ```json
 {
-    "kayttajaId": 2
+    "maksutapaId": 1,
+    "maksupvm": "2024-10-01T12:00:00",
+    "kayttajaId": 2,
+    "liput": [
+            {
+            "tapahtumaId": 1,
+            "lipputyyppiId": 1,
+            "maara": 2
+            },
+            {
+            "tapahtumaId": 1,
+            "lipputyyppiId": 2,
+            "maara": 1
+        }
+    ]
 }
 ```
 
 ## Onnistunut vastaus
 
-**Ehto** : Myyntitapahtuman luominen onnistui
+**Ehto** : Myyntitapahtuman ja lippujen luominen onnistui
 
 **Koodi** : `201 CREATED`
 
 **Sisältöesimerkki**
 
-Tapahtuma, jolle annetaan kayttajaId:ksi 2
+Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 ```json
 {
-    "id": 5,
-    "summa": 0.0,
-    "maksupvm": "2024-10-07T05:45:35.2463842",
-    "maksutapaId": null,
-    "kayttajaId": 2
+    "myyntitapahtumaId": 5,
+    "summa": 100.0,
+    "maksutapa": "Käteinen",
+    "maksupvm": "2024-10-08T21:23:04.8335254",
+    "kayttajaId": 2,
+    "liput": [
+        {
+            "koodi": "4bce29f1-82fb-4500-9f1c-879009d78124",
+            "tapahtumaId": 1,
+            "lipputyyppi": "Normaali",
+            "tila": "AKTIIVINEN"
+        },
+        {
+            "koodi": "d7c32be0-c05d-45a2-808e-322ded6dffba",
+            "tapahtumaId": 1,
+            "lipputyyppi": "Normaali",
+            "tila": "AKTIIVINEN"
+        },
+        {
+            "koodi": "0df59b60-2768-4dae-994f-0771e5e4cef4",
+            "tapahtumaId": 1,
+            "lipputyyppi": "VIP",
+            "tila": "AKTIIVINEN"
+        }
+    ]
 }
 ```
 
 ## Epäonnistunut vastaus
 
-**Ehto** : Jos kayttajaId:tä ei ole annettu
+**Ehto** : Jos lipputyyppi ei kuulu tapahtumaan.
 
 ```json
 {
-    "kayttajaId": ""
+    "maksutapaId": 1,
+    "maksupvm": "2024-10-01T12:00:00",
+    "kayttajaId": 2,
+    "liput": [
+            {
+            "tapahtumaId": 1,
+            "lipputyyppiId": 3, //tapahtumassa on vain lipputyyppiId 1 ja 2
+            "maara": 2
+            },
+            {
+            "tapahtumaId": 1,
+            "lipputyyppiId": 3,
+            "maara": 1
+        }
+    ]
 }
 ```
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältö** : `kayttajaId vaaditaan`
+**Sisältö** : `Lipputyypin tulee löytyä tapahtumasta`
 
 
 ### Tai

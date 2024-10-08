@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import bugivelhot.ticketguru.model.Lippu;
 import bugivelhot.ticketguru.model.Myyntitapahtuma;
 import bugivelhot.ticketguru.repository.MyyntitapahtumaRepository;
+import bugivelhot.ticketguru.repository.LippuRepository;
 import bugivelhot.ticketguru.dto.MyyntitapahtumaJaLiputDTO;
 import bugivelhot.ticketguru.dto.MyyntitapahtumaResponseDTO;
 import bugivelhot.ticketguru.service.MyyntitapahtumaService;
@@ -31,6 +33,9 @@ public class MyyntitapahtumaRestController {
     @Autowired
     MyyntitapahtumaRepository myyntitapahtumaRepository;
 
+    @Autowired
+    LippuRepository lippuRepository;
+
     @PostMapping
     public ResponseEntity<Object> luoMyyntitapahtuma(@RequestBody MyyntitapahtumaJaLiputDTO dto) {
         // luodaan responseDTO, joka sisältää vain oleelliset maksutapahtuman tiedot
@@ -38,6 +43,14 @@ public class MyyntitapahtumaRestController {
 
         // palautetaan 201 CREATED status ja responseDTO, joka sisältää myyntitapahtuman ja lippujen olennaiset tiedot
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+    }
+
+    //Haku kaikille myyntitapahtuman lipuille ID:llä
+    @GetMapping("/{myyntitapahtumaId}/liput")
+    public List<Lippu> getLiputByMyyntitapahtumaId(@PathVariable Long myyntitapahtumaId) {
+        Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(myyntitapahtumaId)
+                .orElseThrow(() -> new RuntimeException("Myyntitapahtuma ei löytynyt"));
+        return lippuRepository.findByMyyntitapahtuma(myyntitapahtuma);
     }
 
     @GetMapping("{id}")
