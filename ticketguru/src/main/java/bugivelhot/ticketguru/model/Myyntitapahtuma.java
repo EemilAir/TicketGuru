@@ -5,12 +5,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.CascadeType;
 
 import java.time.LocalDateTime;
-// import java.util.List;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -37,8 +39,8 @@ public class Myyntitapahtuma {
     @JsonManagedReference
     private Kayttaja kayttaja;
 
-    /* @OneToMany(mappedBy = "myyntitapahtuma")
-    private List<Lippu> liput; */
+    @OneToMany(mappedBy = "myyntitapahtuma", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Lippu> liput;
 
     /* @ManyToOne
     @JoinColumn(name = "myyntikanava_id")
