@@ -18,15 +18,18 @@ public class Lipputyyppi {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että lipputyyppiId on pääavain ja se generoidaan automaattisesti
     private Long lipputyyppiId;
-    private String lipputyyppi;
+    private String lipputyyppiNimi;
     private String kuvaus;
 
     @OneToMany(mappedBy = "lipputyyppi", cascade = CascadeType.ALL)
     private List<TapahtumanLipputyyppi> tapahtumanLipputyypit;
 
+    @OneToMany(mappedBy = "lipputyyppi", cascade = CascadeType.ALL)
+    private List<Lippu> liput;
+
     // konstruktorit
-    public Lipputyyppi(String lipputyyppi, String kuvaus) {
-        this.lipputyyppi = lipputyyppi;
+    public Lipputyyppi(String lipputyyppiNimi, String kuvaus) {
+        this.lipputyyppiNimi = lipputyyppiNimi;
         this.kuvaus = kuvaus;
     }
 
@@ -42,12 +45,12 @@ public class Lipputyyppi {
         this.lipputyyppiId = lipputyyppiId;
     }
 
-    public String getLipputyyppi() {
-        return lipputyyppi;
+    public String getLipputyyppiNimi() {
+        return lipputyyppiNimi;
     }
 
-    public void setLipputyyppi(String lipputyyppi) {
-        this.lipputyyppi = lipputyyppi;
+    public void setLipputyyppiNimi(String lipputyyppiNimi) {
+        this.lipputyyppiNimi = lipputyyppiNimi;
     }
 
     public String getKuvaus() {
@@ -66,10 +69,17 @@ public class Lipputyyppi {
         this.tapahtumanLipputyypit = tapahtumanLipputyypit;
     }
 
-    @Override
-    public String toString() {
-        return "Lipputyyppi [lipputyyppiId=" + lipputyyppiId + ", lipputyyppi=" + lipputyyppi + ", kuvaus=" + kuvaus
-                + "]";
+    public List<Lippu> getLiput() {
+        return liput;
     }
 
+    public void setLiput(List<Lippu> liput) {
+        this.liput = liput;
+    }
+
+    @Override
+    public String toString() {
+        return "Lipputyyppi [lipputyyppiId=" + lipputyyppiId + ", lipputyyppiNimi=" + lipputyyppiNimi + ", kuvaus="
+                + kuvaus + ", tapahtumanLipputyypit=" + tapahtumanLipputyypit + ", liput=" + liput + "]";
+    }
 }

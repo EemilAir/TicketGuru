@@ -21,11 +21,11 @@ public class TapahtumaService {
         return tapahtumaRepository.save(tapahtuma);
     }
 
-    public void luoJaTallennaTapahtumanLipputyyppi(Tapahtuma tapahtuma, Lipputyyppi lipputyyppi, double hinta) {
+    public TapahtumanLipputyyppi luoJaTallennaTapahtumanLipputyyppi(Tapahtuma tapahtuma, Lipputyyppi lipputyyppi, double hinta) {
         TapahtumanLipputyyppiId tapahtumanLipputyyppiId = new TapahtumanLipputyyppiId(tapahtuma.getTapahtumaId(), lipputyyppi.getLipputyyppiId());
         TapahtumanLipputyyppi tapahtumanLipputyyppi = new TapahtumanLipputyyppi(tapahtumanLipputyyppiId, hinta);
         tapahtumanLipputyyppi.setTapahtuma(tapahtuma);
         tapahtumanLipputyyppi.setLipputyyppi(lipputyyppi);
-        tapahtumanLipputyyppiRepository.save(tapahtumanLipputyyppi);
+        return tapahtumanLipputyyppiRepository.save(tapahtumanLipputyyppi);
     }
 }

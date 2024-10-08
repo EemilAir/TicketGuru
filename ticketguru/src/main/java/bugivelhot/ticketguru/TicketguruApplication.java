@@ -1,6 +1,7 @@
 package bugivelhot.ticketguru;
 
-import bugivelhot.ticketguru.dto.MyyntitapahtumaDTO;
+import bugivelhot.ticketguru.dto.LippuDTO;
+import bugivelhot.ticketguru.dto.MyyntitapahtumaJaLiputDTO;
 import bugivelhot.ticketguru.model.*;
 import bugivelhot.ticketguru.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class TicketguruApplication {
@@ -44,9 +47,9 @@ public class TicketguruApplication {
         return (args) -> {
 
 			// Maksutavat
-			maksutapaService.luoJaTallennaMaksutapa("Käteinen");
-			maksutapaService.luoJaTallennaMaksutapa("Debit");
-			maksutapaService.luoJaTallennaMaksutapa("Credit");
+			Maksutapa kateinen = maksutapaService.luoJaTallennaMaksutapa("Käteinen");
+			Maksutapa debit = maksutapaService.luoJaTallennaMaksutapa("Debit");
+			Maksutapa credit = maksutapaService.luoJaTallennaMaksutapa("Credit");
 
             // Osoitteet
             Osoite osoite1 = osoiteService.luoJaTallennaOsoite("00100", "Helsinki");
@@ -84,34 +87,54 @@ public class TicketguruApplication {
                 LocalDateTime.of(2025, 8, 10, 23, 0),
                 "Kaasutehtaankatu 1", osoite3, 1500);
 
-            // Tallenna lipputyypit tapahtumille
-            tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma1, normaaliLippu, 25.0);
-            tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma1, vipLippu, 50.0);
-
-			tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma2, normaaliLippu, 30.0);
-			tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma2, vipLippu, 60.0);
-
-			tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma3, normaaliLippu, 35.0);
-			tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma3, vipLippu, 70.0);
+            // Tallenna lipputyypit tapahtuma1:lle
+            TapahtumanLipputyyppi tapahtuman1LipputyyppiNormaali = tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma1, normaaliLippu, 25.0);
+            TapahtumanLipputyyppi tapahtuman1LipputyyppiVIP = tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma1, vipLippu, 50.0);
+        
+            // Tallenna lipputyypit tapahtuma2:lle
+            TapahtumanLipputyyppi tapahtuman2LipputyyppiNormaali = tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma2, normaaliLippu, 30.0);
+            TapahtumanLipputyyppi tapahtuman2LipputyyppiVIP = tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma2, vipLippu, 60.0);
+        
+            // Tallenna lipputyypit tapahtuma3:lle
+            TapahtumanLipputyyppi tapahtuman3LipputyyppiNormaali = tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma3, normaaliLippu, 35.0);
+            TapahtumanLipputyyppi tapahtuman3LipputyyppiVIP = tapahtumaService.luoJaTallennaTapahtumanLipputyyppi(tapahtuma3, vipLippu, 70.0);
 
             // Käyttäjäroolit
             Kayttaja.Rooli adminRooli = Kayttaja.Rooli.ADMIN;
             Kayttaja.Rooli myyjaRooli = Kayttaja.Rooli.MYYJA;
 
             // Käyttäjät
-            kayttajaService.luoJaTallennaKayttaja("admin", "admin@ticketguru.fi", "salasana", adminRooli, null);
-            kayttajaService.luoJaTallennaKayttaja("myyja1", "myyja1@ticketguru.fi", "salasana", myyjaRooli, myyntipiste1);
-            kayttajaService.luoJaTallennaKayttaja("myyja2", "myyja2@ticketguru.fi", "salasana", myyjaRooli, myyntipiste2);
+            Kayttaja admin = kayttajaService.luoJaTallennaKayttaja("admin", "admin@ticketguru.fi", "salasana", adminRooli, null);
+            Kayttaja myyja1 = kayttajaService.luoJaTallennaKayttaja("myyja1", "myyja1@ticketguru.fi", "salasana", myyjaRooli, myyntipiste1);
+            Kayttaja myyja2 = kayttajaService.luoJaTallennaKayttaja("myyja2", "myyja2@ticketguru.fi", "salasana", myyjaRooli, myyntipiste2);
 
-            // MyyntitapahtumaId:tä ei lisätä näihin, koska ne generoidaan automaattisesti
-            // MyyntitapahtumaService-luokassa määritellään summalle, maksupvm:lle ja maksutavalle oletusarvot, joten niitä ei lisätä suoraan tähän
-            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(2L)); // myyjä1
-            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(2L)); // myyjä1
-            myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(new MyyntitapahtumaDTO(3L)); // myyjä2
+            // Luodaan Lippu1
+            LippuDTO lippu1 = new LippuDTO();
+            lippu1.setLipputyyppiId(normaaliLippu.getLipputyyppiId()); // lisätään lipputyypiksi normaali lippu
+            lippu1.setTapahtumaId(tapahtuma1.getTapahtumaId()); // lisätään tapahtuman id
+            lippu1.setMaara(2);  // 2 normaalia lippua
 
-            
-            
+            // Luodaan Lippu2
+            LippuDTO lippu2 = new LippuDTO();
+            lippu2.setLipputyyppiId(vipLippu.getLipputyyppiId()); // lisätään lipputyypiksi normaali lippu
+            lippu2.setTapahtumaId(tapahtuma1.getTapahtumaId()); // lisätään tapahtuman id
+            lippu2.setMaara(1);  // 1 VIP-lippu
 
+            // Lisää liput listaan
+            List<LippuDTO> liput = new ArrayList<>();
+            liput.add(lippu1);
+            liput.add(lippu2);
+
+            // Luodaan MyyntitapahtumaJaLiputDTO
+            MyyntitapahtumaJaLiputDTO myyntitapahtumaJaLiputDTO = new MyyntitapahtumaJaLiputDTO();
+            myyntitapahtumaJaLiputDTO.setKayttajaId(myyja1.getKayttajaId());  // Asetetaan myyjän ID
+            myyntitapahtumaJaLiputDTO.setMaksutapaId(kateinen.getMaksutapaId()); // Asetetaan maksutavan "käteinen" ID
+            myyntitapahtumaJaLiputDTO.setLiput(liput);  // Asetetaan liput myyntitapahtumaan
+
+            // Luo uusi myyntitapahtuma, joka sisältää liput
+            myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtumaJaLiputDTO);
+
+            System.out.println("Myyntitapahtuma luotu ja liput lisätty!");
         };
     }
 }
