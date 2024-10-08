@@ -1,25 +1,25 @@
 package bugivelhot.ticketguru.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class MyyntitapahtumaResponseDTO {
-    private Long id;
+    private Long myyntitapahtumaId;
     private Double summa;
+    private String maksutapa;
     private LocalDateTime maksupvm;
-    private Long maksutapaId;
     private Long kayttajaId;
 
-    // konstruktorit
-    public MyyntitapahtumaResponseDTO() {
-    }
+    // Lista myyntitapahtuman lipuista. Liput sisältävät vain oleelliset tiedot
+    private List<LippuResponseDTO> liput;
 
     // getterit ja setterit
-    public Long getId() {
-        return id;
+    public Long getMyyntitapahtumaId() {
+        return myyntitapahtumaId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMyyntitapahtumaId(Long myyntitapahtumaId) {
+        this.myyntitapahtumaId = myyntitapahtumaId;
     }
 
     public Double getSumma() {
@@ -30,20 +30,20 @@ public class MyyntitapahtumaResponseDTO {
         this.summa = summa;
     }
 
+    public String getMaksutapa() {
+        return maksutapa;
+    }
+
+    public void setMaksutapa(String maksutapa) {
+        this.maksutapa = maksutapa;
+    }
+
     public LocalDateTime getMaksupvm() {
         return maksupvm;
     }
 
     public void setMaksupvm(LocalDateTime maksupvm) {
         this.maksupvm = maksupvm;
-    }
-
-    public Long getMaksutapaId() {
-        return maksutapaId;
-    }
-
-    public void setMaksutapaId(Long maksutapaId) {
-        this.maksutapaId = maksutapaId;
     }
 
     public Long getKayttajaId() {
@@ -53,5 +53,14 @@ public class MyyntitapahtumaResponseDTO {
     public void setKayttajaId(Long kayttajaId) {
         this.kayttajaId = kayttajaId;
     }
+
+    public List<LippuResponseDTO> getLiput() {
+        return liput;
+    }
+
+    public void setLiput(List<LippuResponseDTO> liput) {
+        this.liput = liput;
+    }
+    
 
 }

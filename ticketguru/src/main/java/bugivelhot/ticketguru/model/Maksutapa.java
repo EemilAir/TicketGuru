@@ -20,20 +20,19 @@ public class Maksutapa {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että maksutapaId on pääavain ja se generoidaan automaattisesti
     private Long maksutapaId;
-    private String maksutapa;
+    private String maksutapaNimi;
 
     @OneToMany(mappedBy = "maksutapa", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Myyntitapahtuma> myyntitapahtumat;
 
     // konstruktorit
-    public Maksutapa(String maksutapa) {
-        this.maksutapa = maksutapa;
+    public Maksutapa(String maksutapaNimi) {
+        this.maksutapaNimi = maksutapaNimi;
     }
 
     public Maksutapa(){}
 
-    // getterit ja setterit
     public Long getMaksutapaId() {
         return maksutapaId;
     }
@@ -42,12 +41,12 @@ public class Maksutapa {
         this.maksutapaId = maksutapaId;
     }
 
-    public String getMaksutapa() {
-        return maksutapa;
+    public String getMaksutapaNimi() {
+        return maksutapaNimi;
     }
 
-    public void setMaksutapa(String maksutapa) {
-        this.maksutapa = maksutapa;
+    public void setMaksutapaNimi(String maksutapaNimi) {
+        this.maksutapaNimi = maksutapaNimi;
     }
 
     public List<Myyntitapahtuma> getMyyntitapahtumat() {
@@ -60,8 +59,7 @@ public class Maksutapa {
 
     @Override
     public String toString() {
-        return "Maksutapa [maksutapaId=" + maksutapaId + ", maksutapa=" + maksutapa + ", myyntitapahtumat="
+        return "Maksutapa [maksutapaId=" + maksutapaId + ", maksutapaNimi=" + maksutapaNimi + ", myyntitapahtumat="
                 + myyntitapahtumat + "]";
     }
-
 }

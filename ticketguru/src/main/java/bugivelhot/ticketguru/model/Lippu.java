@@ -6,6 +6,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +24,7 @@ public class Lippu {
     private Long lippuId;
     private String koodi;
     private LocalDateTime luontiaika;
-    private LocalDateTime myyntiaika;
+    /* private LocalDateTime myyntiaika; */
 
     // lipun tilat
     public enum Tila {
@@ -43,14 +44,24 @@ public class Lippu {
     @JoinColumn(name = "myyntitapahtuma_id")
     private Myyntitapahtuma myyntitapahtuma;
 
-    // konstruktorit
-    public Lippu(String koodi, LocalDateTime luontiaika, LocalDateTime myyntiaika) {
-        this.koodi = koodi;
-        this.luontiaika = luontiaika;
-        this.myyntiaika = myyntiaika;
-    }
+    @ManyToOne
+    @JoinColumn(name = "lipputyyppi_id")
+    private Lipputyyppi lipputyyppi;
 
     public Lippu() {
+    }
+
+    // lisätään oletusarvot lippuun ennen tietokantaan tallentamista
+    @PrePersist
+    public void prePersist() {
+        // koodiksi uniikki merkkijono käyttäen UUID
+        this.koodi = java.util.UUID.randomUUID().toString();
+
+        // luontiajaksi asetetaan nykyhetki
+        this.luontiaika = LocalDateTime.now();
+
+        // tilaksi asetetaan AKTIIVINEN
+        this.lipunTila = Tila.AKTIIVINEN;
     }
 
     // getterit ja setterit
@@ -60,14 +71,6 @@ public class Lippu {
 
     public void setLippuId(Long lippuId) {
         this.lippuId = lippuId;
-    }
-
-    public LocalDateTime getMyyntiaika() {
-        return myyntiaika;
-    }
-
-    public void setMyyntiaika(LocalDateTime myyntiaika) {
-        this.myyntiaika = myyntiaika;
     }
 
     public String getKoodi() {
@@ -85,6 +88,14 @@ public class Lippu {
     public void setLuontiaika(LocalDateTime luontiaika) {
         this.luontiaika = luontiaika;
     }
+
+    /* public LocalDateTime getMyyntiaika() {
+        return myyntiaika;
+    }
+
+    public void setMyyntiaika(LocalDateTime myyntiaika) {
+        this.myyntiaika = myyntiaika;
+    } */
 
     public Tila getLipunTila() {
         return lipunTila;
@@ -110,11 +121,19 @@ public class Lippu {
         this.myyntitapahtuma = myyntitapahtuma;
     }
 
+    public Lipputyyppi getLipputyyppi() {
+        return lipputyyppi;
+    }
+
+    public void setLipputyyppi(Lipputyyppi lipputyyppi) {
+        this.lipputyyppi = lipputyyppi;
+    }
+
     @Override
     public String toString() {
-        return "Lippu [lippuId=" + lippuId + ", koodi=" + koodi + ", luontiaika=" + luontiaika + ", myyntiaika="
-                + myyntiaika + ", lipunTila=" + lipunTila + ", tapahtuma=" + tapahtuma + ", myyntitapahtuma="
-                + myyntitapahtuma + "]";
+        return "Lippu [lippuId=" + lippuId + ", koodi=" + koodi + ", luontiaika=" + luontiaika + /* ", myyntiaika="
+                + myyntiaika + */  ", lipunTila=" + lipunTila + ", tapahtuma=" + tapahtuma + ", myyntitapahtuma="
+                + myyntitapahtuma + ", lipputyyppi=" + lipputyyppi + "]";
     }
 
 }

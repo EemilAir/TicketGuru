@@ -5,10 +5,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 
 import java.time.LocalDateTime;
+// import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -20,6 +22,7 @@ public class Myyntitapahtuma {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että myyntitapahtumaId on pääavain ja se generoidaan automaattisesti
     private Long myyntitapahtumaId;
+
     private Double summa;
     private LocalDateTime maksupvm;
 
@@ -34,18 +37,21 @@ public class Myyntitapahtuma {
     @JsonManagedReference
     private Kayttaja kayttaja;
 
+    /* @OneToMany(mappedBy = "myyntitapahtuma")
+    private List<Lippu> liput; */
+
     /* @ManyToOne
     @JoinColumn(name = "myyntikanava_id")
     @JsonManagedReference
     private Myyntikanava myyntikanava; */
-    
+
     // konstruktorit
-    public Myyntitapahtuma(Double summa, LocalDateTime maksupvm) {
-        this.summa = summa;
-        this.maksupvm = maksupvm;
+    public Myyntitapahtuma() {
     }
 
-    public Myyntitapahtuma() {
+    @PrePersist // varmistaa, että maksupvm on asetettu ennen tietokantaan tallentamista
+    public void prePersist() {
+        this.maksupvm = LocalDateTime.now(); // asettaa nykyhetken lipun myyntiajaksi
     }
 
     // getterit ja setterit
@@ -81,14 +87,6 @@ public class Myyntitapahtuma {
         this.maksutapa = maksutapa;
     }
 
-    /* public Myyntikanava getMyyntikanava() {
-        return myyntikanava;
-    }
-
-    public void setMyyntikanava(Myyntikanava myyntikanava) {
-        this.myyntikanava = myyntikanava;
-    } */
-
     public Kayttaja getKayttaja() {
         return kayttaja;
     }
@@ -97,10 +95,18 @@ public class Myyntitapahtuma {
         this.kayttaja = kayttaja;
     }
 
+    /* public List<Lippu> getLiput() {
+        return liput;
+    }
+
+    public void setLiput(List<Lippu> liput) {
+        this.liput = liput;
+    } */
+
     @Override
     public String toString() {
         return "Myyntitapahtuma [myyntitapahtumaId=" + myyntitapahtumaId + ", summa=" + summa + ", maksupvm=" + maksupvm
-                + ", maksutapa=" + maksutapa + ", myyntikanava=" /* + myyntikanava */ + ", kayttaja=" + kayttaja + "]";
+                + ", maksutapa=" + maksutapa + ", kayttaja=" + kayttaja /* + ", liput=" + liput */ + "]";
     }
 
 }
