@@ -134,7 +134,64 @@ public class TicketguruApplication {
             // Luo uusi myyntitapahtuma, joka sisältää liput
             myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtumaJaLiputDTO);
 
-            System.out.println("Myyntitapahtuma luotu ja liput lisätty!");
+            System.out.println("Myyntitapahtuma 1 luotu ja liput lisätty!");
+            
+             // Luodaan Lippu3
+             LippuDTO lippu3 = new LippuDTO();
+             lippu3.setLipputyyppiId(normaaliLippu.getLipputyyppiId()); // lisätään lipputyypiksi normaali lippu
+             lippu3.setTapahtumaId(tapahtuma2.getTapahtumaId()); // lisätään tapahtuman id
+             lippu3.setMaara(3);  // 3 normaalia lippua
+ 
+             // Luodaan Lippu4
+             LippuDTO lippu4 = new LippuDTO();
+             lippu4.setLipputyyppiId(vipLippu.getLipputyyppiId()); // lisätään lipputyypiksi VIP lippu
+             lippu4.setTapahtumaId(tapahtuma2.getTapahtumaId()); // lisätään tapahtuman id
+             lippu4.setMaara(2);  // 2 VIP-lippua
+ 
+             // Lisää liput listaan
+             List<LippuDTO> liput2 = new ArrayList<>();
+             liput2.add(lippu3);
+             liput2.add(lippu4);
+ 
+             // Luodaan MyyntitapahtumaJaLiputDTO
+             MyyntitapahtumaJaLiputDTO myyntitapahtumaJaLiputDTO2 = new MyyntitapahtumaJaLiputDTO();
+             myyntitapahtumaJaLiputDTO2.setKayttajaId(myyja2.getKayttajaId());  // Asetetaan myyjän ID
+             myyntitapahtumaJaLiputDTO2.setMaksutapaId(debit.getMaksutapaId()); // Asetetaan maksutavan "debit" ID
+             myyntitapahtumaJaLiputDTO2.setLiput(liput2);  // Asetetaan liput myyntitapahtumaan
+ 
+             // Luo uusi myyntitapahtuma, joka sisältää liput
+             myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtumaJaLiputDTO2);
+ 
+             System.out.println("Myyntitapahtuma 2 luotu ja liput lisätty!");
+
+            
+             // Luodaan Lippu5
+            LippuDTO lippu5 = new LippuDTO();
+            lippu5.setLipputyyppiId(normaaliLippu.getLipputyyppiId()); // lisätään lipputyypiksi normaali lippu
+            lippu5.setTapahtumaId(tapahtuma3.getTapahtumaId()); // lisätään tapahtuman id
+            lippu5.setMaara(4);  // 4 normaalia lippua
+
+            // Luodaan Lippu6
+            LippuDTO lippu6 = new LippuDTO();
+            lippu6.setLipputyyppiId(vipLippu.getLipputyyppiId()); // lisätään lipputyypiksi VIP lippu
+            lippu6.setTapahtumaId(tapahtuma3.getTapahtumaId()); // lisätään tapahtuman id
+            lippu6.setMaara(1);  // 1 VIP-lippu
+
+            // Lisää liput listaan
+            List<LippuDTO> liput3 = new ArrayList<>();
+            liput3.add(lippu5);
+            liput3.add(lippu6);
+
+            // Luodaan MyyntitapahtumaJaLiputDTO
+            MyyntitapahtumaJaLiputDTO myyntitapahtumaJaLiputDTO3 = new MyyntitapahtumaJaLiputDTO();
+            myyntitapahtumaJaLiputDTO3.setKayttajaId(myyja1.getKayttajaId());  // Asetetaan myyjän ID
+            myyntitapahtumaJaLiputDTO3.setMaksutapaId(credit.getMaksutapaId()); // Asetetaan maksutavan "credit" ID
+            myyntitapahtumaJaLiputDTO3.setLiput(liput3);  // Asetetaan liput myyntitapahtumaan
+
+            // Luo uusi myyntitapahtuma, joka sisältää liput
+            myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtumaJaLiputDTO3);
+
+            System.out.println("Myyntitapahtuma 3 luotu ja liput lisätty!");
         };
     }
 }
