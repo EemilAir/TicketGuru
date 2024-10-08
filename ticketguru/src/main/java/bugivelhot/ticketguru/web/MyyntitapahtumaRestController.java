@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +36,8 @@ public class MyyntitapahtumaRestController {
     public ResponseEntity<Object> luoMyyntitapahtuma(@RequestBody MyyntitapahtumaDTO myyntitapahtumaDTO) {
         try {
             // luodaan responseDTO, joka sisältää vain oleelliset maksutapahtuman tiedot
-            MyyntitapahtumaResponseDTO responseDTO = myyntitapahtumaService.luoJaTallennaMyyntitapahtuma(myyntitapahtumaDTO);
+            MyyntitapahtumaResponseDTO responseDTO = myyntitapahtumaService
+                    .luoJaTallennaMyyntitapahtuma(myyntitapahtumaDTO);
             return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
         } catch (ResponseStatusException ex) {
             return new ResponseEntity<>(ex.getReason(), ex.getStatusCode());
@@ -81,5 +83,16 @@ public class MyyntitapahtumaRestController {
             }
         }
         return myyntitapahtumat;
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> poistaMyyntiTapahtuma(@PathVariable("id") Long id) {
+
+        if (!myyntitapahtumaRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        } else {
+            myyntitapahtumaRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
     }
 }
