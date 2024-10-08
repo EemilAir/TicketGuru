@@ -10,12 +10,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
 public class TicketguruApplication {
+
+
 
     @Autowired
     private TapahtumaService tapahtumaService;
@@ -64,6 +67,7 @@ public class TicketguruApplication {
             // Lipputyypit
             Lipputyyppi normaaliLippu = lipputyyppiService.luoJaTallennaLipputyyppi("Normaali", "Normaali lippu");
             Lipputyyppi vipLippu = lipputyyppiService.luoJaTallennaLipputyyppi("VIP", "VIP lippu");
+
 
             // Tapahtumat
             Tapahtuma tapahtuma1 = tapahtumaService.luoJaTallennaTapahtuma("Tuska Festival 2025", 

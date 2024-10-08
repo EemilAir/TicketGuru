@@ -10,6 +10,8 @@ import jakarta.persistence.Table;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "lipputyypit") // Määrittää, että tämä entiteetti vastaa tietokantataulua "lipputyypit"
 public class Lipputyyppi {
@@ -21,9 +23,11 @@ public class Lipputyyppi {
     private String lipputyyppiNimi;
     private String kuvaus;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "lipputyyppi", cascade = CascadeType.ALL)
     private List<TapahtumanLipputyyppi> tapahtumanLipputyypit;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "lipputyyppi", cascade = CascadeType.ALL)
     private List<Lippu> liput;
 
