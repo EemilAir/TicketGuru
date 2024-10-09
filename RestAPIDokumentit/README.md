@@ -1,6 +1,6 @@
 # RESTAPIDokumentaatio
 
-Nämä ovat TicketGuru projectin RestAPI:in documentaatiot. Täyttä URL:ää ei ole
+Nämä ovat TicketGuru projektin RestAPI:in dokumentaatiot. Täyttä URL:ää ei ole
 vielä tarjolla, joten projektin testi versio toimii paikallisesti laitteelta 
 portista 8080 'localhost:8080/'
 
