@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -40,11 +41,11 @@ public class Kayttaja {
 
     @ManyToOne
     @JoinColumn(name = "myyntipiste_id")
-    @JsonIgnore
+    @JsonBackReference
     private Lipunmyyntipiste lipunmyyntipiste;
 
     @OneToMany(mappedBy = "kayttaja", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonManagedReference
     private List<Myyntitapahtuma> myyntitapahtumat;
 
     // Konstruktorit

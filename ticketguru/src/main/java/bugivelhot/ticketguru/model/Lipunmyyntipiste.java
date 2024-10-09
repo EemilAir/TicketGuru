@@ -11,6 +11,9 @@ import jakarta.persistence.Table;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "lipunmyyntipisteet") // Määrittää, että tämä entiteetti vastaa tietokantataulua "lipunmyyntipisteet"
 public class Lipunmyyntipiste {
@@ -22,12 +25,13 @@ public class Lipunmyyntipiste {
     private String myyntipiste;
     private String katuosoite;
 
-   
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "osoite_id", nullable = false)
     private Osoite osoite;
 
     @OneToMany(mappedBy = "lipunmyyntipiste")
+    @JsonManagedReference
     private List<Kayttaja> myyjat;
 
     // konstruktorit
