@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "liput") // Määrittää, että tämä entiteetti vastaa tietokantataulua "liput"
@@ -36,17 +37,18 @@ public class Lippu {
     @Enumerated(EnumType.STRING) // Tallennetaan tila tietokantaan merkkijonona (esim. 'AKTIIVINEN' tai 'KAYTETTY')
     private Tila lipunTila;
 
-    @JsonBackReference
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "tapahtuma_id")
     private Tapahtuma tapahtuma;
 
-    @JsonIgnore
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "myyntitapahtuma_id")
     private Myyntitapahtuma myyntitapahtuma;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "lipputyyppi_id")
     private Lipputyyppi lipputyyppi;
 

@@ -1,6 +1,7 @@
 package bugivelhot.ticketguru.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -26,11 +27,13 @@ public class TapahtumanLipputyyppi {
 
     @JsonIgnore
     @ManyToOne
+    @JsonBackReference
     @MapsId("tapahtumaId") // viittaa TapahtumanLipputyyppiId-luokassa olevaan tapahtumaId-kenttään.
     @JoinColumn(name = "tapahtuma_id", nullable = false) // Määrittää, että tapahtuma_id on osa yhdistettyä pääavainta
     private Tapahtuma tapahtuma;
 
     @ManyToOne
+    @JsonBackReference
     @MapsId("lipputyyppiId") // viittaa TapahtumanLipputyyppiId-luokassa olevaan lipputyyppiId-kenttään.
     @JoinColumn(name = "lipputyyppi_id", nullable = false) // Määrittää, että lipputyyppi_id on osa yhdistettyä pääavainta
     private Lipputyyppi lipputyyppi;
