@@ -63,6 +63,7 @@ public class MyyntitapahtumaService {
         if (!kayttajaOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Käyttäjää ei löydy");
         }
+        // 
         Kayttaja kayttaja = kayttajaOptional.get();
 
         // Luo uusi myyntitapahtuma ja aseta käyttäjä sille
@@ -122,7 +123,7 @@ public class MyyntitapahtumaService {
         // Tallenna myyntitapahtuma
         myyntitapahtumaRepository.save(myyntitapahtuma);
 
-        // Palautetaan tiedot luodusta myyntitapahtumasta vastauksena
+        // Luo vastausDTO
         MyyntitapahtumaResponseDTO responseDTO = new MyyntitapahtumaResponseDTO();
         responseDTO.setMyyntitapahtumaId(myyntitapahtuma.getMyyntitapahtumaId());
         responseDTO.setSumma(myyntitapahtuma.getSumma());
@@ -130,7 +131,7 @@ public class MyyntitapahtumaService {
         responseDTO.setKayttajaId(myyntitapahtuma.getKayttaja().getKayttajaId());
         responseDTO.setMaksutapa(myyntitapahtuma.getMaksutapa().getMaksutapaNimi());
 
-        // Lista luoduista lipuista, jotka sisältävät vain oleelliset tiedot
+        // Lista luoduista lipuista
         List<LippuResponseDTO> lippuResponseDTOLista = new ArrayList<>();
         for (Lippu lippu : lippuLista) {
             LippuResponseDTO lippuResponseDTO = new LippuResponseDTO();
@@ -142,9 +143,34 @@ public class MyyntitapahtumaService {
             lippuResponseDTOLista.add(lippuResponseDTO);
         }
 
-        // lisätään lippulista vastaukseen
+        // Pisätään lippulista vastaukseen
         responseDTO.setLiput(lippuResponseDTOLista);
 
+        // Palautetaan vastausDTO
         return responseDTO;
+    }
+
+    public List<Myyntitapahtuma> haeKaikkiMyyntitapahtumat(Double summa, String maksutapa, String kayttajanimi) {
+        List<Myyntitapahtuma> myyntitapahtumat;
+
+        if (maksutapa != null && summa != null) {
+            myyntitapahtumat = myyntitapahtumaRepository.findBySummaAndMaksutapa_MaksutapaNimiContainingIgnoreCase(summa, maksutapa);
+        } else if (summa != null) {
+            myyntitapahtumat = myyntitapahtumaRepository.findBySumma(summa);
+        } else if (maksutapa != null) {
+            myyntitapahtumat = myyntitapahtumaRepository.findByMaksutapa_MaksutapaNimiContainingIgnoreCase(maksutapa);
+        } else if (kayttajanimi != null) {
+            myyntitapahtumat = myyntitapahtumaRepository.findByKayttajaKayttajanimiContainingIgnoreCase(kayttajanimi);
+        } else {
+            myyntitapahtumat = myyntitapahtumaRepository.findAll();
+        }
+
+        // Jos summa on null, asetetaan se nollaksi
+        for (Myyntitapahtuma myyntitapahtuma : myyntitapahtumat) {
+            if (myyntitapahtuma.getSumma() == null) {
+                myyntitapahtuma.setSumma(0.0);
+            }
+        }
+        return myyntitapahtumat;
     }
 }
