@@ -63,7 +63,7 @@ public class MyyntitapahtumaService {
         if (!kayttajaOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Käyttäjää ei löydy");
         }
-        // 
+        
         Kayttaja kayttaja = kayttajaOptional.get();
 
         // Luo uusi myyntitapahtuma ja aseta käyttäjä sille
