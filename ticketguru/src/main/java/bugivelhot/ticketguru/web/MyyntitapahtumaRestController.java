@@ -36,6 +36,20 @@ public class MyyntitapahtumaRestController {
     @Autowired
     LippuRepository lippuRepository;
 
+    /* ESIMERKKI POST /api/myyntitapahtumat/
+     * {
+     *   "kayttajaId": 1,
+     *   "maksutapaId": 1,
+     *   "liput": [
+     *      {    
+     *          "tapahtumaId": 1,
+     *          "lipputyyppiId": 1,
+     *          "maara": 3
+     *      },
+     * }
+     */
+
+    // http://localhost:8080/api/myyntitapahtumat/
     @PostMapping
     public ResponseEntity<Object> luoMyyntitapahtuma(@RequestBody MyyntitapahtumaJaLiputDTO dto) {
         // luodaan responseDTO, joka sisältää vain oleelliset maksutapahtuman tiedot
@@ -45,7 +59,8 @@ public class MyyntitapahtumaRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-    //Haku kaikille myyntitapahtuman lipuille ID:llä
+    // Haku kaikille myyntitapahtuman lipuille ID:llä
+    // http://localhost:8080/api/myyntitapahtumat/1/liput
     @GetMapping("/{myyntitapahtumaId}/liput")
     public List<Lippu> getLiputByMyyntitapahtumaId(@PathVariable Long myyntitapahtumaId) {
         Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(myyntitapahtumaId)
@@ -54,21 +69,26 @@ public class MyyntitapahtumaRestController {
     }
 
 
-    // Kaytetty Myyntitapahtuma-luokkaa, muokataan myohemmin MyyntitapahtumaResponseDTO:ksi
+    // Haetaan myyntitapahtuma ID:llä
+    // http://localhost:8080/api/myyntitapahtumat/1
     @GetMapping("{id}")
-    public ResponseEntity<Myyntitapahtuma> haeMyyntitapahtuma(@PathVariable("id") Long id) {
+    public ResponseEntity<MyyntitapahtumaResponseDTO> haeMyyntitapahtuma(@PathVariable("id") Long id) {
         Optional<Myyntitapahtuma> myyntitapahtuma = myyntitapahtumaRepository.findById(id);
         if (myyntitapahtuma.isPresent()) {
-            return ResponseEntity.ok(myyntitapahtuma.get()); // 200 OK
+            return ResponseEntity.ok(myyntitapahtumaService.mapToResponseDTO(myyntitapahtuma.get())); // 200 OK
         } else {
             return ResponseEntity.notFound().build(); // 404 Not Found
         }
 
     }
 
-    // Kaytetty Myyntitapahtuma-luokkaa, muokataan myohemmin MyyntitapahtumaResponseDTO:ksi
+    // Haetaan kaikki myyntitapahtumat
+    // http://localhost:8080/api/myyntitapahtumat/
+    // http://localhost:8080/api/myyntitapahtumat/?summa=100.0
+    // http://localhost:8080/api/myyntitapahtumat/?maksutapa=käteinen
+    // http://localhost:8080/api/myyntitapahtumat/?kayttajanimi=myyja1
     @GetMapping
-    public List<Myyntitapahtuma> haeKaikkiMyyntitapahtumat(
+    public List<MyyntitapahtumaResponseDTO> haeKaikkiMyyntitapahtumat(
             @RequestParam(required = false) Double summa,
             @RequestParam(required = false) String maksutapa,
             @RequestParam(required = false) String kayttajanimi) {
