@@ -20,14 +20,11 @@ import jakarta.persistence.Table;
 }) 
 public class TapahtumanLipputyyppi {
 
-    // tietokantataulun kentät
-    @JsonIgnore
     @EmbeddedId  // määrittää yhdistetyn pääavaimen (tapahtuma_id, lipputyyppi_id)
     private TapahtumanLipputyyppiId id;
 
-    @JsonIgnore
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     @MapsId("tapahtumaId") // viittaa TapahtumanLipputyyppiId-luokassa olevaan tapahtumaId-kenttään.
     @JoinColumn(name = "tapahtuma_id", nullable = false) // Määrittää, että tapahtuma_id on osa yhdistettyä pääavainta
     private Tapahtuma tapahtuma;

@@ -50,6 +50,9 @@ public class MyyntitapahtumaRestController {
      */
 
     // http://localhost:8080/api/myyntitapahtumat/
+    // Statuskoodit: 201 CREATED
+    // 400 Bad Request (jos jokin kenttä puuttuu tai on väärässä muodossa)
+    // 401/403 (ei oikeuksia)
     @PostMapping
     public ResponseEntity<Object> luoMyyntitapahtuma(@RequestBody MyyntitapahtumaJaLiputDTO dto) {
         // luodaan responseDTO, joka sisältää vain oleelliset maksutapahtuman tiedot
@@ -61,6 +64,7 @@ public class MyyntitapahtumaRestController {
 
     // Haku kaikille myyntitapahtuman lipuille ID:llä
     // http://localhost:8080/api/myyntitapahtumat/1/liput
+    // Statuskoodit: 200 OK, 400 Bad Request (ID väärässä muodossa), 404 Not Found
     @GetMapping("/{myyntitapahtumaId}/liput")
     public List<Lippu> getLiputByMyyntitapahtumaId(@PathVariable Long myyntitapahtumaId) {
         Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(myyntitapahtumaId)
@@ -71,6 +75,7 @@ public class MyyntitapahtumaRestController {
 
     // Haetaan myyntitapahtuma ID:llä
     // http://localhost:8080/api/myyntitapahtumat/1
+    // Statuskoodit: 200 OK, 400 Bad Request (ID väärässä muodossa), 404 Not Found
     @GetMapping("{id}")
     public ResponseEntity<MyyntitapahtumaResponseDTO> haeMyyntitapahtuma(@PathVariable("id") Long id) {
         Optional<Myyntitapahtuma> myyntitapahtuma = myyntitapahtumaRepository.findById(id);
@@ -87,6 +92,9 @@ public class MyyntitapahtumaRestController {
     // http://localhost:8080/api/myyntitapahtumat/?summa=100.0
     // http://localhost:8080/api/myyntitapahtumat/?maksutapa=käteinen
     // http://localhost:8080/api/myyntitapahtumat/?kayttajanimi=myyja1
+    // Statuskoodit: 200 OK
+    // 404 Not Found
+    // 400 Bad Request (jos summa, maksutapa tai käyttäjänimi on väärässä muodossa)
     @GetMapping
     public List<MyyntitapahtumaResponseDTO> haeKaikkiMyyntitapahtumat(
             @RequestParam(required = false) Double summa,
@@ -96,7 +104,10 @@ public class MyyntitapahtumaRestController {
         return myyntitapahtumaService.haeKaikkiMyyntitapahtumat(summa, maksutapa, kayttajanimi); // palauttaa kaikki myyntitapahtumat
     }
     
-    // Kaytetty Myyntitapahtuma-luokkaa, muokataan myohemmin MyyntitapahtumaResponseDTO:ksi 
+    // DELETE: http://localhost:8080/api/myyntitapahtumat/1
+    // Statuskoodit: 204 No Content (poisto onnistui) 
+    // 401/403 (ei oikeuksia) 
+    // 404 Not Found (jos tapahtumaa ei löydy)
     @DeleteMapping("{id}")
     public ResponseEntity<Void> poistaMyyntiTapahtuma(@PathVariable("id") Long id) {
 

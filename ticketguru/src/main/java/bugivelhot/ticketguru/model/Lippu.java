@@ -13,8 +13,6 @@ import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "liput") // Määrittää, että tämä entiteetti vastaa tietokantataulua "liput"
