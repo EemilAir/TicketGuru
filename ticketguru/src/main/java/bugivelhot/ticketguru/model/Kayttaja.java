@@ -16,6 +16,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "kayttajat") // Määrittää, että tämä entiteetti vastaa tietokantataulua "kayttajat"
@@ -25,8 +30,16 @@ public class Kayttaja {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että kayttajaId on pääavain ja se generoidaan automaattisesti
     private Long kayttajaId;
+    
+    @NotBlank(message = "Käyttäjänimi ei voi olla tyhjä")
+    @Size(min = 3, max = 25, message = "Käyttäjänimen on oltava 5-25 merkkiä pitkä")
     private String kayttajanimi;
+
+    @NotBlank(message = "Sähköposti ei voi olla tyhjä")
+    @Email(message = "Sähköpostin tulee olla oikeassa muodossa")
     private String sposti;
+
+    @NotBlank(message = "Salasana ei voi olla tyhjä")
     private String salasanaHash; 
 
     // Käyttäjäroolit

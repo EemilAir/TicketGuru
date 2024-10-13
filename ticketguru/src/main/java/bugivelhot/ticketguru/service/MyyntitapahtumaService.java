@@ -31,6 +31,7 @@ import jakarta.transaction.Transactional;
 
 // Java util
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,15 +56,36 @@ public class MyyntitapahtumaService {
     @Autowired
     private MaksutapaRepository maksutapaRepository;
 
+    public MyyntitapahtumaResponseDTO mapToResponseDTO(Myyntitapahtuma myyntitapahtuma) {
+        MyyntitapahtumaResponseDTO responseDTO = new MyyntitapahtumaResponseDTO();
+        responseDTO.setMyyntitapahtumaId(myyntitapahtuma.getMyyntitapahtumaId());
+        responseDTO.setSumma(myyntitapahtuma.getSumma());
+        responseDTO.setMaksupvm(myyntitapahtuma.getMaksupvm());
+        responseDTO.setKayttajaId(myyntitapahtuma.getKayttaja().getKayttajaId());
+        responseDTO.setMaksutapa(myyntitapahtuma.getMaksutapa().getMaksutapaNimi());
+
+        List<Lippu> lippuLista = lippuRepository.findByMyyntitapahtuma(myyntitapahtuma);
+        List<LippuResponseDTO> lippuResponseDTOLista = lippuLista.stream().map(lippu -> {
+            LippuResponseDTO lippuResponseDTO = new LippuResponseDTO();
+            lippuResponseDTO.setKoodi(lippu.getKoodi());
+            lippuResponseDTO.setTapahtumaId(lippu.getTapahtuma().getTapahtumaId());
+            lippuResponseDTO.setLipputyyppi(lippu.getLipputyyppi().getLipputyyppiNimi());
+            lippuResponseDTO.setTila(lippu.getLipunTila());
+            return lippuResponseDTO;
+        }).collect(Collectors.toList());
+
+        responseDTO.setLiput(lippuResponseDTOLista);
+        return responseDTO;
+    }
+
     @Transactional // Pitää huolen, että kaikki operaatiot suoritetaan yhdessä transaktiossa, jos jokin niistä epäonnistuu, niin kaikki peruutetaan
     public MyyntitapahtumaResponseDTO luoMyyntitapahtumaJaLiput(MyyntitapahtumaJaLiputDTO dto) {
 
-        // Hae käyttäjä, joka luo myyntitapahtuman
+        // Hae käyttäjä, joka luo myyntitapahtuman, jos id on null tai käyttäjää ei löydy se heittää virheen
         Optional<Kayttaja> kayttajaOptional = kayttajaRepository.findById(dto.getKayttajaId());
         if (!kayttajaOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Käyttäjää ei löydy");
         }
-        
         Kayttaja kayttaja = kayttajaOptional.get();
 
         // Luo uusi myyntitapahtuma ja aseta käyttäjä sille
@@ -86,7 +108,8 @@ public class MyyntitapahtumaService {
             }
             Tapahtuma tapahtuma = tapahtumaOptional.get();
 
-            // Hae tapahtuman ja lipputyypin yhdistelmä (TapahtumaLipputyyppi) ja heitä virhe jos ei löydy
+            // Hae tapahtuman ja lipputyypin yhdistelmä (TapahtumaLipputyyppi) ja heitä
+            // virhe jos ei löydy
             Optional<TapahtumanLipputyyppi> tapahtumaLipputyyppiOptional = tapahtumaLipputyyppiRepository
                     .findById_TapahtumaIdAndId_LipputyyppiId(
                             lippuDTO.getTapahtumaId(), lippuDTO.getLipputyyppiId());
@@ -113,8 +136,8 @@ public class MyyntitapahtumaService {
         // Päivitä myyntitapahtuman summa
         myyntitapahtuma.setSumma(yhteissumma);
 
-        // hae maksutapa ja aseta se myyntitapahtumaan
-        Optional<Maksutapa> maksutapaOptional = maksutapaRepository.findByMaksutapaId(dto.getMaksutapaId());
+        // hae maksutapa ja aseta se myyntitapahtumaan,jos id on null tai maksutapaa ei löydy se heittää virheen
+        Optional<Maksutapa> maksutapaOptional = maksutapaRepository.findById(dto.getMaksutapaId());
         if (!maksutapaOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Maksutapaa ei löydy");
         }
@@ -123,38 +146,16 @@ public class MyyntitapahtumaService {
         // Tallenna myyntitapahtuma
         myyntitapahtumaRepository.save(myyntitapahtuma);
 
-        // Luo vastausDTO
-        MyyntitapahtumaResponseDTO responseDTO = new MyyntitapahtumaResponseDTO();
-        responseDTO.setMyyntitapahtumaId(myyntitapahtuma.getMyyntitapahtumaId());
-        responseDTO.setSumma(myyntitapahtuma.getSumma());
-        responseDTO.setMaksupvm(myyntitapahtuma.getMaksupvm());
-        responseDTO.setKayttajaId(myyntitapahtuma.getKayttaja().getKayttajaId());
-        responseDTO.setMaksutapa(myyntitapahtuma.getMaksutapa().getMaksutapaNimi());
-
-        // Lista luoduista lipuista
-        List<LippuResponseDTO> lippuResponseDTOLista = new ArrayList<>();
-        for (Lippu lippu : lippuLista) {
-            LippuResponseDTO lippuResponseDTO = new LippuResponseDTO();
-            lippuResponseDTO.setKoodi(lippu.getKoodi());
-            lippuResponseDTO.setTapahtumaId(lippu.getTapahtuma().getTapahtumaId());
-            lippuResponseDTO.setLipputyyppi(lippu.getLipputyyppi().getLipputyyppiNimi());
-            lippuResponseDTO.setTila(lippu.getLipunTila());
-
-            lippuResponseDTOLista.add(lippuResponseDTO);
-        }
-
-        // Pisätään lippulista vastaukseen
-        responseDTO.setLiput(lippuResponseDTOLista);
-
-        // Palautetaan vastausDTO
-        return responseDTO;
+        // Palautetaan myyntitapahtuma ja liput responseDTO-muodossa
+        return mapToResponseDTO(myyntitapahtuma);
     }
 
-    public List<Myyntitapahtuma> haeKaikkiMyyntitapahtumat(Double summa, String maksutapa, String kayttajanimi) {
+    public List<MyyntitapahtumaResponseDTO> haeKaikkiMyyntitapahtumat(Double summa, String maksutapa, String kayttajanimi) {
         List<Myyntitapahtuma> myyntitapahtumat;
 
         if (maksutapa != null && summa != null) {
-            myyntitapahtumat = myyntitapahtumaRepository.findBySummaAndMaksutapa_MaksutapaNimiContainingIgnoreCase(summa, maksutapa);
+            myyntitapahtumat = myyntitapahtumaRepository
+                    .findBySummaAndMaksutapa_MaksutapaNimiContainingIgnoreCase(summa, maksutapa);
         } else if (summa != null) {
             myyntitapahtumat = myyntitapahtumaRepository.findBySumma(summa);
         } else if (maksutapa != null) {
@@ -164,13 +165,9 @@ public class MyyntitapahtumaService {
         } else {
             myyntitapahtumat = myyntitapahtumaRepository.findAll();
         }
-
-        // Jos summa on null, asetetaan se nollaksi
-        for (Myyntitapahtuma myyntitapahtuma : myyntitapahtumat) {
-            if (myyntitapahtuma.getSumma() == null) {
-                myyntitapahtuma.setSumma(0.0);
-            }
-        }
-        return myyntitapahtumat;
+        
+        return myyntitapahtumat.stream()
+            .map(this::mapToResponseDTO)
+            .collect(Collectors.toList());
     }
 }

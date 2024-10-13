@@ -8,6 +8,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
@@ -23,7 +25,10 @@ public class Lippu {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että lippuId on pääavain ja se generoidaan automaattisesti
     private Long lippuId;
+    @NotBlank(message = "Lipun koodi ei voi olla tyhjä")
     private String koodi;
+
+    @NotNull(message = "Luontiaika ei voi olla tyhjä") // Tähän alustetaan luontiaika automaattisesti, silti validointi
     private LocalDateTime luontiaika;
     /* private LocalDateTime myyntiaika; */
 
