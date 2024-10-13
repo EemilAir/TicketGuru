@@ -13,6 +13,8 @@ import jakarta.persistence.Table;
 import java.util.List;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -32,18 +34,21 @@ public class Tapahtuma {
     private int lippujaJaljella;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "osoite_id")
     private Osoite osoite;
 
+    @JsonIgnore
     @JsonManagedReference
     @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
     private List<Lippu> liput;
 
     @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<TapahtumanLipputyyppi> tapahtumanLipputyypit;
 
-        public Tapahtuma(String nimi, String kuvaus, String kategoria, LocalDateTime aloituspvm, LocalDateTime lopetuspvm,
-                String katuosoite, Osoite osoite, int lippujaJaljella) {
+    public Tapahtuma(String nimi, String kuvaus, String kategoria, LocalDateTime aloituspvm, LocalDateTime lopetuspvm,
+    String katuosoite, Osoite osoite, int lippujaJaljella) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
         this.kategoria = kategoria;

@@ -14,6 +14,7 @@ import jakarta.persistence.CascadeType;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -30,16 +31,17 @@ public class Myyntitapahtuma {
 
     
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "maksutapa_id")
-    @JsonManagedReference
     private Maksutapa maksutapa;
     
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "myyja_id")
-    @JsonManagedReference
     private Kayttaja kayttaja;
 
     @OneToMany(mappedBy = "myyntitapahtuma", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Lippu> liput;
 
     /* @ManyToOne

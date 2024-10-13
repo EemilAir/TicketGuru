@@ -108,8 +108,7 @@ public class MyyntitapahtumaService {
             }
             Tapahtuma tapahtuma = tapahtumaOptional.get();
 
-            // Hae tapahtuman ja lipputyypin yhdistelmä (TapahtumaLipputyyppi) ja heitä
-            // virhe jos ei löydy
+            // Hae tapahtuman ja lipputyypin yhdistelmä (TapahtumaLipputyyppi) ja heitä virhe jos ei löydy
             Optional<TapahtumanLipputyyppi> tapahtumaLipputyyppiOptional = tapahtumaLipputyyppiRepository
                     .findById_TapahtumaIdAndId_LipputyyppiId(
                             lippuDTO.getTapahtumaId(), lippuDTO.getLipputyyppiId());

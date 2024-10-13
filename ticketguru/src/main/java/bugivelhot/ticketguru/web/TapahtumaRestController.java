@@ -30,6 +30,7 @@ public class TapahtumaRestController {
     // Esim: http://localhost:8080/api/tapahtumat/?nimi=Tuska&kategoria=Festivaali
     // /TAI/ http://localhost:8080/api/tapahtumat/
     // /TAI/ http://localhost:8080/api/tapahtumat/?nimi=Tuska
+    // Statuskoodit: 200 OK, 404 Not Found, 400 Bad Request (jos ei ole nimeä tai kategoriaa)
     @GetMapping
     public List<Tapahtuma> haeKaikkiTapahtumat(
             @RequestParam(required = false) String nimi,
@@ -45,6 +46,7 @@ public class TapahtumaRestController {
     }
 
     // http://localhost:8080/api/tapahtumat/1
+    // Statuskoodit: 200 OK, 400 Bad Request (ID väärässä muodossa), 404 Not Found
     @GetMapping("{id}")
     public ResponseEntity<Tapahtuma> haeTapahtuma(@PathVariable("id") Long id) {
         Optional<Tapahtuma> tapahtuma = tapahtumaRepository.findById(id);
@@ -55,7 +57,30 @@ public class TapahtumaRestController {
         }
     }
 
+    /*
+     * 
+     * {
+     * "nimi": "Uusi tapahtuma",
+     * "kuvaus": "Tämä on uusi tapahtuma",
+     * "kategoria": "Uusi Kategoria",
+     * "aloituspvm": "{{aloituspvm}}",
+     * "lopetuspvm": "{{lopetuspvm}}",
+     * "katuosoite": "Uusiosoite 5",
+     * "lippujaJaljella": 500,
+     * "osoite": {
+     * "osoiteId": 1,
+     * "postinumero": "00100",
+     * "postitmp": "Helsinki"
+     * },
+     * "liput": [],
+     * "tapahtumanLipputyypit": []
+     * }
+     * 
+     */
+
     // POST: http://localhost:8080/api/tapahtumat/
+    // Statuskoodit: 201 CREATED, 400 Bad Request (jos jokin kenttä puuttuu tai on väärässä muodossa), 401/403 (ei oikeuksia)
+    // TODO: DTO
     @PostMapping
     public ResponseEntity<Tapahtuma> lisaaTapahtuma(@RequestBody Tapahtuma tapahtuma) {
         Tapahtuma uusiTapahtuma = tapahtumaRepository.save(tapahtuma);
@@ -63,6 +88,14 @@ public class TapahtumaRestController {
     }
 
     // PUT: http://localhost:8080/api/tapahtumat/id
+    // Statuskoodit: 200 OK (päivitys onnistui), 
+    // 400 Bad Request (jos jokin kenttä on väärässä muodossa), 
+    // 401/403 (ei oikeuksia), 
+    // 404 Not Found (jos tapahtumaa ei löydy)
+    /* TODO: muokkaaTapahtuma-metodi:n päivitys
+     * siirrä logiikka service-luokkaan
+     * Vaihda PUT -> PATCH
+    */
     @PutMapping("{id}")
     public ResponseEntity<Tapahtuma> muokkaaTapahtuma(@PathVariable("id") Long id,
             @RequestBody Tapahtuma muokattuTapahtuma) {
@@ -89,6 +122,9 @@ public class TapahtumaRestController {
     }
 
     // DELETE: http://localhost:8080/api/tapahtumat/1
+    // Statuskoodit: 204 No Content (poisto onnistui) 
+    // 401/403 (ei oikeuksia) 
+    // 404 Not Found (jos tapahtumaa ei löydy)
     @DeleteMapping("{id}")
     public ResponseEntity<Void> poistaTapahtuma(@PathVariable("id") Long id) {
         if (!tapahtumaRepository.existsById(id)) {

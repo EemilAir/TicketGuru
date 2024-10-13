@@ -2,6 +2,7 @@ package bugivelhot.ticketguru.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -24,12 +25,12 @@ public class Osoite {
     private String postinumero;
     private String postitmp;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "osoite", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Lipunmyyntipiste> lipunmyyntipisteet;
 
-    @JsonBackReference
     @OneToMany(mappedBy = "osoite", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Tapahtuma> tapahtumat;
 
     // konstruktorit
