@@ -45,7 +45,7 @@ public class MyyntitapahtumaRestController {
      *          "tapahtumaId": 1,
      *          "lipputyyppiId": 1,
      *          "maara": 3
-     *      },
+     *      },  
      * }
      */
 
