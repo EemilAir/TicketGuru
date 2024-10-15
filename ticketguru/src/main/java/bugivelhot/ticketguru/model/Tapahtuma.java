@@ -9,6 +9,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 import java.time.LocalDateTime;
@@ -25,12 +29,30 @@ public class Tapahtuma {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että tapahtumaId on pääavain ja se generoidaan automaattisesti
     private Long tapahtumaId;
+
+    @NotBlank(message = "Tapahtuman nimi ei voi olla tyhjä")
+    @Size(min = 3, max = 100, message = "Tapahtuman nimi voi olla korkeintaan 100 merkkiä pitkä ja 3 merkkiä lyhyt")
     private String nimi;
+
+    @Size(min = 3, max = 500, message = "Tapahtuman kuvaus voi olla korkeintaan 500 merkkiä pitkä ja 3 merkkiä lyhyt")
     private String kuvaus;
+
+    @NotBlank(message = "Tapahtuman kategoria ei voi olla tyhjä")
+    @Size(min = 3, max = 75, message = "Tapahtuman kategoria voi olla korkeintaan 75 merkkiä pitkä ja 3 merkkiä lyhyt")
     private String kategoria;
+
+    @NotNull(message = "Tapahtuman aloituspvm ei voi olla tyhjä")
     private LocalDateTime aloituspvm;
+
+    @NotNull(message = "Tapahtuman lopetuspvm ei voi olla tyhjä")
     private LocalDateTime lopetuspvm;
+
+    @NotBlank(message = "Tapahtuman katuosoite ei voi olla tyhjä")
+    @Size(min = 3, max = 100, message = "Tapahtuman katuosoite voi olla korkeintaan 100 merkkiä pitkä ja 3 merkkiä lyhyt")
     private String katuosoite;
+
+    @NotNull(message = "LippujaJaljella ei voi olla null")
+    @PositiveOrZero(message = "LippujaJaljella on oltava positiivinen tai nolla")
     private int lippujaJaljella;
 
     @ManyToOne

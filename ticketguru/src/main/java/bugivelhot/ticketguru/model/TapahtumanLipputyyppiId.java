@@ -3,12 +3,16 @@ package bugivelhot.ticketguru.model;
 import java.io.Serializable;
 import java.util.Objects;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
 
 @Embeddable
 public class TapahtumanLipputyyppiId implements Serializable {
 
     // tietokantataulun kentät
+    @NotNull(message = "TapahtumanLipputyyppiID:n tapahtumaId ei saa olla null")
     private Long tapahtumaId;
+
+    @NotNull(message = "TapahtumanLipputyyppiID:n lipputyyppiId ei saa olla null")
     private Long lipputyyppiId;
 
     // konstruktorit
