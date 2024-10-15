@@ -8,6 +8,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -22,7 +24,13 @@ public class Lipunmyyntipiste {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että myyntipisteId on pääavain ja se generoidaan automaattisesti
     private Long myyntipisteId;
-    private String myyntipiste;
+
+    @NotBlank(message = "Myyntipisteen nimi ei voi olla tyhjä")
+    @Size(max = 100, message = "Myyntipisteen nimi voi olla korkeintaan 100 merkkiä pitkä")
+    private String myyntipisteNimi;
+
+    @NotBlank(message = "Katuosoite ei voi olla tyhjä")
+    @Size(max = 100, message = "Katuosoite voi olla korkeintaan 100 merkkiä pitkä")
     private String katuosoite;
 
     @ManyToOne
@@ -35,8 +43,8 @@ public class Lipunmyyntipiste {
     private List<Kayttaja> myyjat;
 
     // konstruktorit
-    public Lipunmyyntipiste(String myyntipiste, String katuosoite) {
-        this.myyntipiste = myyntipiste;
+    public Lipunmyyntipiste(String myyntipisteNimi, String katuosoite) {
+        this.myyntipisteNimi = myyntipisteNimi;
         this.katuosoite = katuosoite;
     }
 
@@ -52,12 +60,12 @@ public class Lipunmyyntipiste {
         this.myyntipisteId = myyntipisteId;
     }
 
-    public String getMyyntipiste() {
-        return myyntipiste;
+    public String getMyyntipisteNimi() {
+        return myyntipisteNimi;
     }
 
-    public void setMyyntipiste(String myyntipiste) {
-        this.myyntipiste = myyntipiste;
+    public void setMyyntipisteNimi(String myyntipisteNimi) {
+        this.myyntipisteNimi = myyntipisteNimi;
     }
 
     public String getKatuosoite() {
@@ -86,7 +94,7 @@ public class Lipunmyyntipiste {
 
     @Override
     public String toString() {
-        return "Lipunmyyntipiste [myyntipisteId=" + myyntipisteId + ", myyntipiste=" + myyntipiste + ", katuosoite="
+        return "Lipunmyyntipiste [myyntipisteId=" + myyntipisteId + ", myyntipisteNimi=" + myyntipisteNimi + ", katuosoite="
                 + katuosoite + ", osoite=" + osoite + ", myyjat=" + myyjat + "]";
     }
 
