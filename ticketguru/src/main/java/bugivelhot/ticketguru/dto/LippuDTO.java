@@ -1,9 +1,17 @@
 package bugivelhot.ticketguru.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 public class LippuDTO {
 
+    @NotNull(message = "Tapahtuma ID ei voi olla tyhjä")
     private Long tapahtumaId; // tapahtuma
+
+    @NotNull(message = "Lipputyyppi ID ei voi olla tyhjä")
     private Long lipputyyppiId; // lipputyyppi
+
+    @Min(value = 1, message = "Lippujen määrän on oltava vähintään 1")
     private int maara; // lippujen määrä
 
     // getterit ja setterit
@@ -30,8 +38,4 @@ public class LippuDTO {
     public void setMaara(int maara) {
         this.maara = maara;
     }
-
-    
-
-    
 }

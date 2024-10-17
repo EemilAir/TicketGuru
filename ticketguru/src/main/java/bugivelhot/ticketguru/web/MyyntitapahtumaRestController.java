@@ -18,6 +18,8 @@ import bugivelhot.ticketguru.repository.LippuRepository;
 import bugivelhot.ticketguru.dto.MyyntitapahtumaJaLiputDTO;
 import bugivelhot.ticketguru.dto.MyyntitapahtumaResponseDTO;
 import bugivelhot.ticketguru.service.MyyntitapahtumaService;
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,7 +56,7 @@ public class MyyntitapahtumaRestController {
     // 400 Bad Request (jos jokin kenttä puuttuu tai on väärässä muodossa)
     // 401/403 (ei oikeuksia)
     @PostMapping
-    public ResponseEntity<Object> luoMyyntitapahtuma(@RequestBody MyyntitapahtumaJaLiputDTO dto) {
+    public ResponseEntity<Object> luoMyyntitapahtuma(@Valid @RequestBody MyyntitapahtumaJaLiputDTO dto) {
         // luodaan responseDTO, joka sisältää vain oleelliset maksutapahtuman tiedot
         MyyntitapahtumaResponseDTO responseDTO = myyntitapahtumaService.luoMyyntitapahtumaJaLiput(dto);
 

@@ -28,28 +28,36 @@ import jakarta.validation.constraints.Size;
 public class Kayttaja {
 
     // Tietokantataulun kentät
+    // Määrittää, että kayttajaId on pääavain ja se generoidaan automaattisesti
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että kayttajaId on pääavain ja se generoidaan automaattisesti
+    @GeneratedValue(strategy = GenerationType.AUTO) 
     private Long kayttajaId;
     
+    // Käyttäjänimi ei voi olla tyhjä ja sen pituus on 5-25 merkkiä
     @NotBlank(message = "Käyttäjänimi ei voi olla tyhjä")
     @Size(min = 3, max = 25, message = "Käyttäjänimen on oltava 5-25 merkkiä pitkä")
     private String kayttajanimi;
 
+    // Sähköposti on pakollinen ja sen tulee olla oikeassa muodossa
     @NotBlank(message = "Sähköposti ei voi olla tyhjä")
     @Email(message = "Sähköpostin tulee olla oikeassa muodossa")
     private String sposti;
 
+    // Salasanan hash-arvolle voi asettaa myös muita rajoituksia, esim. pituus, määritellään myöhemmin
     @NotBlank(message = "Salasana ei voi olla tyhjä")
     private String salasanaHash; 
 
     // Käyttäjäroolit
+    // Ei tarvitse validointia, koska enum on määritelty ja käyttäjärooli on pakollinen
     public enum Rooli {
         ADMIN,
         MYYJA;
     }
 
-    @Enumerated(EnumType.STRING) // Tallennetaan rooli tietokantaan merkkijonona (esim. 'ADMIN' tai 'MYYJA')
+    // Tallennetaan rooli tietokantaan merkkijonona (esim. 'ADMIN' tai 'MYYJA')
+    @Enumerated(EnumType.STRING) 
+    // Käyttäjällä on aina jokin rooli
+    @NotNull(message = "Käyttäjärooli ei voi olla tyhjä")
     private Rooli kayttajarooli;
 
     @ManyToOne

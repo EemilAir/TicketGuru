@@ -21,29 +21,33 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Lippu {
 
     // Tietokantataulun kentät
+    // Määrittää, että lippuId on pääavain ja se generoidaan automaattisesti
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että lippuId on pääavain ja se generoidaan automaattisesti
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long lippuId;
     
+    // Koodi ei voi olla tyhjä, koodia voi validoida myös muilla tavoilla, esim. pituus
     @NotBlank(message = "Lipun koodi ei voi olla tyhjä")
     private String koodi;
 
-    @NotNull(message = "Luontiaika ei voi olla tyhjä") // Tähän alustetaan luontiaika automaattisesti, silti validointi
+    // Luontiaika asetetaan automaattisesti, ei tarvita validointia
     private LocalDateTime luontiaika;
     /* private LocalDateTime myyntiaika; */
 
-    // lipun tilat
+    // Lipun tila voi olla AKTIIVINEN tai KAYTETTY
     public enum Tila {
         AKTIIVINEN,
         KAYTETTY
     }
 
+    // Ei tarvita validointia, koska enum on määritelty, tila on pakollinen ja arvo asetetaan automaattisesti
     @Enumerated(EnumType.STRING) // Tallennetaan tila tietokantaan merkkijonona (esim. 'AKTIIVINEN' tai 'KAYTETTY')
     private Tila lipunTila;
 
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "tapahtuma_id")
+    @NotNull(message = "Tapahtuma ei voi olla tyhjä")
     private Tapahtuma tapahtuma;
 
     @ManyToOne
@@ -54,12 +58,13 @@ public class Lippu {
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "lipputyyppi_id")
+    @NotNull(message = "Lipputyyppi ei voi olla tyhjä")
     private Lipputyyppi lipputyyppi;
 
     public Lippu() {
     }
 
-    // lisätään oletusarvot lippuun ennen tietokantaan tallentamista
+    // Lisätään oletusarvot lippuun ennen tietokantaan tallentamista
     @PrePersist
     public void prePersist() {
         // koodiksi uniikki merkkijono käyttäen UUID

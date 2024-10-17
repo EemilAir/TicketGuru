@@ -26,8 +26,10 @@ import bugivelhot.ticketguru.repository.TapahtumanLipputyyppiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 // Java util
 import java.util.Optional;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Validated
 public class MyyntitapahtumaService {
 
     @Autowired
@@ -79,7 +82,7 @@ public class MyyntitapahtumaService {
     }
 
     @Transactional // Pitää huolen, että kaikki operaatiot suoritetaan yhdessä transaktiossa, jos jokin niistä epäonnistuu, niin kaikki peruutetaan
-    public MyyntitapahtumaResponseDTO luoMyyntitapahtumaJaLiput(MyyntitapahtumaJaLiputDTO dto) {
+    public MyyntitapahtumaResponseDTO luoMyyntitapahtumaJaLiput(@Valid MyyntitapahtumaJaLiputDTO dto) {
 
         // Hae käyttäjä, joka luo myyntitapahtuman, jos id on null tai käyttäjää ei löydy se heittää virheen
         Optional<Kayttaja> kayttajaOptional = kayttajaRepository.findById(dto.getKayttajaId());
@@ -100,7 +103,13 @@ public class MyyntitapahtumaService {
         Double yhteissumma = 0.0;
 
         // Käy läpi kaikki liput, jotka halutaan luoda
-        for (LippuDTO lippuDTO : dto.getLiput()) {
+        for (@Valid LippuDTO lippuDTO : dto.getLiput()) {
+        
+            // Heitä virhe jos lipun määrä on pienempi kuin 1
+            if (lippuDTO.getMaara() < 1) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Lippujen määrä ei voi olla pienempi kuin 1");
+            }
+
             // Hae tapahtuma tietokannasta ja heitä virhe jos tapahtumaa ei löydy
             Optional<Tapahtuma> tapahtumaOptional = tapahtumaRepository.findById(lippuDTO.getTapahtumaId());
             if (!tapahtumaOptional.isPresent()) {
