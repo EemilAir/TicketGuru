@@ -7,11 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -22,7 +22,13 @@ public class Lipputyyppi {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että lipputyyppiId on pääavain ja se generoidaan automaattisesti
     private Long lipputyyppiId;
+
+    @NotBlank(message = "Lipputyypin nimi ei voi olla tyhjä")
+    @Size(max = 100, message = "Lipputyypin nimi voi olla korkeintaan 100 merkkiä pitkä")
     private String lipputyyppiNimi;
+
+    @NotBlank(message = "Kuvaus ei voi olla tyhjä")
+    @Size(max = 255, message = "Kuvaus voi olla korkeintaan 255 merkkiä pitkä")
     private String kuvaus;
 
     @OneToMany(mappedBy = "lipputyyppi", cascade = CascadeType.ALL)
