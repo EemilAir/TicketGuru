@@ -10,6 +10,9 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.CascadeType;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,7 +29,12 @@ public class Myyntitapahtuma {
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että myyntitapahtumaId on pääavain ja se generoidaan automaattisesti
     private Long myyntitapahtumaId;
 
+    @NotNull(message = "Myyntitapahtuman summa ei voi olla tyhjä")
+    @Positive(message = "Summan pitää olla positiivinen luku")
+    @Digits(integer = 10, fraction = 2, message = "Summan tulee olla enintään 10 numeroa ja 2 desimaalia")
     private Double summa;
+
+    @NotNull(message = "Maksupvm ei voi olla tyhjä")
     private LocalDateTime maksupvm;
 
     
