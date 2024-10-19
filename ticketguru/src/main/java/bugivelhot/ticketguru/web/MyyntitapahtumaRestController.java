@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import bugivelhot.ticketguru.model.Lippu;
 import bugivelhot.ticketguru.model.Myyntitapahtuma;
@@ -86,7 +87,6 @@ public class MyyntitapahtumaRestController {
         } else {
             return ResponseEntity.notFound().build(); // 404 Not Found
         }
-
     }
 
     // Haetaan kaikki myyntitapahtumat
