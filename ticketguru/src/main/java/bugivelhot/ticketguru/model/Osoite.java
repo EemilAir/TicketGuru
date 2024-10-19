@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -22,7 +24,13 @@ public class Osoite {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että osoiteId on pääavain ja se generoidaan automaattisesti
     private Long osoiteId;
+
+    @NotBlank(message = "Postinumero ei voi olla tyhjä")
+    @Size(min = 5, max = 5, message = "Postinumeron tulee olla 5 merkkiä pitkä")
     private String postinumero;
+
+    @NotBlank(message = "Postitoimipaikka ei voi olla tyhjä")
+    @Size(max = 100, message = "Postitoimipaikka voi olla korkeintaan 100 merkkiä pitkä")
     private String postitmp;
 
     @OneToMany(mappedBy = "osoite", cascade = CascadeType.ALL)
