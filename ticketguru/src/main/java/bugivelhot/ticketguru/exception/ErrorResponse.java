@@ -1,20 +1,23 @@
 package bugivelhot.ticketguru.exception;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ErrorResponse {
     private String viesti;
     private LocalDateTime aikaleima;
-    private int tila;
-    private String virhe;
+    private int tilakoodi;
+    private String tila;
     private String polku;
+    private Map<String, String> virheet;
 
     // Konstruktori
-    public ErrorResponse(String viesti, LocalDateTime aikaleima, int tila, String virhe, String polku) {
+    public ErrorResponse(String viesti, LocalDateTime aikaleima, int tilakoodi, String tila, String polku) {
         this.viesti = viesti;
         this.aikaleima = aikaleima;
+        this.tilakoodi = tilakoodi;
         this.tila = tila;
-        this.virhe = virhe;
         this.polku = polku;
     }
 
@@ -35,20 +38,20 @@ public class ErrorResponse {
         this.aikaleima = aikaleima;
     }
 
-    public int getTila() {
+    public int getTilakoodi() {
+        return tilakoodi;
+    }
+
+    public void setTilakoodi(int tilakoodi) {
+        this.tilakoodi = tilakoodi;
+    }
+
+    public String getTila() {
         return tila;
     }
 
-    public void setTila(int tila) {
+    public void setTila(String tila) {
         this.tila = tila;
-    }
-
-    public String getVirhe() {
-        return virhe;
-    }
-
-    public void setVirhe(String virhe) {
-        this.virhe = virhe;
     }
 
     public String getPolku() {
@@ -58,5 +61,18 @@ public class ErrorResponse {
     public void setPolku(String polku) {
         this.polku = polku;
     }
+
+    public Map<String, String> getVirheet() {
+        if (virheet == null) {
+            return new HashMap<>(); // Palauttaa tyhjän Map-olion, jos virheet on null
+        }
+        return virheet;
+    }
+
+    public void setVirheet(Map<String, String> virheet) {
+        this.virheet = virheet;
+    }
+
+    
    
 }

@@ -3,6 +3,7 @@ package bugivelhot.ticketguru.exception;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -11,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -47,7 +50,8 @@ public class GlobalExceptionHandler {
 
         String paramNimi = ex.getName();
         String vaadittuTyyppi = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "tuntematon";
-        String viesti = String.format("Virheellinen arvo parametrille '%s'. Odotettu tyyppi on '%s'", paramNimi, vaadittuTyyppi);
+        String annettuArvo = ex.getValue() != null ? ex.getValue().toString() : "null";
+        String viesti = String.format("Virheellinen arvo '%s' parametrille '%s'. Odotettu tyyppi on '%s'", annettuArvo, paramNimi, vaadittuTyyppi);
 
         ErrorResponse errorResponse = new ErrorResponse(
             viesti,
@@ -56,6 +60,31 @@ public class GlobalExceptionHandler {
             HttpStatus.BAD_REQUEST.getReasonPhrase(),
             request.getDescription(false)
         );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    // Käsittelee MethodArgumentNotValidException-poikkeuksia (400 Bad Request, esim. annotaatioista (@NotNull, @Positive) johtuvat virheet)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
+
+        // Luo virheilmoitukset kenttäkohtaisesti
+        Map<String, String> virheet = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error -> 
+            virheet.put(error.getField(), error.getDefaultMessage())
+        );
+
+        // Luo virhevastaus
+        ErrorResponse errorResponse = new ErrorResponse(
+            "Validaatiovirhe. Tarkista syöteparametrit.",
+            LocalDateTime.now(),
+            HttpStatus.BAD_REQUEST.value(),
+            HttpStatus.BAD_REQUEST.getReasonPhrase(),
+            request.getDescription(false)
+        );
+
+        // Lisää yksityiskohtaiset virheet vastaukseen (esim. kenttien virheilmoitukset)
+        errorResponse.setVirheet(virheet);
+
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 

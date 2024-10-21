@@ -112,7 +112,7 @@ public class MyyntitapahtumaRestController {
     public ResponseEntity<Void> poistaMyyntiTapahtuma(@PathVariable("id") Long id) {
 
         if (!myyntitapahtumaRepository.existsById(id)) {
-            return ResponseEntity.notFound().build(); // 404 Not Found
+            throw new ResourceNotFoundException("Myyntitapahtumaa ei löydy ID:llä " + id); // 404 Not Found
         } else {
             myyntitapahtumaRepository.deleteById(id);
             return ResponseEntity.noContent().build(); // 204 No Content
