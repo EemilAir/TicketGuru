@@ -29,9 +29,11 @@ public class Myyntitapahtuma {
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että myyntitapahtumaId on pääavain ja se generoidaan automaattisesti
     private Long myyntitapahtumaId;
 
-    @NotNull(message = "Myyntitapahtuman summa ei voi olla tyhjä")
+    // @NotNull(message = "Myyntitapahtuman summa ei voi olla tyhjä")
+    // @NotNull ei toimi, koska myyntitapahtuman luonnissa luodaan tyhjä myyntitapahtuma, johon ei ole asetettu summaa ja 
     @Positive(message = "Summan pitää olla positiivinen luku")
-    @Digits(integer = 10, fraction = 2, message = "Summan tulee olla enintään 10 numeroa ja 2 desimaalia")
+    // @Digits(integer = 10, fraction = 2, message = "Summan tulee olla enintään 10 numeroa ja 2 desimaalia")
+    // @Digits ei toimi, kun käytetään Double tyyppiä. 
     private Double summa;
 
     @NotNull(message = "Maksupvm ei voi olla tyhjä")

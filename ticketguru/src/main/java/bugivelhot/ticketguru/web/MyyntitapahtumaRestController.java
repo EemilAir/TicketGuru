@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,7 +72,7 @@ public class MyyntitapahtumaRestController {
     @GetMapping("/{myyntitapahtumaId}/liput")
     public List<Lippu> getLiputByMyyntitapahtumaId(@PathVariable Long myyntitapahtumaId) {
         Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(myyntitapahtumaId)
-                .orElseThrow(() -> new RuntimeException("Myyntitapahtuma ei löytynyt"));
+                .orElseThrow(() -> new ResourceNotFoundException("Myyntitapahtumaa ei löytynyt ID:llä " + myyntitapahtumaId)); // 404 Not Found
         return lippuRepository.findByMyyntitapahtuma(myyntitapahtuma); // palauttaa kaikki myyntitapahtuman liput
     }
 
@@ -81,12 +82,9 @@ public class MyyntitapahtumaRestController {
     // Statuskoodit: 200 OK, 400 Bad Request (ID väärässä muodossa), 404 Not Found
     @GetMapping("{id}")
     public ResponseEntity<MyyntitapahtumaResponseDTO> haeMyyntitapahtuma(@PathVariable("id") Long id) {
-        Optional<Myyntitapahtuma> myyntitapahtuma = myyntitapahtumaRepository.findById(id);
-        if (myyntitapahtuma.isPresent()) {
-            return ResponseEntity.ok(myyntitapahtumaService.mapToResponseDTO(myyntitapahtuma.get())); // 200 OK
-        } else {
-            return ResponseEntity.notFound().build(); // 404 Not Found
-        }
+        Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Myyntitapahtumaa ei löytynyt ID:llä " + id)); // 404 Not Found
+        return ResponseEntity.ok(myyntitapahtumaService.mapToResponseDTO(myyntitapahtuma)); // 200 OK
     }
 
     // Haetaan kaikki myyntitapahtumat

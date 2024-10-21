@@ -24,10 +24,9 @@ import bugivelhot.ticketguru.repository.TapahtumanLipputyyppiRepository;
 
 // Spring
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.server.ResponseStatusException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -81,13 +80,15 @@ public class MyyntitapahtumaService {
         return responseDTO;
     }
 
-    @Transactional // Pitää huolen, että kaikki operaatiot suoritetaan yhdessä transaktiossa, jos jokin niistä epäonnistuu, niin kaikki peruutetaan
+    @Transactional // Pitää huolen, että kaikki operaatiot suoritetaan yhdessä transaktiossa, jos
+                   // jokin niistä epäonnistuu, niin kaikki peruutetaan
     public MyyntitapahtumaResponseDTO luoMyyntitapahtumaJaLiput(@Valid MyyntitapahtumaJaLiputDTO dto) {
 
-        // Hae käyttäjä, joka luo myyntitapahtuman, jos id on null tai käyttäjää ei löydy se heittää virheen
+        // Hae käyttäjä, joka luo myyntitapahtuman, jos id on null tai käyttäjää ei
+        // löydy se heittää virheen
         Optional<Kayttaja> kayttajaOptional = kayttajaRepository.findById(dto.getKayttajaId());
         if (!kayttajaOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Käyttäjää ei löydy");
+            throw new ResourceNotFoundException("Käyttäjää ei löydy");
         }
         Kayttaja kayttaja = kayttajaOptional.get();
 
@@ -103,26 +104,28 @@ public class MyyntitapahtumaService {
         Double yhteissumma = 0.0;
 
         // Käy läpi kaikki liput, jotka halutaan luoda
-        for (@Valid LippuDTO lippuDTO : dto.getLiput()) {
-        
+        for (@Valid
+        LippuDTO lippuDTO : dto.getLiput()) {
+
             // Heitä virhe jos lipun määrä on pienempi kuin 1
             if (lippuDTO.getMaara() < 1) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Lippujen määrä ei voi olla pienempi kuin 1");
+                throw new IllegalArgumentException("Lippujen määrä ei voi olla pienempi kuin 1");
             }
 
             // Hae tapahtuma tietokannasta ja heitä virhe jos tapahtumaa ei löydy
             Optional<Tapahtuma> tapahtumaOptional = tapahtumaRepository.findById(lippuDTO.getTapahtumaId());
             if (!tapahtumaOptional.isPresent()) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tapahtumaa ei löydy");
+                throw new ResourceNotFoundException("Tapahtumaa ei löydy");
             }
             Tapahtuma tapahtuma = tapahtumaOptional.get();
 
-            // Hae tapahtuman ja lipputyypin yhdistelmä (TapahtumaLipputyyppi) ja heitä virhe jos ei löydy
+            // Hae tapahtuman ja lipputyypin yhdistelmä (TapahtumaLipputyyppi) ja heitä
+            // virhe jos ei löydy
             Optional<TapahtumanLipputyyppi> tapahtumaLipputyyppiOptional = tapahtumaLipputyyppiRepository
                     .findById_TapahtumaIdAndId_LipputyyppiId(
                             lippuDTO.getTapahtumaId(), lippuDTO.getLipputyyppiId());
             if (!tapahtumaLipputyyppiOptional.isPresent()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Lipputyyppi ei kuulu tapahtumaan");
+                throw new IllegalArgumentException("Lipputyyppi ei kuulu tapahtumaan");
             }
             TapahtumanLipputyyppi tapahtumanLipputyyppi = tapahtumaLipputyyppiOptional.get();
 
@@ -134,7 +137,8 @@ public class MyyntitapahtumaService {
                 lippu.setMyyntitapahtuma(myyntitapahtuma);
 
                 lippuLista.add(lippu);
-                yhteissumma += tapahtumanLipputyyppi.getHinta(); // Päivitä myyntitapahtuman summa käyttäen TapahtumaLipputyyppi-hintaa
+                yhteissumma += tapahtumanLipputyyppi.getHinta(); // Päivitä myyntitapahtuman summa käyttäen
+                                                                 // TapahtumaLipputyyppi-hintaa
             }
         }
 
@@ -144,10 +148,11 @@ public class MyyntitapahtumaService {
         // Päivitä myyntitapahtuman summa
         myyntitapahtuma.setSumma(yhteissumma);
 
-        // hae maksutapa ja aseta se myyntitapahtumaan,jos id on null tai maksutapaa ei löydy se heittää virheen
+        // hae maksutapa ja aseta se myyntitapahtumaan,jos id on null tai maksutapaa ei
+        // löydy se heittää virheen
         Optional<Maksutapa> maksutapaOptional = maksutapaRepository.findById(dto.getMaksutapaId());
         if (!maksutapaOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Maksutapaa ei löydy");
+            throw new ResourceNotFoundException("Maksutapaa ei löydy");
         }
         myyntitapahtuma.setMaksutapa(maksutapaOptional.get());
 
@@ -158,7 +163,8 @@ public class MyyntitapahtumaService {
         return mapToResponseDTO(myyntitapahtuma);
     }
 
-    public List<MyyntitapahtumaResponseDTO> haeKaikkiMyyntitapahtumat(Double summa, String maksutapa, String kayttajanimi) {
+    public List<MyyntitapahtumaResponseDTO> haeKaikkiMyyntitapahtumat(Double summa, String maksutapa,
+            String kayttajanimi) {
         List<Myyntitapahtuma> myyntitapahtumat;
 
         if (maksutapa != null && summa != null) {
@@ -173,9 +179,13 @@ public class MyyntitapahtumaService {
         } else {
             myyntitapahtumat = myyntitapahtumaRepository.findAll();
         }
-        
+
+        if(myyntitapahtumat.isEmpty()){
+            throw new ResourceNotFoundException("Myyntitapahtumia ei löytynyt");
+        }
+
         return myyntitapahtumat.stream()
-            .map(this::mapToResponseDTO)
-            .collect(Collectors.toList());
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
     }
 }
