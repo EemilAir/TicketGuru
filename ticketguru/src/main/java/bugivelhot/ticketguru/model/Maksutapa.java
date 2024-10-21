@@ -5,12 +5,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -21,6 +22,9 @@ public class Maksutapa {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että maksutapaId on pääavain ja se generoidaan automaattisesti
     private Long maksutapaId;
+
+    @NotBlank(message = "Maksutavalla tulee olla nimi")
+    @Size(min = 1, max = 20, message = "Maksutavan nimen tulee olla 1-20 merkkiä pitkä")
     private String maksutapaNimi;
 
     @OneToMany(mappedBy = "maksutapa", cascade = CascadeType.ALL)

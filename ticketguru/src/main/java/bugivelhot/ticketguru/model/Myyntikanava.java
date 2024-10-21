@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 // import java.util.List;
 
@@ -16,6 +18,9 @@ public class Myyntikanava {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että myyntikanavaId on pääavain ja se generoidaan automaattisesti
     private Long myyntikanavaId;
+
+    @NotBlank(message = "Myyntikanava ei voi olla tyhjä")
+    @Size(min = 1, max = 50, message = "Myyntikanavan pituuden tulee olla 1-50 merkkiä")
     private String myyntikanava;
 
     /* @OneToMany(mappedBy = "myyntikanava", cascade = CascadeType.ALL)
