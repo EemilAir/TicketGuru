@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class TapahtumaService {
@@ -27,5 +28,42 @@ public class TapahtumaService {
         tapahtumanLipputyyppi.setTapahtuma(tapahtuma);
         tapahtumanLipputyyppi.setLipputyyppi(lipputyyppi);
         return tapahtumanLipputyyppiRepository.save(tapahtumanLipputyyppi);
+    }
+
+    public Optional<Tapahtuma> muokkaaTapahtuma(Long id, Tapahtuma muokattuTapahtuma) {
+        Optional<Tapahtuma> tapahtumaOptional = tapahtumaRepository.findById(id);
+
+        if (tapahtumaOptional.isPresent()) {
+            Tapahtuma tapahtuma = tapahtumaOptional.get();
+
+            if (muokattuTapahtuma.getNimi() != null) {
+                tapahtuma.setNimi(muokattuTapahtuma.getNimi());
+            }
+            if (muokattuTapahtuma.getKuvaus() != null) {
+                tapahtuma.setKuvaus(muokattuTapahtuma.getKuvaus());
+            }
+            if (muokattuTapahtuma.getKategoria() != null) {
+                tapahtuma.setKategoria(muokattuTapahtuma.getKategoria());
+            }
+            if (muokattuTapahtuma.getAloituspvm() != null) {
+                tapahtuma.setAloituspvm(muokattuTapahtuma.getAloituspvm());
+            }
+            if (muokattuTapahtuma.getLopetuspvm() != null) {
+                tapahtuma.setLopetuspvm(muokattuTapahtuma.getLopetuspvm());
+            }
+            if (muokattuTapahtuma.getKatuosoite() != null) {
+                tapahtuma.setKatuosoite(muokattuTapahtuma.getKatuosoite());
+            }
+            if (muokattuTapahtuma.getLippujaJaljella() > 0) {
+                tapahtuma.setLippujaJaljella(muokattuTapahtuma.getLippujaJaljella());
+            }
+            if (muokattuTapahtuma.getOsoite() != null) {
+                tapahtuma.setOsoite(muokattuTapahtuma.getOsoite());
+            }
+
+            return Optional.of(tapahtumaRepository.save(tapahtuma));
+        }
+
+        return Optional.empty();
     }
 }

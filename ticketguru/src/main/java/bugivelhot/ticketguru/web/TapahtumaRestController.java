@@ -12,12 +12,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import bugivelhot.ticketguru.service.TapahtumaService;
 
 @RestController
 @RequestMapping("/api/tapahtumat/") // Määrittää oletuspolun endpointeille
@@ -25,6 +27,9 @@ public class TapahtumaRestController {
 
     @Autowired
     private TapahtumaRepository tapahtumaRepository;
+
+    @Autowired
+    private TapahtumaService tapahtumaService;
 
     // Hakee kaikki tai suodatetut tapahtumat nimen ja kategorian perusteella
     // Esim: http://localhost:8080/api/tapahtumat/?nimi=Tuska&kategoria=Festivaali
@@ -87,38 +92,18 @@ public class TapahtumaRestController {
         return new ResponseEntity<>(uusiTapahtuma, HttpStatus.CREATED);
     }
 
-    // PUT: http://localhost:8080/api/tapahtumat/id
+    // PATCH: http://localhost:8080/api/tapahtumat/id
     // Statuskoodit: 200 OK (päivitys onnistui), 
     // 400 Bad Request (jos jokin kenttä on väärässä muodossa), 
     // 401/403 (ei oikeuksia), 
     // 404 Not Found (jos tapahtumaa ei löydy)
-    /* TODO: muokkaaTapahtuma-metodi:n päivitys
-     * siirrä logiikka service-luokkaan
-     * Vaihda PUT -> PATCH
-    */
-    @PutMapping("{id}")
-    public ResponseEntity<Tapahtuma> muokkaaTapahtuma(@PathVariable("id") Long id,
-            @RequestBody Tapahtuma muokattuTapahtuma) {
 
-        Optional<Tapahtuma> tapahtumaOptional = tapahtumaRepository.findById(id);
-
-        if (tapahtumaOptional.isPresent()) {
-            Tapahtuma tapahtuma = tapahtumaOptional.get();
-
-            tapahtuma.setNimi(muokattuTapahtuma.getNimi());
-            tapahtuma.setKuvaus(muokattuTapahtuma.getKuvaus());
-            tapahtuma.setKategoria(muokattuTapahtuma.getKategoria());
-            tapahtuma.setAloituspvm(muokattuTapahtuma.getAloituspvm());
-            tapahtuma.setLopetuspvm(muokattuTapahtuma.getLopetuspvm());
-            tapahtuma.setKatuosoite(muokattuTapahtuma.getKatuosoite());
-            tapahtuma.setLippujaJaljella(muokattuTapahtuma.getLippujaJaljella());
-            tapahtuma.setOsoite(muokattuTapahtuma.getOsoite());
-
-            tapahtumaRepository.save(tapahtuma);
-            return ResponseEntity.ok(tapahtuma);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    // PATCH: http://localhost:8080/api/tapahtumat/{id}
+    @PatchMapping(value = "{id}")
+    public ResponseEntity<Tapahtuma> muokkaaTapahtuma(@PathVariable("id") Long id, @RequestBody Tapahtuma muokattuTapahtuma) {
+        Optional<Tapahtuma> updatedTapahtuma = tapahtumaService.muokkaaTapahtuma(id, muokattuTapahtuma);
+        return updatedTapahtuma.map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // DELETE: http://localhost:8080/api/tapahtumat/1

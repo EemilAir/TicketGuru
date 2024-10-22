@@ -55,6 +55,7 @@ public class Tapahtuma {
     @PositiveOrZero(message = "LippujaJaljella on oltava positiivinen tai nolla")
     private int lippujaJaljella;
 
+    @JsonIgnore //TempFix
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "osoite_id")
@@ -65,6 +66,7 @@ public class Tapahtuma {
     @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
     private List<Lippu> liput;
 
+    @JsonIgnore //TempFix
     @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<TapahtumanLipputyyppi> tapahtumanLipputyypit;
