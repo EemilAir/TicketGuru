@@ -95,6 +95,7 @@ public class MyyntitapahtumaRestController {
     // Statuskoodit: 200 OK
     // 404 Not Found
     // 400 Bad Request (jos summa, maksutapa tai käyttäjänimi on väärässä muodossa)
+    // TODO: Korjaa 200 OK jos on virheellinen requestParam
     @GetMapping
     public List<MyyntitapahtumaResponseDTO> haeKaikkiMyyntitapahtumat(
             @RequestParam(required = false) Double summa,

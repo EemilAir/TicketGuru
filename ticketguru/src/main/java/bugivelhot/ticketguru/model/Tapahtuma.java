@@ -34,7 +34,7 @@ public class Tapahtuma {
     @Size(min = 3, max = 100, message = "Tapahtuman nimi voi olla korkeintaan 100 merkkiä pitkä ja 3 merkkiä lyhyt")
     private String nimi;
 
-    @Size(min = 3, max = 500, message = "Tapahtuman kuvaus voi olla korkeintaan 500 merkkiä pitkä ja 3 merkkiä lyhyt")
+    @Size(max = 500, message = "Tapahtuman kuvaus voi olla korkeintaan 500 merkkiä pitkä ja 3 merkkiä lyhyt")
     private String kuvaus;
 
     @NotBlank(message = "Tapahtuman kategoria ei voi olla tyhjä")
