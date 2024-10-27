@@ -37,7 +37,7 @@ public class TapahtumaDTO {
 
     @NotNull(message = "LippujaJaljella ei voi olla null")
     @PositiveOrZero(message = "LippujaJaljella on oltava positiivinen tai nolla")
-    private int lippujaJaljella;
+    private Integer lippujaJaljella;
 
     @NotNull(message = "OsoiteId ei voi olla null")
     @Positive(message = "OsoiteId on oltava positiivinen")
@@ -83,10 +83,10 @@ public class TapahtumaDTO {
     public void setKatuosoite(String katuosoite) {
         this.katuosoite = katuosoite;
     }
-    public int getLippujaJaljella() {
+    public Integer getLippujaJaljella() {
         return lippujaJaljella;
     }
-    public void setLippujaJaljella(int lippujaJaljella) {
+    public void setLippujaJaljella(Integer lippujaJaljella) {
         this.lippujaJaljella = lippujaJaljella;
     }
     public Long getOsoiteId() {

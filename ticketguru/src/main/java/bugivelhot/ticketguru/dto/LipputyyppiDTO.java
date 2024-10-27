@@ -1,7 +1,9 @@
 package bugivelhot.ticketguru.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 public class LipputyyppiDTO {
 
@@ -12,6 +14,13 @@ public class LipputyyppiDTO {
     @NotNull(message = "hinta ei voi olla null")
     @Positive(message = "hinta ei voi olla negatiivinen")
     private double hinta;
+
+    @NotBlank(message = "lipputyypinNimi ei voi olla tyhjä")
+    @Size(min = 3, max = 25, message = "lipputyypinNimi on oltava 3-25 merkkiä pitkä")
+    private String lipputyyppiNimi;
+
+    @Size(min = 3, max = 25, message = "Kuvauksen on oltava 3-250 merkkiä pitkä")
+    private String kuvaus;
 
     // konstruktorit
     public LipputyyppiDTO() {
@@ -39,4 +48,19 @@ public class LipputyyppiDTO {
         this.hinta = hinta;
     }
     
+    public String getLipputyyppiNimi() {
+        return lipputyyppiNimi;
+    }
+
+    public void setLipputyyppiNimi(String lipputyyppiNimi) {
+        this.lipputyyppiNimi = lipputyyppiNimi;
+    }
+
+    public String getKuvaus() {
+        return kuvaus;
+    }
+
+    public void setKuvaus(String kuvaus) {
+        this.kuvaus = kuvaus;
+    }
 }

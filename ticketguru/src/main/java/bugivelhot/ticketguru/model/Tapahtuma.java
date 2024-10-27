@@ -53,7 +53,7 @@ public class Tapahtuma {
 
     @NotNull(message = "LippujaJaljella ei voi olla null")
     @PositiveOrZero(message = "LippujaJaljella on oltava positiivinen tai nolla")
-    private int lippujaJaljella;
+    private Integer lippujaJaljella;
 
     @JsonIgnore //TempFix
     @ManyToOne
@@ -72,7 +72,7 @@ public class Tapahtuma {
     private List<TapahtumanLipputyyppi> tapahtumanLipputyypit;
 
     public Tapahtuma(String nimi, String kuvaus, String kategoria, LocalDateTime aloituspvm, LocalDateTime lopetuspvm,
-    String katuosoite, Osoite osoite, int lippujaJaljella) {
+    String katuosoite, Osoite osoite, Integer lippujaJaljella) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
         this.kategoria = kategoria;
@@ -143,11 +143,11 @@ public class Tapahtuma {
         this.katuosoite = katuosoite;
     }
 
-    public int getLippujaJaljella() {
+    public Integer getLippujaJaljella() {
         return lippujaJaljella;
     }
 
-    public void setLippujaJaljella(int lippujaJaljella) {
+    public void setLippujaJaljella(Integer lippujaJaljella) {
         this.lippujaJaljella = lippujaJaljella;
     }
 

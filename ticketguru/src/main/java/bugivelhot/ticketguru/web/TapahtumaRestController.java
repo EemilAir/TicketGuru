@@ -1,5 +1,10 @@
 package bugivelhot.ticketguru.web;
 
+import bugivelhot.ticketguru.dto.MyyntitapahtumaJaLiputDTO;
+import bugivelhot.ticketguru.dto.MyyntitapahtumaResponseDTO;
+import bugivelhot.ticketguru.dto.TapahtumaDTO;
+import bugivelhot.ticketguru.dto.TapahtumaResponseDTO;
+import bugivelhot.ticketguru.model.Myyntitapahtuma;
 import bugivelhot.ticketguru.model.Tapahtuma;
 import bugivelhot.ticketguru.repository.TapahtumaRepository;
 import bugivelhot.ticketguru.service.TapahtumaService;
@@ -33,11 +38,51 @@ public class TapahtumaRestController {
     @Autowired
     private TapahtumaService tapahtumaService;
 
+    @GetMapping
+    public List<TapahtumaResponseDTO> haeKaikkiTapahtumat(
+        @RequestParam(required = false) String nimi,
+        @RequestParam(required = false) String kategoria) {
+
+        return tapahtumaService.haeKaikkiTapahtumat(nimi, kategoria);  // palauttaa kaikki suodatetut tapahtumat
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<TapahtumaResponseDTO> haetapahtuma(@PathVariable("id") Long id) {
+        Tapahtuma tapahtuma = tapahtumaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Tapahtumaa ei löytynyt ID:llä " + id)); // 404 Not Found
+        return ResponseEntity.ok(tapahtumaService.mapToResponseDTO(tapahtuma)); // 200 OK
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> lisaaTapahtuma(@Valid @RequestBody TapahtumaDTO dto) {
+        TapahtumaResponseDTO responseDTO = tapahtumaService.lisaaTapahtuma(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+    }
+
+    //TODO:virheiden hallinta!
+    @PatchMapping(value = "{id}")
+    public ResponseEntity<TapahtumaResponseDTO> muokkaaTapahtuma(@PathVariable("id") Long id, @RequestBody TapahtumaDTO muokattuTapahtuma) {
+        Optional<TapahtumaResponseDTO> updatedTapahtuma = tapahtumaService.muokkaaTapahtuma(id, muokattuTapahtuma);
+        return updatedTapahtuma.map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> poistaTapahtuma(@PathVariable("id") Long id) {
+        if (!tapahtumaRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Tapahtumaa ei löydy ID:llä " + id); // 404 Not Found
+        } else {
+        tapahtumaRepository.deleteById(id);
+        return ResponseEntity.noContent().build(); // 204 No Content
+        }
+    }
+
     // Hakee kaikki tai suodatetut tapahtumat nimen ja kategorian perusteella
     // Esim: http://localhost:8080/api/tapahtumat/?nimi=Tuska&kategoria=Festivaali
     // /TAI/ http://localhost:8080/api/tapahtumat/
     // /TAI/ http://localhost:8080/api/tapahtumat/?nimi=Tuska
     // Statuskoodit: 200 OK, 404 Not Found, 400 Bad Request (jos ei ole nimeä tai kategoriaa)
+    /*
     @GetMapping
     public List<Tapahtuma> haeKaikkiTapahtumat(
         @RequestParam(required = false) String nimi,
@@ -79,7 +124,7 @@ public class TapahtumaRestController {
      * }
      * 
      */
-
+    /*
     // POST: http://localhost:8080/api/tapahtumat/
     // Statuskoodit: 201 CREATED, 400 Bad Request (jos jokin kenttä puuttuu tai on väärässä muodossa), 401/403 (ei oikeuksia)
     // TODO: DTO
@@ -115,4 +160,5 @@ public class TapahtumaRestController {
         tapahtumaRepository.deleteById(id);
         return ResponseEntity.noContent().build(); // 204 No Content
     }
+    */
 }

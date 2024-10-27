@@ -11,6 +11,7 @@ public class TapahtumaResponseDTO {
     private String lopetuspvm;
     private String katuosoite;
     private OsoiteDTO osoite;
+    private Integer lippujaJaljella;
     private List<TapahtumanLipputyyppiDTO> lipputyypit;
 
     public String getNimi() {
@@ -54,6 +55,12 @@ public class TapahtumaResponseDTO {
     }
     public void setOsoite(OsoiteDTO osoite) {
         this.osoite = osoite;
+    }
+    public Integer getLippujaJaljella() {
+        return lippujaJaljella;
+    }
+    public void setLippujaJaljella(Integer lippujaJaljella) {
+        this.lippujaJaljella = lippujaJaljella;
     }
     public List<TapahtumanLipputyyppiDTO> getLipputyypit() {
         return lipputyypit;

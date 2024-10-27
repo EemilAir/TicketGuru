@@ -88,5 +88,4 @@ public class TapahtumanLipputyyppi {
         return "TapahtumanLipputyyppi [id=" + id + ", tapahtuma=" + tapahtuma + ", lipputyyppi=" + lipputyyppi
                 + ", hinta=" + hinta + "]";
     }
-
 }
