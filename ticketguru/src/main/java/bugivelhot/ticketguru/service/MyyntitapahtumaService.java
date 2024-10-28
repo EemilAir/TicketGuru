@@ -129,6 +129,13 @@ public class MyyntitapahtumaService {
             }
             TapahtumanLipputyyppi tapahtumanLipputyyppi = tapahtumaLipputyyppiOptional.get();
 
+            // Vähentää lippujaJaljella-arvoa lipunmyynnin yhteydessä
+            if (tapahtuma.getLippujaJaljella() < lippuDTO.getMaara()) {
+                throw new IllegalArgumentException("Ei tarpeeksi lippuja jäljellä");
+            }
+            tapahtuma.setLippujaJaljella(tapahtuma.getLippujaJaljella() - lippuDTO.getMaara());
+            tapahtumaRepository.save(tapahtuma);
+
             // Luo ja tallenna liput (lippuDTO.getMaara() kertaa)
             for (int i = 0; i < lippuDTO.getMaara(); i++) {
                 Lippu lippu = new Lippu();
