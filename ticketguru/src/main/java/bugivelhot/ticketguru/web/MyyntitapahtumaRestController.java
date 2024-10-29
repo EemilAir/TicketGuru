@@ -43,14 +43,14 @@ public class MyyntitapahtumaRestController {
     /*
      * ESIMERKKI POST /api/myyntitapahtumat/
      * {
-     * "kayttajaId": 1,
-     * "maksutapaId": 1,
-     * "liput": [
-     * {
-     * "tapahtumaId": 1,
-     * "lipputyyppiId": 1,
-     * "maara": 3
-     * },
+     *  "kayttajaId": 1,
+     *  "maksutapaId": 1,
+     *  "liput": [
+     *      {
+     *          "tapahtumaId": 1,
+     *          "lipputyyppiId": 1,
+     *          "maara": 3
+     *      },
      * }
      */
 
@@ -63,8 +63,7 @@ public class MyyntitapahtumaRestController {
         // luodaan responseDTO, joka sisältää vain oleelliset maksutapahtuman tiedot
         MyyntitapahtumaResponseDTO responseDTO = myyntitapahtumaService.luoMyyntitapahtumaJaLiput(dto);
 
-        // palautetaan 201 CREATED status ja responseDTO, joka sisältää myyntitapahtuman
-        // ja lippujen olennaiset tiedot
+        // palautetaan 201 CREATED status ja responseDTO, joka sisältää myyntitapahtuman ja lippujen olennaiset tiedot
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
@@ -85,9 +84,8 @@ public class MyyntitapahtumaRestController {
     @GetMapping("{id}")
     public ResponseEntity<MyyntitapahtumaResponseDTO> haeMyyntitapahtuma(@PathVariable("id") Long id) {
         Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Myyntitapahtumaa ei löytynyt ID:llä " + id)); // 404
-                                                                                                                // Not
-                                                                                                                // Found
+                .orElseThrow(() -> new ResourceNotFoundException("Myyntitapahtumaa ei löytynyt ID:llä " + id)); // 404 Not Found
+
         return ResponseEntity.ok(myyntitapahtumaService.mapToResponseDTO(myyntitapahtuma)); // 200 OK
     }
 
