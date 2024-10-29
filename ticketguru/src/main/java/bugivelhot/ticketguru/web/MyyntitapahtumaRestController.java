@@ -40,16 +40,17 @@ public class MyyntitapahtumaRestController {
     @Autowired
     LippuRepository lippuRepository;
 
-    /* ESIMERKKI POST /api/myyntitapahtumat/
+    /*
+     * ESIMERKKI POST /api/myyntitapahtumat/
      * {
-     *   "kayttajaId": 1,
-     *   "maksutapaId": 1,
-     *   "liput": [
-     *      {    
-     *          "tapahtumaId": 1,
-     *          "lipputyyppiId": 1,
-     *          "maara": 3
-     *      },  
+     * "kayttajaId": 1,
+     * "maksutapaId": 1,
+     * "liput": [
+     * {
+     * "tapahtumaId": 1,
+     * "lipputyyppiId": 1,
+     * "maara": 3
+     * },
      * }
      */
 
@@ -62,7 +63,8 @@ public class MyyntitapahtumaRestController {
         // luodaan responseDTO, joka sisältää vain oleelliset maksutapahtuman tiedot
         MyyntitapahtumaResponseDTO responseDTO = myyntitapahtumaService.luoMyyntitapahtumaJaLiput(dto);
 
-        // palautetaan 201 CREATED status ja responseDTO, joka sisältää myyntitapahtuman ja lippujen olennaiset tiedot
+        // palautetaan 201 CREATED status ja responseDTO, joka sisältää myyntitapahtuman
+        // ja lippujen olennaiset tiedot
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
@@ -72,10 +74,10 @@ public class MyyntitapahtumaRestController {
     @GetMapping("/{myyntitapahtumaId}/liput")
     public List<Lippu> getLiputByMyyntitapahtumaId(@PathVariable Long myyntitapahtumaId) {
         Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(myyntitapahtumaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Myyntitapahtumaa ei löytynyt ID:llä " + myyntitapahtumaId)); // 404 Not Found
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Myyntitapahtumaa ei löytynyt ID:llä " + myyntitapahtumaId)); // 404 Not Found
         return lippuRepository.findByMyyntitapahtuma(myyntitapahtuma); // palauttaa kaikki myyntitapahtuman liput
     }
-
 
     // Haetaan myyntitapahtuma ID:llä
     // http://localhost:8080/api/myyntitapahtumat/1
@@ -83,7 +85,9 @@ public class MyyntitapahtumaRestController {
     @GetMapping("{id}")
     public ResponseEntity<MyyntitapahtumaResponseDTO> haeMyyntitapahtuma(@PathVariable("id") Long id) {
         Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Myyntitapahtumaa ei löytynyt ID:llä " + id)); // 404 Not Found
+                .orElseThrow(() -> new ResourceNotFoundException("Myyntitapahtumaa ei löytynyt ID:llä " + id)); // 404
+                                                                                                                // Not
+                                                                                                                // Found
         return ResponseEntity.ok(myyntitapahtumaService.mapToResponseDTO(myyntitapahtuma)); // 200 OK
     }
 
@@ -95,19 +99,34 @@ public class MyyntitapahtumaRestController {
     // Statuskoodit: 200 OK
     // 404 Not Found
     // 400 Bad Request (jos summa, maksutapa tai käyttäjänimi on väärässä muodossa)
-    // TODO: Korjaa 200 OK jos on virheellinen requestParam
     @GetMapping
-    public List<MyyntitapahtumaResponseDTO> haeKaikkiMyyntitapahtumat(
-            @RequestParam(required = false) Double summa,
+    public ResponseEntity<List<MyyntitapahtumaResponseDTO>> haeKaikkiMyyntitapahtumat(
+            @RequestParam(required = false) String summa,
             @RequestParam(required = false) String maksutapa,
             @RequestParam(required = false) String kayttajanimi) {
 
-        return myyntitapahtumaService.haeKaikkiMyyntitapahtumat(summa, maksutapa, kayttajanimi); // palauttaa kaikki myyntitapahtumat
+        // Summa-parametri vastaanotetaan merkkijonona validoinnin mahdollistamiseksi
+        // Yrittää muuttaa summan doubleksi
+        try {
+            Double parsedSumma = summa != null ? Double.parseDouble(summa) : null;
+
+            // Validoi maksutapa ja käyttäjänimi parametrit
+            if ((maksutapa != null && maksutapa.trim().isEmpty())
+                    || (kayttajanimi != null && kayttajanimi.trim().isEmpty())) {
+                throw new IllegalArgumentException("Virheellinen maksutapa tai käyttäjänimi"); // 400 Bad Request
+            }
+
+            List<MyyntitapahtumaResponseDTO> myyntitapahtumat = myyntitapahtumaService
+                    .haeKaikkiMyyntitapahtumat(parsedSumma, maksutapa, kayttajanimi);
+            return ResponseEntity.ok(myyntitapahtumat); // 200 OK
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException("Summan muoto on virheellinen"); // 400 Bad Request
+        }
     }
-    
+
     // DELETE: http://localhost:8080/api/myyntitapahtumat/1
-    // Statuskoodit: 204 No Content (poisto onnistui) 
-    // 401/403 (ei oikeuksia) 
+    // Statuskoodit: 204 No Content (poisto onnistui)
+    // 401/403 (ei oikeuksia)
     // 404 Not Found (jos tapahtumaa ei löydy)
     @DeleteMapping("{id}")
     public ResponseEntity<Void> poistaMyyntiTapahtuma(@PathVariable("id") Long id) {
