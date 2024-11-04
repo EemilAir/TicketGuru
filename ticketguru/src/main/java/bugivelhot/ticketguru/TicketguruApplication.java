@@ -2,6 +2,7 @@ package bugivelhot.ticketguru;
 
 import bugivelhot.ticketguru.dto.LippuDTO;
 import bugivelhot.ticketguru.dto.MyyntitapahtumaJaLiputDTO;
+import bugivelhot.ticketguru.initializer.DataInitializer;
 import bugivelhot.ticketguru.model.*;
 import bugivelhot.ticketguru.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,28 +19,31 @@ import java.util.List;
 @SpringBootApplication
 public class TicketguruApplication {
 
-
-
-    @Autowired
-    private TapahtumaService tapahtumaService;
-
-    @Autowired
+    /* private TapahtumaService tapahtumaService;
     private KayttajaService kayttajaService;
-
-    @Autowired
     private OsoiteService osoiteService;
-
-    @Autowired
     private LipunmyyntipisteService lipunmyyntipisteService;
-
-    @Autowired
     private LipputyyppiService lipputyyppiService;
-
-	@Autowired
 	private MaksutapaService maksutapaService;
-
-    @Autowired
     private MyyntitapahtumaService myyntitapahtumaService;
+
+    public TicketguruApplication(TapahtumaService tapahtumaService, KayttajaService kayttajaService, OsoiteService osoiteService, 
+                                 LipunmyyntipisteService lipunmyyntipisteService, LipputyyppiService lipputyyppiService, 
+                                 MaksutapaService maksutapaService, MyyntitapahtumaService myyntitapahtumaService) {
+        this.tapahtumaService = tapahtumaService;
+        this.kayttajaService = kayttajaService;
+        this.osoiteService = osoiteService;
+        this.lipunmyyntipisteService = lipunmyyntipisteService;
+        this.lipputyyppiService = lipputyyppiService;
+        this.maksutapaService = maksutapaService;
+        this.myyntitapahtumaService = myyntitapahtumaService;
+    } */
+
+    private final DataInitializer dataInitializer;
+
+    public TicketguruApplication(DataInitializer dataInitializer) {
+        this.dataInitializer = dataInitializer;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(TicketguruApplication.class, args);
@@ -49,7 +53,9 @@ public class TicketguruApplication {
     public CommandLineRunner loadData() {
         return (args) -> {
 
-			// Maksutavat
+            dataInitializer.initialize();
+
+			/* // Maksutavat
 			Maksutapa kateinen = maksutapaService.luoJaTallennaMaksutapa("Käteinen");
 			Maksutapa debit = maksutapaService.luoJaTallennaMaksutapa("Debit");
 			Maksutapa credit = maksutapaService.luoJaTallennaMaksutapa("Credit");
@@ -57,14 +63,15 @@ public class TicketguruApplication {
             Maksutapa paypal = maksutapaService.luoJaTallennaMaksutapa("PayPal");
 
             // Osoitteet
-            Osoite osoite1 = osoiteService.luoJaTallennaOsoite("00100", "Helsinki");
-            Osoite osoite2 = osoiteService.luoJaTallennaOsoite("00200", "Helsinki");
-            Osoite osoite3 = osoiteService.luoJaTallennaOsoite("00540", "Helsinki");
-            Osoite osoite4 = osoiteService.luoJaTallennaOsoite("20100", "Turku");
-            Osoite osoite5 = osoiteService.luoJaTallennaOsoite("33100", "Tampere");
-            Osoite osoite6 = osoiteService.luoJaTallennaOsoite("90100", "Oulu");
-            Osoite osoite7 = osoiteService.luoJaTallennaOsoite("40100", "Jyväskylä");
-            Osoite osoite8 = osoiteService.luoJaTallennaOsoite("80100", "Joensuu");
+            osoiteService.luoOsoitteet();
+            Osoite osoite1 = osoiteService.haeOsoitePostinumerolla("00100").get();
+            Osoite osoite2 = osoiteService.haeOsoitePostinumerolla("00200").get();
+            Osoite osoite3 = osoiteService.haeOsoitePostinumerolla("00540").get();
+            Osoite osoite4 = osoiteService.haeOsoitePostinumerolla("20100").get();
+            Osoite osoite5 = osoiteService.haeOsoitePostinumerolla("33100").get();
+            Osoite osoite6 = osoiteService.haeOsoitePostinumerolla("90100").get();
+            Osoite osoite7 = osoiteService.haeOsoitePostinumerolla("40100").get();
+            Osoite osoite8 = osoiteService.haeOsoitePostinumerolla("80100").get();
 
             // Lipunmyyntipisteet
             Lipunmyyntipiste myyntipiste1 = lipunmyyntipisteService.luoJaTallennaLipunmyyntipiste("Lippupiste 1", "Esimerkkikatu 1", osoite1);
@@ -352,7 +359,7 @@ public class TicketguruApplication {
 
 				// Tallennetaan myyntitapahtuma 7
 				myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtuma7);
-                System.out.println("Myyntitapahtuma 7 luotu ja liput lisätty!");
+                System.out.println("Myyntitapahtuma 7 luotu ja liput lisätty!"); */
         };
     }
 }

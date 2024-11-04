@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 import java.util.List;
@@ -20,11 +21,12 @@ public class Maksutapa {
 
     // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että maksutapaId on pääavain ja se generoidaan automaattisesti
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Määrittää, että maksutapaId on pääavain ja se generoidaan automaattisesti
     private Long maksutapaId;
 
     @NotBlank(message = "Maksutavalla tulee olla nimi")
     @Size(min = 1, max = 20, message = "Maksutavan nimen tulee olla 1-20 merkkiä pitkä")
+    @Column(unique = true) // Maksutavan nimi on uniikki
     private String maksutapaNimi;
 
     @OneToMany(mappedBy = "maksutapa", cascade = CascadeType.ALL)

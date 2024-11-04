@@ -1,6 +1,7 @@
 package bugivelhot.ticketguru.model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,11 +21,12 @@ public class Lipputyyppi {
 
     // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että lipputyyppiId on pääavain ja se generoidaan automaattisesti
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Määrittää, että lipputyyppiId on pääavain ja se generoidaan automaattisesti
     private Long lipputyyppiId;
 
     @NotBlank(message = "Lipputyypin nimi ei voi olla tyhjä")
     @Size(max = 100, message = "Lipputyypin nimi voi olla korkeintaan 100 merkkiä pitkä")
+    @Column(unique = true) // Lipputyypin nimi on uniikki
     private String lipputyyppiNimi;
 
     @NotBlank(message = "Kuvaus ei voi olla tyhjä")

@@ -1,5 +1,6 @@
 package bugivelhot.ticketguru.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,16 +24,16 @@ public class Lippu {
     // Tietokantataulun kentät
     // Määrittää, että lippuId on pääavain ja se generoidaan automaattisesti
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long lippuId;
     
     // Koodi ei voi olla tyhjä, koodia voi validoida myös muilla tavoilla, esim. pituus
     @NotBlank(message = "Lipun koodi ei voi olla tyhjä")
+    @Column(unique = true) // Koodi on uniikki
     private String koodi;
 
     // Luontiaika asetetaan automaattisesti, ei tarvita validointia
     private LocalDateTime luontiaika;
-    /* private LocalDateTime myyntiaika; */
 
     // Lipun tila voi olla AKTIIVINEN tai KAYTETTY
     public enum Tila {
