@@ -7,6 +7,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,8 +29,18 @@ public class WebSecurityConfig {
         http
                 // Kaikki pyynnöt vaativat autentikaation
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
+                        // Vain ADMIN-roolilla voi lisätä tapahtumia
+                        .requestMatchers(HttpMethod.POST,"/api/tapahtumat/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH,"/api/tapahtumat/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/tapahtumat/**").hasRole("ADMIN")
+                        // Sekä ADMIN- että USER-roolilla voi nähdä tapahtumat (GET)-pyynnöllä
+                        .requestMatchers(HttpMethod.GET,"/api/tapahtumat/**").hasAnyRole("ADMIN", "USER")
+                        // Sekä ADMIN- että USER-roolilla voi käyttää myyntitapahtuman kaikkia endpointteja
+                        .requestMatchers("/api/myyntitapahtumat/**").hasAnyRole("ADMIN", "USER")
+                    // Muut pyynnöt vaativat autentikaation
+                    .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults()
+                )
                 .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()).disable())
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())); // H2-konsolin
                                                                                                       // käyttöön
@@ -43,12 +54,18 @@ public class WebSecurityConfig {
         UserDetails user = User.builder() // Ei turvallinen tapa tallentaa salasanoja, ei tuotantoon
                 // Käyttäjänimi ja salasana
                 .username("user")
-                .password(passwordEncoder.encode("password"))
+                .password(passwordEncoder.encode("user"))
                 .roles("USER")
+                .build();
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("admin"))
+                .roles("ADMIN")
                 .build();
         // Luodaan lista käyttäjistä
         List<UserDetails> users = new ArrayList<>();
         users.add(user);
+        users.add(admin);
         // Palautetaan käyttäjät
         return new InMemoryUserDetailsManager(users);
     }
