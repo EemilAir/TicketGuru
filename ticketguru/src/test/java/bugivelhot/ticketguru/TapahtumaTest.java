@@ -4,6 +4,12 @@ import bugivelhot.ticketguru.model.Tapahtuma;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import java.util.Set;
+
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,9 +17,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TapahtumaTest {
 
     private Tapahtuma tapahtuma;
+    private Validator validator;
 
     @BeforeEach
     public void setUp() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+
         tapahtuma = new Tapahtuma(
                 "Testi tapahtuma",
                 "Tämä on testi tapahtuma.",
@@ -55,6 +65,18 @@ public class TapahtumaTest {
         assertEquals(LocalDateTime.of(2023, 11, 1, 18, 0), tapahtuma.getLopetuspvm());
         assertEquals("Päivitetty katu 456", tapahtuma.getKatuosoite());
         assertEquals(200, tapahtuma.getLippujaJaljella());
+    }
+
+    // Testataan, että tapahtuman-olio ei hyväksy null-arvoa nimelle
+    @Test
+    public void shouldNotAcceptNullNimi() {
+        tapahtuma.setNimi(null);
+    
+        Set<ConstraintViolation<Tapahtuma>> violations = validator.validate(tapahtuma);
+        assertFalse(violations.isEmpty());
+
+        ConstraintViolation<Tapahtuma> violation = violations.iterator().next();
+        assertEquals("Tapahtuman nimi ei voi olla tyhjä", violation.getMessage());
     }
 
 }
