@@ -16,7 +16,7 @@ public class Myyntikanava {
 
     // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että myyntikanavaId on pääavain ja se generoidaan automaattisesti
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Määrittää, että myyntikanavaId on pääavain ja se generoidaan automaattisesti
     private Long myyntikanavaId;
 
     @NotBlank(message = "Myyntikanava ei voi olla tyhjä")

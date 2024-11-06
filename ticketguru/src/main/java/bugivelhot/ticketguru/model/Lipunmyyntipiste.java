@@ -1,5 +1,6 @@
 package bugivelhot.ticketguru.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,11 +23,12 @@ public class Lipunmyyntipiste {
 
     // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että myyntipisteId on pääavain ja se generoidaan automaattisesti
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Määrittää, että myyntipisteId on pääavain ja se generoidaan automaattisesti
     private Long myyntipisteId;
 
     @NotBlank(message = "Myyntipisteen nimi ei voi olla tyhjä")
     @Size(max = 100, message = "Myyntipisteen nimi voi olla korkeintaan 100 merkkiä pitkä")
+    @Column(unique = true) // Myyntipisteen nimi on uniikki
     private String myyntipisteNimi;
 
     @NotBlank(message = "Katuosoite ei voi olla tyhjä")

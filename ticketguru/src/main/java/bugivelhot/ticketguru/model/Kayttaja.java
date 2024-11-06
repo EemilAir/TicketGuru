@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -30,17 +31,19 @@ public class Kayttaja {
     // Tietokantataulun kentät
     // Määrittää, että kayttajaId on pääavain ja se generoidaan automaattisesti
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long kayttajaId;
     
     // Käyttäjänimi ei voi olla tyhjä ja sen pituus on 5-25 merkkiä
     @NotBlank(message = "Käyttäjänimi ei voi olla tyhjä")
     @Size(min = 3, max = 25, message = "Käyttäjänimen on oltava 5-25 merkkiä pitkä")
+    @Column(unique = true) // Käyttäjänimi on uniikki
     private String kayttajanimi;
 
     // Sähköposti on pakollinen ja sen tulee olla oikeassa muodossa
     @NotBlank(message = "Sähköposti ei voi olla tyhjä")
     @Email(message = "Sähköpostin tulee olla oikeassa muodossa")
+    @Column(unique = true) // Sähköposti on uniikki
     private String sposti;
 
     // Salasanan hash-arvolle voi asettaa myös muita rajoituksia, esim. pituus, määritellään myöhemmin
