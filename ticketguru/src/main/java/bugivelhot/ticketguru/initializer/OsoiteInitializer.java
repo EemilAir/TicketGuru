@@ -13,6 +13,11 @@ public class OsoiteInitializer {
     }
 
     public void luoOsoitteet(){
-        osoiteService.luoOsoitteet();
+        osoiteService.luoJaTallennaOsoite("00540", "Helsinki");
+        osoiteService.luoJaTallennaOsoite("20100", "Turku");
+        osoiteService.luoJaTallennaOsoite("33100", "Tampere");
+        osoiteService.luoJaTallennaOsoite("90100", "Oulu");
+        osoiteService.luoJaTallennaOsoite("40100", "Jyväskylä");
+        osoiteService.luoJaTallennaOsoite("80100", "Joensuu");
     }
 }

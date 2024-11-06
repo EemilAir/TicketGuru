@@ -5,6 +5,7 @@ import bugivelhot.ticketguru.repository.OsoiteRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.StackWalker.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,10 @@ public class OsoiteService {
     }
 
     public Osoite luoJaTallennaOsoite(String postinumero, String kaupunki) {
+        Optional<Osoite> optionalOsoite = haeOsoitePostinumerolla(postinumero);
+        if (optionalOsoite.isPresent()) {
+            return optionalOsoite.get();
+        }
         Osoite osoite = new Osoite(postinumero, kaupunki);
         return osoiteRepository.save(osoite);
     }
@@ -44,7 +49,7 @@ public class OsoiteService {
      * }
      */
 
-    public void luoOsoitteet() {
+    /* public void luoOsoitteet() {
         // tarkistetaan onko osoitteet jo luotu
         if (osoiteRepository.count() > 0) {
             System.out.println("Osoitteet on jo luotu");
@@ -57,16 +62,16 @@ public class OsoiteService {
             InputStream inputStream = resource.getInputStream();
             List<Osoite> osoitteet = postinumeroLukija.luePostitiedot(inputStream);
             tallennaOsoitteet(osoitteet);
-            System.out.println("\n \n \n"); 
+            System.out.println("\n \n \n");
             System.out.println("Osoitteet luotu ja tallennettu");
-            System.out.println("\n \n \n"); 
+            System.out.println("\n \n \n");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Osoitteiden luonti ja tallennus epäonnistui");
         }
-    }
+    } */
 
-    public void tallennaOsoitteet(List<Osoite> osoitteet){
+    public void tallennaOsoitteet(List<Osoite> osoitteet) {
         for (Osoite osoite : osoitteet) {
             try {
                 osoiteRepository.save(osoite);
