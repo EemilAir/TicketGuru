@@ -1,58 +1,218 @@
-# Projektin nimi
+# Lipunmyyntijärjestelmä
 
-Tiimi: Etunimi Sukunimi, Etunimi Sukunimi
+Tiimi: Jere Holopainen, Miikka Vartiainen, Jami Norja, Eemil Airaksinen, Anton Asikainen
 
 ## Johdanto
 
-Johdantoon kirjoitetaan lyhyt, ytimekäs kuvaus siitä, mikä on projektin aihe,
-kuka on asiakas (käyttäjä), mitä hän haluaa ja saa järjestelmältä, mitä
-tekniikoita käytetään ja mitä konkreettisesti on valmiina, kun projekti päättyy.
+**TicketGuru** on lipunmyyntijärjestelmä, joka on suunniteltu lipputoimiston käyttöön. Järjestelmä mahdollistaa lippujen myymisen, hallinnan ja tulostamisen myyntipisteessä, sekä lipputarkistuksen tapahtumapaikalla. Tulevaisuudessa järjestelmään voidaan lisätä verkkokauppa, joka mahdollistaa lipun ostamisen verkossa.
 
--   Järjestelmän tarkoitus ja tiivis kuvaus siitä, mistä on kyse ja kenelle järjestelmä on tarkoitettu.
--   Toteutus- ja toimintaympäristö lyhyesti:  
-    -   Palvelinpuolen ratkaisut ja teknologiat (esim. palvelinteknologia, mikä tietokantajärjestelmä on käytössä)
-    -   Käyttöliittymäratkaisut ja teknologiat (esim. päätelaitteet: puhelin,
-    täppäri, desktop)
+### Toteutus- ja toimintaympäristö
+- **Palvelinpuolen ratkaisut ja teknologiat:**
+    - Palvelinpuoli toteutetaan **Spring Boot** -kehystä käyttäen
+    - **Tietokannan suunnittelu UML-Kaaviota käyttäen**
+    - **REST API** *
+    - **Rajapinta ja olioiden väliset yhteydet JPA:ta käyttäen**
+    - **Vastauskoodit ja virhetilanteiden käsittely** *
+    - **Autentikointi ja auktorisointi** *
+    - **Tietokanta MySQL:n avulla ja julkaisu** *
+
+- **Käyttöliittymäratkaisut ja teknologiat:**
+    - Järjestelmä suunnitellaan **desktop-laitteille**, mutta se on responsiivinen, jolloin se toimii myös tabletilla ja mobiililaitteilla. 
+    - **Web-ohjelmointi ReactJS-kirjastoa apuna käyttäen**
+    
+`NOTE: [tähdellä (*) merkittyjen kohtien tarkemmat tiedot lisätään kurssin edetessä.]`
+
+### Projektin lopputulos
+
+Lopputuloksena on käyttövalmis TicketGuru-järjestelmä lipputoimistolle, joka sisältää tapahtumien hallinnan, lippujen myynnin ja tulostamisen sekä lipputarkastuksen. Järjestelmä on myös valmis laajentumaan verkkokaupaksi.
+
+---
 
 ## Järjestelmän määrittely
 
-Määrittelyssä järjestelmää tarkastellaan käyttäjän näkökulmasta. Järjestelmän
-toiminnot hahmotellaan käyttötapausten tai käyttäjätarinoiden kautta, ja kuvataan järjestelmän
-käyttäjäryhmät.
+TicketGuru-järjestelmässä on useita selkeitä keskeisiä käyttäjärooleja. 
+Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytään syventymään roolien tarpeisiin ja järjestelmän tavoitteisiin.
 
--   Lyhyt kuvaus käyttäjäryhmistä (rooleista)
--   Käyttäjäroolit ja roolien tarvitsemat toiminnot, esim. käyttötapauskaaviona
-    (use case diagram) tai käyttäjätarinoina.
--   Lyhyt kuvaus käyttötapauksista tai käyttäjätarinat
+1. **Lipunmyyjä**
+- Myy ja tulostaa liput. Tarkastaa liput ovella ja merkitsee ne käytetyiksi järjestelmään lipussa olevalla koodilla.
 
-Kuvauksissa kannattaa harkita, mikä on toteuttajalle ja asiakkaalle oleellista
-tietoa ja keskittyä siihen.
+    >*Käyttäjätarinat:*
+    > - Lipunmyyjänä haluan myydä lippuja asiakkaille ja tulostaa ne järjestelmästä, jotta asiakas saa lipun heti mukaansa paikan päälle.
+    >>
+    > - Lipunmyyjänä haluan merkitä tarkastetut liput käytetyiksi järjestelmässä, jotta samaa lippua ei voida käyttää uudelleen ja estää väärinkäytökset.
+    >> 
+    > - Lipunmyyjänä haluan pystyä muuttamaan lipun tietoja, jotta voin vastata sujuvasti asiakkaan muutospyyntöihin.
+    >>
+    > - Lipunmyyjänä haluan voida peruuttaa asiakkaan lipun ja tekemään hyvityksen, jotta asiakkaan asiakaskokemus säilyy korkeana.
+
+2. **Asiakas**
+- Ostaa lippuja paikan päältä, jatkossa myös verkkokaupasta. Paikan päällä saa itselleen tulostetun lipun, verkkokaupasta tilattuna sähköpostitse.
+
+    >*Käyttäjätarinat:*
+    > - Asiakkaana haluan ostaa lipun paikan päältä lipunmyyntipisteeltä, jotta voin osallistua haluamaani tapahtumaan heti.
+    >>
+    > - Asiakkaana haluan saada verkkokaupasta ostetun lipun sähköpostiini, jotta voin tallentaa sen sähköisesti ja esittää sen tapahtuman ovella puhelimesta.
+     >>
+    > - Asiakkaana haluan pystyä perumaan lippuni ja saada hyvityksen, jotta voin muuttaa suunnitelmiani tarvittaessa.
+
+3. **Järjestelmän ylläpitäjä**
+- Vastaa järjestelmän teknisestä ylläpidosta. Toimii myös teknisenä tukena.
+
+    >*Käyttäjätarinat:*
+    > - Järjestelmän ylläpitäjänä haluan ylläpitää järjestelmän teknisiä toimintoja, jotta TicketGuru toimii luotettavasti ja tehokkaasti kaikille käyttäjille.
+    >>
+    > - Järjestelmän ylläpitäjänä haluan tarjota teknistä tukea järjestelmän käyttäjille, jotta voin ratkaista mahdolliset ongelmat nopeasti ja minimoida käyttökatkokset.
+
+
+4. **Tapahtumien ylläpitäjä**
+- Vastaa tapahtumien lisäämisestä, poistamisesta ja muokkaamisesta järjestelmässä. Voi tulostaa myös erilaisia raportteja lippuihin ja niiden myyntiin liittyen.
+
+    >*Käyttäjätarinat:*
+    > - Tapahtumien ylläpitäjänä haluan lisätä uusia tapahtumia järjestelmään, jotta lipunmyynti voi alkaa ajoissa ja asiakkaat voivat ostaa lippuja.
+    >>
+    > - Tapahtumien ylläpitäjänä haluan muokata olemassa olevien tapahtumien tietoja, jotta voin päivittää esimerkiksi tapahtuma-ajan tai -paikan muutokset.
+    >>
+    > - Tapahtumien ylläpitäjänä haluan poistaa peruutetut tapahtumat järjestelmästä, jotta virheelliset tapahtumat eivät ole näkyvissä asiakkaille ja vältetään sekaannukset.
+    >>
+    > - Tapahtumien ylläpitäjänä haluan tuottaa järjestelmään tallennetun datan perusteella raportteja lipunmyynnistä, jotta voin parantaa myyntiä tulevaisuudessa.
+
 
 ## Käyttöliittymä
+- Käyttöliittymäkaavio
 
-Esitetään käyttöliittymän tärkeimmät (vain ne!) näkymät sekä niiden väliset siirtymät käyttöliittymäkaaviona. 
+![Käyttöliittymäkaavio](./Images/Kayttoliittymakaavio.PNG)
 
-Jos näkymän tarkoitus ei ole itsestään selvä, se pitää kuvata lyhyesti.
+- Tapahtumasivulta siirtyminen tapahtumien raportteihin ja myyntitapahtumiin
+
+![Käyttöliittymäkaavio](./Images/Kayttoliittymakaavio2.PNG)
 
 ## Tietokanta
+- TicketGuru-tietokannan UML-luokkakaavio
 
-Järjestelmään säilöttävä ja siinä käsiteltävät tiedot ja niiden väliset suhteet
-kuvataan käsitekaaviolla. Käsitemalliin sisältyy myös taulujen välisten viiteyhteyksien ja avainten
-määritykset. Tietokanta kuvataan käyttäen jotain kuvausmenetelmää, joko ER-kaaviota ja UML-luokkakaaviota.
+![UML-luokkakaavio](./Images/UMLclass.png)
 
-Lisäksi kukin järjestelmän tietoelementti ja sen attribuutit kuvataan
-tietohakemistossa. Tietohakemisto tarkoittaa yksinkertaisesti vain jokaisen elementin (taulun) ja niiden
-attribuuttien (kentät/sarakkeet) listausta ja lyhyttä kuvausta esim. tähän tyyliin:
+> Linkki UML-luokkakaavion sivuille:
+> https://lucid.app/lucidchart/cc73c021-a71b-40e2-b45e-cc985ebd1832/edit?viewport_loc=-2463%2C-161%2C2984%2C1477%2CHWEp-vi-RSFO&invitationId=inv_80605f74-82a3-4fa1-99c2-f3d2ad5d97b4
+# Tietohakemisto
 
-> ### _Tilit_
-> _Tilit-taulu sisältää käyttäjätilit. Käyttäjällä voi olla monta tiliä. Tili kuuluu aina vain yhdelle käyttäjälle._
->
-> Kenttä | Tyyppi | Kuvaus
-> ------ | ------ | ------
-> id | int PK | Tilin id
-> nimimerkki | varchar(30) |  Tilin nimimerkki
-> avatar | int FK | Tilin avatar, viittaus [avatar](#Avatar)-tauluun
-> kayttaja | int FK | Viittaus käyttäjään [käyttäjä](#Kayttaja)-taulussa
+<details>
+<summary>Tietohakemiston taulut</summary>
+
+> ### _Kayttajat_
+> _Kayttajat-taulu sisältää järjestelmän käyttäjätiedot. Jokaisella käyttäjällä on uniikki tunniste, ja taulu tallentaa käyttäjänimen, yhteystiedot ja osoitteen._
+> | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
+> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
+> | kayttaja_id       | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Käyttäjän tunniste                                                                              |
+> | kayttajanimi           | VARCHAR(50) NOT NULL                                               | Käyttäjän käyttäjätunnus                                                                               |
+> | sposti          | VARCHAR(100) NOT NULL                                               | Käyttäjän sähköposti                                                                              |
+> | salasanaHash      | VARCHAR(255) NOT NULL                                                               | Käyttäjän salasana                                                                           |
+> | kayttajarooli         | VARCHAR(50) NOT NULL                                               | Käyttäjän rooli                                                                         |
+> | myyntipiste_id            | INT NOT NULL FOREIGN KEY REFERENCES lipunmyyntipiste(myyntipiste_id)                                              | Lipunmyyntipiste, Viittaus lipunmyyntipisteeseen [lipunmyyntipiste](#lipunmyyntipisteet)-taulussa                                                                           |
+
+---
+
+> ### _Lipunmyyntipisteet_
+> _Lipunmyyntipisteet-taulu sisältää myyntipisteiden tiedot, kuten tunnisteen ja osoitteen. Jokaisella myyntipisteellä on yhteys osoitetietoihin, mikä mahdollistaa lipunmyynnin hallinnan eri sijainneissa._
+> | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
+> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
+> | myyntipiste_id    | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Myyntipisteen tunniste                                                                          |
+> | myyntipiste  | VARCHAR(100) NOT NULL                                                | Lipun myyntipiste                                                                              |
+> | katuosoite        | VARCHAR(100) NOT NULL                                              | Myyntipisteen katuosoite                                                                        |
+> | osoite_id         | INT NOT NULL FOREIGN KEY REFERENCES osoitteet(osoite_id)           | postinumero ja postitoimipaikka, viittaus osoitetietoihin [Osoitteet](#osoitteet)-taulussa      |
+
+---
+
+> ### _Tapahtumat_
+> _Tapahtumat-taulu sisältää tietoja eri tapahtumista, kuten tunnisteen, nimen ja kuvauksen. Taulu tallentaa myös tapahtuman päivämäärän ja mahdollisen katuosoitteen, sekä viittaa osoitetietoihin, mikä mahdollistaa tapahtumien hallinnan ja sijainnin määrittämisen._
+> | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
+> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
+> | tapahtuma_id      | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Tapahtuman tunniste                                                                             |
+> | nimi              | VARCHAR(100) NOT NULL                                              | Tapahtuman nimi                                                                                 |
+> | kuvaus            | TEXT                                              | Tapahtuman kuvaus                                                                               |
+> | kategoria            | VARCHAR(255) NOT NULL                                              | Tapahtuman kategoria                                                                               |
+> | alkupvm        | DATE NOT NULL                                                              | Tapahtuman aloituspäivämäärä                                                                           |
+> | loppupvm        | DATE NOT NULL                                                       | Tapahtuman lopetuspäivämäärä                                                                           |
+> | katuosoite        | VARCHAR(100)                                                       | Tapahtuman katuosoite                                                                           |
+> | lippuja_jaljella        | INT                                                       | Tapahtumaan jäljellä olevat liput                                                                           |
+> | osoite_id         | INT FOREIGN KEY REFERENCES osoitteet(osoite_id)                    | postinumero ja postitoimipaikka, viittaus osoitetietoihin [Osoitteet](#osoitteet)-taulussa      |
+
+---
+
+> ### _Osoitteet_
+> _Osoitteet-taulu sisältää osoitetiedot, kuten tunnisteen, postinumeron ja postitoimipaikan. Taulu mahdollistaa eri sijaintien hallinnan ja on yhteydessä muihin tauluihin, joissa tarvitaan osoitetietoja._
+> | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
+> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
+> | osoite_id         | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Osoitteen tunniste                                                                              |
+> | postino           | VARCHAR(5) NOT NULL                                                | Postinumero                                                                                     |
+> | postitmp          | VARCHAR(100) NOT NULL                                              | Postitoimipaikka                                                                                |
+
+---
+
+> ### _Liput_
+> _Liput-taulu sisältää tietoja lipuista, kuten tunnisteen ja myyntiajan. Taulu tallentaa myös lipun koodin. Liput linkitetään myyntitapahtumiin ja tapahtumiin, mikä mahdollistaa lipun hallinnan ja myynnin seurannan eri tapahtumissa._
+> | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
+> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
+> | lippu_id          | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Lipun tunniste                                                                                  |
+> | myyntiaika        | TIMESTAMP NOT NULL                                                 | Lipun myyntiaika                                                                                |
+> | koodi             | VARCHAR(255) NOT NULL                                              | Lipun koodi                                                                                     |
+> | luontiaika        | TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP                       | Lipun luontiaika                                                                                |
+> | lipun_tila             | VARCHAR(10)                                              | Lipun tila                                                                                     |
+> | tapahtuma_id      | INT NOT NULL FOREIGN KEY REFERENCES tapahtumat(tapahtuma_id)       | Tapahtumatiedot, viittaus tapahtumatietoihin [Tapahtumat](#tapahtumat)-taulussa                 |
+> | myyntitapahtuma_id      | INT NOT NULL FOREIGN KEY REFERENCES myyntitapahtumat(myyntitapahtuma_id)       | Myyntitapahtumat, viittaus myyntitapahtumiin [Myyntitapahtumat](#myyntitapahtumat)-taulussa                 |
+
+---
+
+> ### _Maksutavat_
+> _Maksutavat-taulu sisältää maksutapojen tiedot, kuten tunnisteen ja maksutavan nimen. Taulu mahdollistaa eri maksutapojen hallinnan ja käyttömahdollisuuksien määrittämisen järjestelmässä._
+> | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
+> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
+> | maksutapa_id      | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Maksutavan tunniste                                                                             |
+> | maksutapa    | VARCHAR(50) NOT NULL                                             | Lipun maksutapa                                                                                 |
+
+---
+
+> ### _Myyntikanavat_
+> _Myyntikanavat-taulu sisältää myyntikanavien tiedot, kuten tunnisteen ja myyntikanavan nimen. Taulu mahdollistaa eri myyntikanavien hallinnan ja määrittämisen järjestelmässä, mikä tukee lipunmyynnin monipuolisuutta._
+> | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
+> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
+> | myyntikanava_id   | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Myyntikanavan tunniste                                                                          |
+> | myyntikanava | VARCHAR(50) NOT NULL                                             | Lipun myyntikanava                                                                              |
+
+---
+
+> ### _Lipputyypit_
+> _Lipputyypit-taulu sisältää eri lipputyyppien tiedot, kuten tunnisteen, nimen ja kuvauksen. Taulu mahdollistaa lipputyyppien hallinnan ja erottelun, mikä auttaa Määrittämään eri lipputyyppejä._
+> | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
+> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
+> | lipputyyppi_id    | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Lipputyypin tunniste                                                                            |
+> | lipputyyppi       | VARCHAR(50) NOT NULL                                               | Lipputyypin nimi                                                                                |
+> | kuvaus            | VARCHAR(255)                                                       | Lipputyypin kuvaus                                                                              |
+
+---
+
+> ### _Tapahtuman_lipputyypit_
+> _Tapahtuman_lipputyypit-taulu sisältää tiedon kyseisen tapahtuman eri lipuista ja niiden hinnoista. Taulu mahdollistaa lippujen hinnoittelun tapahtumaa kohden._
+> | Kenttä            | Tyyppi                                                             | Kuvaus
+> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
+> | lipputyyppi_id, tapahtuma_id           | INT PRIMARY KEY NOT NULL                            | Tapahtuman lipputyypin tunniste                                                                                  |
+> | lipputyyppi_id      | INT NOT NULL FOREIGN KEY REFERENCES lipputyypit(lipputyyppi_id)       | Lipputyyppi, viittaus lipputyyppiin [Lipputyypit](#lipputyypit)-taulussa                              |
+> | tapahtuma_id      | INT NOT NULL FOREIGN KEY REFERENCES tapahtumat(tapahtuma_id)       | Tapahtuma, viittaus tapahtumaan [Tapahtumat](#tapahtumat)-taulussa                              |
+> | hinta       | DECIMAL(10, 2) NOT NULL                                               | Tapahtuman lipputyypin hinta                                                                                |
+
+---
+
+> ### _Myyntitapahtumat_
+> _Myyntitapahtumat-taulu sisältää tiedon ostettujen lippujen maksupäivämääräärästä, kokonaissummasta, sekä muusta tarvittavasta lippuihin kohdistuvasta tiedosta. Taulu mahdollistaa lippujen tulostamisen asiakkaille, sekä lippumyynnin seuraamisen._
+> | Kenttä            | Tyyppi                                                             | Kuvaus
+> |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
+> | myyntitapahtuma_id           | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Myyntitapahtuman tunniste                                                                                  |
+> | maksupvm         | DATETIME NOT NULL                                               | Lippujen ostopäivämäärä
+> | summa           | DECIMAL(10,2) NOT NULL                           | Lippujen yhteissumma
+> | maksutapa_id      | INT NOT NULL FOREIGN KEY REFERENCES maksutavat(maksutapa_id)       | Maksutapa, viittaus maksutapaan [Maksutavat](#maksutavat)-taulussa                              |
+> | myyntikanava_id   | INT NOT NULL FOREIGN KEY REFERENCES myyntikanavat(myyntikanava_id) | Myyntikanava, viittaus myyntikanavaan [Myyntikanavat](#myyntikanavat)-taulussa                  |
+> | myyja_id       | INT NOT NULL FOREIGN KEY REFERENCES kayttajat(kayttaja_id)         | Myyjän käyttäjätiedot, viittaus käyttäjään [Käyttäjät](#kayttajat)-taulussa                     |
+
+</details>
 
 ## Tekninen kuvaus
 
