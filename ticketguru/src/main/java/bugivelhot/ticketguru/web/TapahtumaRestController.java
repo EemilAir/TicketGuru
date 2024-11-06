@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -39,6 +40,7 @@ public class TapahtumaRestController {
     private TapahtumaService tapahtumaService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public List<TapahtumaResponseDTO> haeKaikkiTapahtumat(
         @RequestParam(required = false) String nimi,
         @RequestParam(required = false) String kategoria) {
@@ -47,6 +49,7 @@ public class TapahtumaRestController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<TapahtumaResponseDTO> haetapahtuma(@PathVariable("id") Long id) {
         Tapahtuma tapahtuma = tapahtumaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tapahtumaa ei löytynyt ID:llä " + id)); // 404 Not Found
@@ -54,6 +57,7 @@ public class TapahtumaRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> lisaaTapahtuma(@Valid @RequestBody TapahtumaDTO dto) {
         TapahtumaResponseDTO responseDTO = tapahtumaService.lisaaTapahtuma(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
@@ -61,6 +65,7 @@ public class TapahtumaRestController {
 
     //TODO:virheiden hallinta!
     @PatchMapping(value = "{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TapahtumaResponseDTO> muokkaaTapahtuma(@PathVariable("id") Long id, @RequestBody TapahtumaDTO muokattuTapahtuma) {
         Optional<TapahtumaResponseDTO> updatedTapahtuma = tapahtumaService.muokkaaTapahtuma(id, muokattuTapahtuma);
         return updatedTapahtuma.map(ResponseEntity::ok)
@@ -68,6 +73,7 @@ public class TapahtumaRestController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> poistaTapahtuma(@PathVariable("id") Long id) {
         if (!tapahtumaRepository.existsById(id)) {
             throw new ResourceNotFoundException("Tapahtumaa ei löydy ID:llä " + id); // 404 Not Found
