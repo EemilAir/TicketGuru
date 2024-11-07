@@ -24,6 +24,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -59,6 +60,7 @@ public class MyyntitapahtumaRestController {
     // 400 Bad Request (jos jokin kenttä puuttuu tai on väärässä muodossa)
     // 401/403 (ei oikeuksia)
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<Object> luoMyyntitapahtuma(@Valid @RequestBody MyyntitapahtumaJaLiputDTO dto) {
         // luodaan responseDTO, joka sisältää vain oleelliset maksutapahtuman tiedot
         MyyntitapahtumaResponseDTO responseDTO = myyntitapahtumaService.luoMyyntitapahtumaJaLiput(dto);
@@ -71,6 +73,7 @@ public class MyyntitapahtumaRestController {
     // http://localhost:8080/api/myyntitapahtumat/1/liput
     // Statuskoodit: 200 OK, 400 Bad Request (ID väärässä muodossa), 404 Not Found
     @GetMapping("/{myyntitapahtumaId}/liput")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public List<Lippu> getLiputByMyyntitapahtumaId(@PathVariable Long myyntitapahtumaId) {
         Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(myyntitapahtumaId)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -82,6 +85,7 @@ public class MyyntitapahtumaRestController {
     // http://localhost:8080/api/myyntitapahtumat/1
     // Statuskoodit: 200 OK, 400 Bad Request (ID väärässä muodossa), 404 Not Found
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<MyyntitapahtumaResponseDTO> haeMyyntitapahtuma(@PathVariable("id") Long id) {
         Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Myyntitapahtumaa ei löytynyt ID:llä " + id)); // 404 Not Found
@@ -98,6 +102,7 @@ public class MyyntitapahtumaRestController {
     // 404 Not Found
     // 400 Bad Request (jos summa, maksutapa tai käyttäjänimi on väärässä muodossa)
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<List<MyyntitapahtumaResponseDTO>> haeKaikkiMyyntitapahtumat(
             @RequestParam(required = false) String summa,
             @RequestParam(required = false) String maksutapa,
@@ -127,6 +132,7 @@ public class MyyntitapahtumaRestController {
     // 401/403 (ei oikeuksia)
     // 404 Not Found (jos tapahtumaa ei löydy)
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN', 'USER')")
     public ResponseEntity<Void> poistaMyyntiTapahtuma(@PathVariable("id") Long id) {
 
         if (!myyntitapahtumaRepository.existsById(id)) {

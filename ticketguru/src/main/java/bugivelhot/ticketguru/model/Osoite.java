@@ -1,10 +1,9 @@
 package bugivelhot.ticketguru.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,11 +21,12 @@ public class Osoite {
 
     // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että osoiteId on pääavain ja se generoidaan automaattisesti
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Määrittää, että osoiteId on pääavain ja se generoidaan automaattisesti
     private Long osoiteId;
 
     @NotBlank(message = "Postinumero ei voi olla tyhjä")
     @Size(min = 5, max = 5, message = "Postinumeron tulee olla 5 merkkiä pitkä")
+    @Column(unique = true) // Määrittää, että postinumero on tietokannassa uniikki
     private String postinumero;
 
     @NotBlank(message = "Postitoimipaikka ei voi olla tyhjä")

@@ -102,6 +102,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
+    // käsittelee virheen, jossa resurssi löytyy jo samalla arvolla
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<Object> handleResourceAlreadyExistsException(ResourceAlreadyExistsException ex, WebRequest request) {
+        ErrorResponse errorResponse = createErrorResponse(ex, request, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
     // Käsittelee kaikki muut poikkeukset (500 Internal Server Error)
     // Jostain syystä tämä nappaa virheet ennen muita metodeja, jonka takia
     // vastaukseen tulee aina 500, eikä esim 400, vaikka olisi IllegalArgumentException

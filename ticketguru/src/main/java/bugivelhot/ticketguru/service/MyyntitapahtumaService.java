@@ -40,23 +40,23 @@ import java.util.List;
 @Validated
 public class MyyntitapahtumaService {
 
-    @Autowired
     private MyyntitapahtumaRepository myyntitapahtumaRepository;
-
-    @Autowired
     private LippuRepository lippuRepository;
-
-    @Autowired
     private TapahtumaRepository tapahtumaRepository;
-
-    @Autowired
     private TapahtumanLipputyyppiRepository tapahtumaLipputyyppiRepository;
-
-    @Autowired
     private KayttajaRepository kayttajaRepository;
-
-    @Autowired
     private MaksutapaRepository maksutapaRepository;
+
+    public MyyntitapahtumaService(MyyntitapahtumaRepository myyntitapahtumaRepository, LippuRepository lippuRepository,
+            TapahtumaRepository tapahtumaRepository, TapahtumanLipputyyppiRepository tapahtumaLipputyyppiRepository,
+            KayttajaRepository kayttajaRepository, MaksutapaRepository maksutapaRepository) {
+        this.myyntitapahtumaRepository = myyntitapahtumaRepository;
+        this.lippuRepository = lippuRepository;
+        this.tapahtumaRepository = tapahtumaRepository;
+        this.tapahtumaLipputyyppiRepository = tapahtumaLipputyyppiRepository;
+        this.kayttajaRepository = kayttajaRepository;
+        this.maksutapaRepository = maksutapaRepository;
+    }
 
     public MyyntitapahtumaResponseDTO mapToResponseDTO(Myyntitapahtuma myyntitapahtuma) {
         MyyntitapahtumaResponseDTO responseDTO = new MyyntitapahtumaResponseDTO();

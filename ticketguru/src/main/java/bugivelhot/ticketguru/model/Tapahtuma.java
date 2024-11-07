@@ -1,6 +1,7 @@
 package bugivelhot.ticketguru.model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,11 +28,12 @@ public class Tapahtuma {
 
     // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että tapahtumaId on pääavain ja se generoidaan automaattisesti
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Määrittää, että tapahtumaId on pääavain ja se generoidaan automaattisesti
     private Long tapahtumaId;
 
     @NotBlank(message = "Tapahtuman nimi ei voi olla tyhjä")
     @Size(min = 3, max = 100, message = "Tapahtuman nimi voi olla korkeintaan 100 merkkiä pitkä ja 3 merkkiä lyhyt")
+    @Column(unique = true) // Määrittää, että nimi on tietokannassa uniikki
     private String nimi;
 
     @Size(max = 500, message = "Tapahtuman kuvaus voi olla korkeintaan 500 merkkiä pitkä ja 3 merkkiä lyhyt")

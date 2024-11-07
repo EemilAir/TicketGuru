@@ -26,7 +26,7 @@ public class Myyntitapahtuma {
 
     // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Määrittää, että myyntitapahtumaId on pääavain ja se generoidaan automaattisesti
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Määrittää, että myyntitapahtumaId on pääavain ja se generoidaan automaattisesti
     private Long myyntitapahtumaId;
 
     @Positive(message = "Summan pitää olla positiivinen luku")
