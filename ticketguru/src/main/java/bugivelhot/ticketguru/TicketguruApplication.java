@@ -65,6 +65,7 @@ public class TicketguruApplication {
             Osoite osoite6 = osoiteService.luoJaTallennaOsoite("90100", "Oulu");
             Osoite osoite7 = osoiteService.luoJaTallennaOsoite("40100", "Jyväskylä");
             Osoite osoite8 = osoiteService.luoJaTallennaOsoite("80100", "Joensuu");
+            Osoite osoite9 = osoiteService.luoJaTallennaOsoite("60100", "Seinäjoki");
 
             // Lipunmyyntipisteet
             Lipunmyyntipiste myyntipiste1 = lipunmyyntipisteService.luoJaTallennaLipunmyyntipiste("Lippupiste 1", "Esimerkkikatu 1", osoite1);
