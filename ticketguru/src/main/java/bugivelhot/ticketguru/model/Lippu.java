@@ -35,11 +35,15 @@ public class Lippu {
     // Luontiaika asetetaan automaattisesti, ei tarvita validointia
     private LocalDateTime luontiaika;
 
-    // Lipun tila voi olla AKTIIVINEN tai KAYTETTY
-    @Min(0)
-    @Max(1)
-    @NotNull(message = "Lipun tila ei voi olla tyhjä")
-    public Integer lipunTila;
+    // Kayttoaika asetetaan automaattisesti, ei tarvita validointia
+    @Column(nullable = true)
+    private LocalDateTime kayttoaika;
+
+    // Katso validointi!
+    // Aktiivinen = 1, Käytetty = 0
+    @Min(value = 0, message = "Lipun tila voi olla vain 0 tai 1")
+    @Max(value = 1, message = "Lipun tila voi olla vain 0 tai 1")
+    private Integer lipunTila;
 
     @ManyToOne
     @JsonBackReference
@@ -57,6 +61,10 @@ public class Lippu {
     @JoinColumn(name = "lipputyyppi_id")
     @NotNull(message = "Lipputyyppi ei voi olla tyhjä")
     private Lipputyyppi lipputyyppi;
+
+    public Lippu(LocalDateTime kayttoaika) {
+        this.kayttoaika = kayttoaika;
+    }
 
     public Lippu() {
     }
@@ -97,6 +105,14 @@ public class Lippu {
 
     public void setLuontiaika(LocalDateTime luontiaika) {
         this.luontiaika = luontiaika;
+    }
+
+    public LocalDateTime getKayttoaika() {
+        return kayttoaika;
+    }
+
+    public void setKayttoaika(LocalDateTime kayttoaika) {
+        this.kayttoaika = kayttoaika;
     }
 
     /* public LocalDateTime getMyyntiaika() {
@@ -141,7 +157,7 @@ public class Lippu {
 
     @Override
     public String toString() {
-        return "Lippu [lippuId=" + lippuId + ", koodi=" + koodi + ", luontiaika=" + luontiaika + /* ", myyntiaika="
+        return "Lippu [lippuId=" + lippuId + ", koodi=" + koodi + ", luontiaika=" + luontiaika + ", kayttoaika=" + kayttoaika + /* ", myyntiaika="
                 + myyntiaika + */  ", lipunTila=" + lipunTila + ", tapahtuma=" + tapahtuma + ", myyntitapahtuma="
                 + myyntitapahtuma + ", lipputyyppi=" + lipputyyppi + "]";
     }

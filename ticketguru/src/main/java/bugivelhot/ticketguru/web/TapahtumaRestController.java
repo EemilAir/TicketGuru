@@ -1,10 +1,7 @@
 package bugivelhot.ticketguru.web;
 
-import bugivelhot.ticketguru.dto.MyyntitapahtumaJaLiputDTO;
-import bugivelhot.ticketguru.dto.MyyntitapahtumaResponseDTO;
 import bugivelhot.ticketguru.dto.TapahtumaDTO;
 import bugivelhot.ticketguru.dto.TapahtumaResponseDTO;
-import bugivelhot.ticketguru.model.Myyntitapahtuma;
 import bugivelhot.ticketguru.model.Tapahtuma;
 import bugivelhot.ticketguru.repository.TapahtumaRepository;
 import bugivelhot.ticketguru.service.TapahtumaService;
@@ -82,89 +79,4 @@ public class TapahtumaRestController {
         return ResponseEntity.noContent().build(); // 204 No Content
         }
     }
-
-    // Hakee kaikki tai suodatetut tapahtumat nimen ja kategorian perusteella
-    // Esim: http://localhost:8080/api/tapahtumat/?nimi=Tuska&kategoria=Festivaali
-    // /TAI/ http://localhost:8080/api/tapahtumat/
-    // /TAI/ http://localhost:8080/api/tapahtumat/?nimi=Tuska
-    // Statuskoodit: 200 OK, 404 Not Found, 400 Bad Request (jos ei ole nimeä tai kategoriaa)
-    /*
-    @GetMapping
-    public List<Tapahtuma> haeKaikkiTapahtumat(
-        @RequestParam(required = false) String nimi,
-        @RequestParam(required = false) String kategoria) {
-        List<Tapahtuma> tapahtumat = tapahtumaService.haeKaikkiTapahtumat(nimi, kategoria);
-        if (tapahtumat.isEmpty()) {
-            throw new ResourceNotFoundException("Tapahtumia ei löytynyt");
-        }
-        return tapahtumat; // palauttaa kaikki tapahtumat
-    }
-
-    // http://localhost:8080/api/tapahtumat/1
-    // Statuskoodit: 200 OK, 400 Bad Request (ID väärässä muodossa), 404 Not Found
-    @GetMapping("{id}")
-    public ResponseEntity<Tapahtuma> haeTapahtuma(@PathVariable("id") Long id) {
-        // Etsitään tapahtuma ID:n perusteella, ja jos ei löydy, heitetään virhe
-        Tapahtuma tapahtuma = tapahtumaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Tapahtumaa ei löytynyt ID:llä " + id)); // 404 Not Found
-        return ResponseEntity.ok(tapahtuma); // 200 OK
-    }
-
-    /*
-     * 
-     * {
-     * "nimi": "Uusi tapahtuma",
-     * "kuvaus": "Tämä on uusi tapahtuma",
-     * "kategoria": "Uusi Kategoria",
-     * "aloituspvm": "{{aloituspvm}}",
-     * "lopetuspvm": "{{lopetuspvm}}",
-     * "katuosoite": "Uusiosoite 5",
-     * "lippujaJaljella": 500,
-     * "osoite": {
-     * "osoiteId": 1,
-     * "postinumero": "00100",
-     * "postitmp": "Helsinki"
-     * },
-     * "liput": [],
-     * "tapahtumanLipputyypit": []
-     * }
-     * 
-     */
-    /*
-    // POST: http://localhost:8080/api/tapahtumat/
-    // Statuskoodit: 201 CREATED, 400 Bad Request (jos jokin kenttä puuttuu tai on väärässä muodossa), 401/403 (ei oikeuksia)
-    // TODO: DTO
-    @PostMapping
-    public ResponseEntity<Object> lisaaTapahtuma(@Valid @RequestBody Tapahtuma tapahtuma) {
-        Tapahtuma uusiTapahtuma = tapahtumaService.lisaaTapahtuma(tapahtuma);
-        // Palautetaan 201 CREATED status ja tallennettu tapahtuma
-        return ResponseEntity.status(HttpStatus.CREATED).body(uusiTapahtuma);
-    }
-
-    // PATCH: http://localhost:8080/api/tapahtumat/id
-    // Statuskoodit: 200 OK (päivitys onnistui), 
-    // 400 Bad Request (jos jokin kenttä on väärässä muodossa), 
-    // 401/403 (ei oikeuksia), 
-    // 404 Not Found (jos tapahtumaa ei löydy)
-    @PatchMapping(value = "{id}")
-    public ResponseEntity<Tapahtuma> muokkaaTapahtuma(@PathVariable("id") Long id, @RequestBody Tapahtuma muokattuTapahtuma) {
-        Optional<Tapahtuma> updatedTapahtuma = tapahtumaService.muokkaaTapahtuma(id, muokattuTapahtuma);
-        return updatedTapahtuma.map(ResponseEntity::ok)
-            .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // DELETE: http://localhost:8080/api/tapahtumat/1
-    // Statuskoodit: 204 No Content (poisto onnistui) 
-    // 401/403 (ei oikeuksia) 
-    // 404 Not Found (jos tapahtumaa ei löydy)
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> poistaTapahtuma(@PathVariable("id") Long id) {
-        if (!tapahtumaRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Tapahtumaa ei löydy ID:llä " + id); // 404 Not Found
-        }
-
-        tapahtumaRepository.deleteById(id);
-        return ResponseEntity.noContent().build(); // 204 No Content
-    }
-    */
 }

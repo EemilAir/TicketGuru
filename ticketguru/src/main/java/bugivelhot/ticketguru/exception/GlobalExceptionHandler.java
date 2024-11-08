@@ -3,6 +3,7 @@ package bugivelhot.ticketguru.exception;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,28 @@ import java.util.HashMap;
 import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
+        
+        String viesti = "Virheellinen JSON-syöte. Tarkista, että arvo on oikeassa muodossa.";
+        
+        // Voit tarkistaa virheellisiä kenttiä tai lisätä lisätietoja virheilmoitukseen
+        if (ex.getMessage().contains("Cannot deserialize value of type")) {
+            viesti = "Virheellinen arvo JSON:ssa: ei kelvollinen tietotyyppi.";
+        }
+
+        // Luo virheilmoituksesta virheilmoitus-objekti
+        ErrorResponse errorResponse = new ErrorResponse(
+            viesti,
+            LocalDateTime.now(),
+            HttpStatus.BAD_REQUEST.value(),
+            HttpStatus.BAD_REQUEST.getReasonPhrase(),
+            request.getDescription(false)
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
     private ErrorResponse createErrorResponse(Exception ex, WebRequest request, HttpStatus status) {
         return new ErrorResponse(
