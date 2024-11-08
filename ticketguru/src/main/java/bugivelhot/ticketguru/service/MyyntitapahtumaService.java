@@ -72,7 +72,7 @@ public class MyyntitapahtumaService {
             lippuResponseDTO.setKoodi(lippu.getKoodi());
             lippuResponseDTO.setTapahtumaId(lippu.getTapahtuma().getTapahtumaId());
             lippuResponseDTO.setLipputyyppi(lippu.getLipputyyppi().getLipputyyppiNimi());
-            lippuResponseDTO.setTila(lippu.getLipunTila());
+            lippuResponseDTO.setLipunTila(lippu.getLipunTila());
             return lippuResponseDTO;
         }).collect(Collectors.toList());
 

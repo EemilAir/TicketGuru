@@ -1,6 +1,5 @@
 package bugivelhot.ticketguru.dto;
 
-import bugivelhot.ticketguru.model.Lippu.Tila;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,7 +17,7 @@ public class LippuResponseDTO {
 
     // Tila on enum, jolle asetetaan aina joko AKTIIVINEN tai KAYTETTY, validointi ei välttämättä tarpeellinen
     @NotNull(message = "Lipun tila ei voi olla tyhjä")
-    private Tila tila; // Lipun tila (esim. AKTIIVINEN, KÄYTETTY)
+    Integer lipunTila;
 
     // getterit ja setterit
     public String getKoodi() {
@@ -39,11 +38,10 @@ public class LippuResponseDTO {
     public void setLipputyyppi(String lipputyyppi) {
         this.lipputyyppi = lipputyyppi;
     }
-    public Tila getTila() {
-        return tila;
+    public Integer getLipunTila() {
+        return lipunTila;
     }
-    public void setTila(Tila tila) {
-        this.tila = tila;
+    public void setLipunTila(Integer lipunTila) {
+        this.lipunTila = lipunTila;
     }
-
 }
