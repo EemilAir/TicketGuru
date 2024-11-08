@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import bugivelhot.ticketguru.dto.LippuPatchDTO;
 import bugivelhot.ticketguru.dto.LippuResponseDTO;
+import bugivelhot.ticketguru.dto.LippuTapahtumaResponseDTO;
 import bugivelhot.ticketguru.model.Lippu;
 import bugivelhot.ticketguru.repository.LippuRepository;
+import bugivelhot.ticketguru.service.LippuService;
 import bugivelhot.ticketguru.service.MyyntitapahtumaService;
 
 import org.springframework.http.ResponseEntity;
@@ -26,17 +28,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class LippuRestController {
 
     @Autowired
-    private LippuRepository lippuRepository;
+    private MyyntitapahtumaService myyntitapahtumaService;
 
     @Autowired
-    private MyyntitapahtumaService myyntitapahtumaService;
+    private LippuService lippuService;
 
     @CrossOrigin
     @GetMapping
-    public ResponseEntity<Lippu> haeLippuKoodilla(@RequestParam("koodi") String koodi) {
-        Lippu lippu = lippuRepository.findByKoodi(koodi)
-                .orElseThrow(() -> new ResourceNotFoundException("Lippua ei löytynyt koodilla: " + koodi));
-        return ResponseEntity.ok(lippu);
+    public ResponseEntity<LippuTapahtumaResponseDTO> haeLippuKoodilla(@RequestParam("koodi") String koodi) {
+        LippuTapahtumaResponseDTO responseDTO = lippuService.haeLippuKoodilla(koodi);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @CrossOrigin
