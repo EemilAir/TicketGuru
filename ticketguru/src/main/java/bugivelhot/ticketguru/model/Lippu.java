@@ -2,13 +2,13 @@ package bugivelhot.ticketguru.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.GeneratedValue;
@@ -35,15 +35,15 @@ public class Lippu {
     // Luontiaika asetetaan automaattisesti, ei tarvita validointia
     private LocalDateTime luontiaika;
 
-    // Lipun tila voi olla AKTIIVINEN tai KAYTETTY
-    public enum Tila {
-        AKTIIVINEN,
-        KAYTETTY
-    }
+    // Kayttoaika asetetaan automaattisesti, ei tarvita validointia
+    @Column(nullable = true)
+    private LocalDateTime kayttoaika;
 
-    // Ei tarvita validointia, koska enum on määritelty, tila on pakollinen ja arvo asetetaan automaattisesti
-    @Enumerated(EnumType.STRING) // Tallennetaan tila tietokantaan merkkijonona (esim. 'AKTIIVINEN' tai 'KAYTETTY')
-    private Tila lipunTila;
+    // Katso validointi!
+    // Aktiivinen = 1, Käytetty = 0
+    @Min(value = 0, message = "Lipun tila voi olla vain 0 tai 1")
+    @Max(value = 1, message = "Lipun tila voi olla vain 0 tai 1")
+    private Integer lipunTila;
 
     @ManyToOne
     @JsonBackReference
@@ -62,6 +62,10 @@ public class Lippu {
     @NotNull(message = "Lipputyyppi ei voi olla tyhjä")
     private Lipputyyppi lipputyyppi;
 
+    public Lippu(LocalDateTime kayttoaika) {
+        this.kayttoaika = kayttoaika;
+    }
+
     public Lippu() {
     }
 
@@ -75,7 +79,7 @@ public class Lippu {
         this.luontiaika = LocalDateTime.now();
 
         // tilaksi asetetaan AKTIIVINEN
-        this.lipunTila = Tila.AKTIIVINEN;
+        this.lipunTila = 1;
     }
 
     // getterit ja setterit
@@ -103,6 +107,14 @@ public class Lippu {
         this.luontiaika = luontiaika;
     }
 
+    public LocalDateTime getKayttoaika() {
+        return kayttoaika;
+    }
+
+    public void setKayttoaika(LocalDateTime kayttoaika) {
+        this.kayttoaika = kayttoaika;
+    }
+
     /* public LocalDateTime getMyyntiaika() {
         return myyntiaika;
     }
@@ -111,11 +123,11 @@ public class Lippu {
         this.myyntiaika = myyntiaika;
     } */
 
-    public Tila getLipunTila() {
+    public Integer getLipunTila() {
         return lipunTila;
     }
 
-    public void setLipunTila(Tila lipunTila) {
+    public void setLipunTila(Integer lipunTila) {
         this.lipunTila = lipunTila;
     }
 
@@ -145,7 +157,7 @@ public class Lippu {
 
     @Override
     public String toString() {
-        return "Lippu [lippuId=" + lippuId + ", koodi=" + koodi + ", luontiaika=" + luontiaika + /* ", myyntiaika="
+        return "Lippu [lippuId=" + lippuId + ", koodi=" + koodi + ", luontiaika=" + luontiaika + ", kayttoaika=" + kayttoaika + /* ", myyntiaika="
                 + myyntiaika + */  ", lipunTila=" + lipunTila + ", tapahtuma=" + tapahtuma + ", myyntitapahtuma="
                 + myyntitapahtuma + ", lipputyyppi=" + lipputyyppi + "]";
     }

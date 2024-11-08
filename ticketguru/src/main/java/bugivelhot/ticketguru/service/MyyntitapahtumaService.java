@@ -2,6 +2,7 @@ package bugivelhot.ticketguru.service;
 
 // DTOt
 import bugivelhot.ticketguru.dto.LippuDTO;
+import bugivelhot.ticketguru.dto.LippuPatchDTO;
 import bugivelhot.ticketguru.dto.LippuResponseDTO;
 import bugivelhot.ticketguru.dto.MyyntitapahtumaJaLiputDTO;
 import bugivelhot.ticketguru.dto.MyyntitapahtumaResponseDTO;
@@ -23,7 +24,6 @@ import bugivelhot.ticketguru.repository.TapahtumaRepository;
 import bugivelhot.ticketguru.repository.TapahtumanLipputyyppiRepository;
 
 // Spring
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -33,6 +33,7 @@ import jakarta.validation.Valid;
 // Java util
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +74,7 @@ public class MyyntitapahtumaService {
             lippuResponseDTO.setTapahtumaId(lippu.getTapahtuma().getTapahtumaId());
             lippuResponseDTO.setLipputyyppi(lippu.getLipputyyppi().getLipputyyppiNimi());
             lippuResponseDTO.setTila(lippu.getLipunTila());
+            lippuResponseDTO.setKayttoaika(lippu.getKayttoaika());
             return lippuResponseDTO;
         }).collect(Collectors.toList());
 
@@ -194,5 +196,32 @@ public class MyyntitapahtumaService {
         return myyntitapahtumat.stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public LippuResponseDTO paivitaLipunTila(Long lippuId, LippuPatchDTO dto) {
+        Lippu lippu = lippuRepository.findById(lippuId)
+            .orElseThrow(() -> new ResourceNotFoundException("Lippua ei löytynyt ID:llä " + lippuId));
+
+        // Tarkista, että tila on kelvollinen (esimerkiksi 0 tai 1)
+        if (dto.getTila() == null || (dto.getTila() != 0 && dto.getTila() != 1)) {
+            throw new IllegalArgumentException("Virheellinen tila: " + dto.getTila() + " Tilan tulee olla muodossa 0 tai 1");
+        }
+
+        // Päivitä tila ja aseta aikaleima, jos tila muuttuu 1 --> 0
+        if (dto.getTila() != null && dto.getTila() == 0 && lippu.getLipunTila() == 1) {
+            lippu.setKayttoaika(LocalDateTime.now());
+        }
+        lippu.setLipunTila(dto.getTila());
+
+        lippuRepository.save(lippu);
+        // Palauta ResponseDTO
+        LippuResponseDTO response = new LippuResponseDTO();
+        response.setKoodi(lippu.getKoodi());
+        response.setTila(lippu.getLipunTila());
+        response.setKayttoaika(lippu.getKayttoaika());
+        response.setTapahtumaId(lippu.getTapahtuma().getTapahtumaId());
+        response.setLipputyyppi(lippu.getLipputyyppi().getLipputyyppiNimi());
+        return response;
     }
 }

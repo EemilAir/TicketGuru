@@ -9,7 +9,6 @@ import bugivelhot.ticketguru.model.*;
 import bugivelhot.ticketguru.repository.*;
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
