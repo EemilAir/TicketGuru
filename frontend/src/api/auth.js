@@ -18,9 +18,8 @@ async function login(username, password){
         const data = await response.json();
         setToken(data.jwt);
         setUsername(username);
-        console.log('Login successful');
     } else {
-        throw new Error('Login failed, check your username and password');
+        throw new Error("Kirjautuminen epäonnistui, tarkasta käyttäjänimi ja salasana");
     }
 }
 

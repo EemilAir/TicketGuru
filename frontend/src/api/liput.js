@@ -10,12 +10,13 @@ export async function fetchLiput() {
         }
     });
 
+    const json = await response.json();
+
     if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Error ${response.status}: ${errorText}`);
+        throw new Error(json.message);
     }
 
-    return await response.json();
+    return json;
 }
 
 export async function fetchLippuById(id){
@@ -26,12 +27,13 @@ export async function fetchLippuById(id){
         }
     });
 
-    if(!response.ok){
-        const errorText = await response.text();
-        throw new Error(`Error ${response.status}: ${errorText}`);
+    const json = await response.json();
+
+    if (!response.ok) {
+        throw new Error(json.message);
     }
 
-    return await response.json();
+    return json;
 }
 
 export async function editLippu(lippu){
@@ -48,11 +50,11 @@ export async function editLippu(lippu){
     }
 
     const response = await fetch(apiUrl + '/api/liput/' + id, fetchConfig);
+    const json = await response.json();
 
     if(!response.ok){
-        const error = await response.json();
-        throw new Error('Error editing lippu', error);
+        throw new Error(json.message);
     }
 
-    return await response.json();
+    return json;
 }

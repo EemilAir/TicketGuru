@@ -6,15 +6,12 @@ export default function Lippu({ lippu: initialLippu, setError, setSuccess }) {
 
     const [showDetails, setShowDetails] = useState(false);
     const [lippu, setLippu] = useState(initialLippu);
-    const [messageTimeout, setMessageTimeout] = useState(null);
 
     const handleEditLippu = async () => {
         try {
             const editedLippu = await editLippu(lippu);
             setLippu(editedLippu);
-            setSuccess(`Lippua ${editedLippu.lippuId} muokattu onnistuneesti`);
-            clearTimeout(messageTimeout);
-            setMessageTimeout(setTimeout(() => setSuccess(''), 5000));
+            setSuccess(`Lippu ID: ${editedLippu.lippuId} - muokattu onnistuneesti`);
         } catch (error) {
             setError(error.message);
         }

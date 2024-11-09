@@ -22,7 +22,6 @@ export default function Liput({ liput, setLiput, setError, setSuccess }) {
             const lippu = await fetchLippuById(lippuId);
             setLiput([lippu]);
         } catch (error) {
-            console.error("ERROR:",error);
             setError(error.message);
         }
     }

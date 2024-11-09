@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import { login } from '../api/auth';
 
-export default function LoginForm({ setIsLoggedIn, setLoggedInUsername }) {
+export default function LoginForm({ handleLoginSuccess, setError }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
             await login(username, password);
-            setIsLoggedIn(true);
-            setLoggedInUsername(username);
+            handleLoginSuccess(username);
         } catch (error) {
             setError(error.message);
         }
@@ -40,7 +38,6 @@ export default function LoginForm({ setIsLoggedIn, setLoggedInUsername }) {
                 />
             </div>
             <button type="submit">Login</button>
-            {error && <div>{error}</div>}
         </form>
     )
 }
