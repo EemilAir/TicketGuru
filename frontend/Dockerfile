@@ -1,30 +1,41 @@
-# Use an official Node runtime as a parent image
+# Stage 1: Build the React App using Vite
 FROM node:19-alpine AS build
-# Set the working directory to /app
+
+# Set the working directory
 WORKDIR /app
-# Copy the package.json and package-lock.json to the container
+
+# Copy package.json and package-lock.json (if available) to install dependencies
 COPY package*.json ./
-# Install dependencies
+
+# Install dependencies using npm ci
 RUN npm ci
-# Copy the rest of the application code to the container
+
+# Copy the rest of the application files
 COPY . .
-# Build the React app
+
+# Run the build command using Vite
 RUN npm run build
 
+# Debug step to verify the build folder creation
+RUN ls -al /app/dist  # This will list the files in /app/dist after the build
+
+# Stage 2: Serve the React App using Nginx
 FROM nginx:alpine
-# Support running as arbitrary user which belongs to the root group
-# Note that users are not allowed to listen on privileged ports (< 1024)
+
+# Ensure correct permissions for nginx
 RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx && \
     chown nginx.root /var/cache/nginx /var/run /var/log/nginx && \
-    # Make /etc/nginx/html/ available to use
     mkdir -p /etc/nginx/html/ && chmod 777 /etc/nginx/html/ && \
-    # comment user directive as master process is run as user in OpenShift anyhow
     sed -i.bak 's/^user/#user/' /etc/nginx/nginx.conf
-# Copy React build to nginx HTML directory 
-COPY --from=build /app/<build-dir> /usr/share/nginx/html/
-# Copy nginx-configuration file 
+
+# Copy the React build from the build stage to Nginx's html directory
+COPY --from=build /app/dist /usr/share/nginx/html/
+
+# Copy the Nginx configuration file
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-WORKDIR /usr/share/nginx/html/
+# Expose the port Nginx is running on
 EXPOSE 8080
+
+# Set the user to nginx for security
 USER nginx:root
