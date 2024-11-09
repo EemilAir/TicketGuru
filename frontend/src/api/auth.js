@@ -14,12 +14,13 @@ async function login(username, password){
         })
     });
 
+    const json = await response.json();
+
     if(response.ok){
-        const data = await response.json();
-        setToken(data.jwt);
+        setToken(json.jwt);
         setUsername(username);
     } else {
-        throw new Error("Kirjautuminen epäonnistui, tarkasta käyttäjänimi ja salasana");
+        throw new Error(json.message);
     }
 }
 
