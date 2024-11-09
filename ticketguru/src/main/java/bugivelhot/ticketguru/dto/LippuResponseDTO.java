@@ -16,7 +16,7 @@ public class LippuResponseDTO {
     @NotEmpty(message = "Lipputyyppi ei voi olla tyhjä")
     private String lipputyyppi; // Lipputyyppi (esim. "VIP", "Normaali")
 
-    // Tila on enum, jolle asetetaan aina joko AKTIIVINEN tai KAYTETTY, validointi ei välttämättä tarpeellinen
+    // Tila on enum, jolle asetetaan aina joko 1 tai 2, validointi ei välttämättä tarpeellinen
     @NotNull(message = "Lipun tila ei voi olla tyhjä")
     private Integer tila; // Lipun tila (esim. AKTIIVINEN, KÄYTETTY)
 
@@ -52,5 +52,9 @@ public class LippuResponseDTO {
     }
     public void setKayttoaika(LocalDateTime kayttoaika) {
         this.kayttoaika = kayttoaika;
+    }
+    public Object map(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'map'");
     }
 }
