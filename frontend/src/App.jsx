@@ -1,4 +1,4 @@
-import './App.css';
+import './css/App.css';
 import { useState, useEffect } from 'react';
 import LoginForm from './components/LoginForm';
 import Liput from './components/Liput';
@@ -71,24 +71,27 @@ function App() {
   };
 
   return (
-    <>
-      {isLoggedIn ?
-        (
-          <h1>Logged In as {username} <button onClick={handleLogout}>Logout</button></h1>
+    <div className="app-container">
+      <header className="app-header">
+        {isLoggedIn ? (
+          <div className="header-content">
+            <h1>Welcome to Ticketguru, {username}</h1>
+            <button className="logout-button" onClick={handleLogout}>Logout</button>
+          </div>
         ) : (
-          <h1>Login</h1>
+          <h1>TicketGuru Login</h1>
         )}
-      {error && <div className="error" style={{color: "red"}}>{error}</div>}
-      {success && <div className="success" style={{color: "green"}}>{success}</div>}
-      {isLoggedIn ? 
-      (
-        <Liput liput={liput} setLiput={setLiput} setError={setErrorMessage} setSuccess={setSuccessMessage} />
-      ) 
-      : 
-      (
-        <LoginForm handleLoginSuccess={handleLoginSuccess} setError={setErrorMessage} />
-      )}
-    </>
+      </header>
+      <main className="app-main">
+        {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message">{success}</div>}
+        {isLoggedIn ? (
+          <Liput liput={liput} setLiput={setLiput} setError={setErrorMessage} setSuccess={setSuccessMessage} />
+        ) : (
+          <LoginForm handleLoginSuccess={handleLoginSuccess} setError={setErrorMessage} />
+        )}
+      </main>
+    </div>
   );
 }
 

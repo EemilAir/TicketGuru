@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { login } from '../api/auth';
+import '../css/LoginForm.css';
 
 export default function LoginForm({ handleLoginSuccess, setError }) {
     const [username, setUsername] = useState('');
@@ -16,7 +17,7 @@ export default function LoginForm({ handleLoginSuccess, setError }) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="login-form" onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="username">Käyttäjänimi: </label>
                 <input
