@@ -8,9 +8,7 @@ Poistaa yksittäisen myyntitapahtuman
 
 **Metodi** : `DELETE`
 
-**Autentikointi vaaditaan** : EI TOISTAISEKSI
-
-**Oikeudet vaaditaan** : EI TOISTAISEKSI
+**Oikeudet vaaditaan** : ADMIN tai USER
 
 **Data** : `{}`
 
@@ -28,8 +26,18 @@ Poistaa yksittäisen myyntitapahtuman
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältö** : `{}`
+**Sisältö** : {
 
-## Huomautukset
-
-* Oikeudet ja autentikointi lisätään myöhemmin
+```json
+[
+    {
+        "viesti": "Myyntitapahtumaa ei löydy ID:llä 8",
+        "aikaleima": "2024-11-12T13:29:21.2306056",
+        "tilakoodi": 404,
+        "tila": "Not Found",
+        "polku": "uri=/api/myyntitapahtumat/8",
+        "virheet": {}
+    }
+]
+```
+}

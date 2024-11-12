@@ -6,9 +6,7 @@ Nayta haetun tapahtuman tiedot.
 
 **Metodi** : `GET`
 
-**Autentikointi vaaditaan** : EI TOISTAISEKSI
-
-**Oikeudet vaaditaan** : EI TOISTAISEKSI
+**Oikeudet vaaditaan** : ADMIN tai USER
 
 ## Onnistunut vastaus
 
@@ -16,31 +14,44 @@ Nayta haetun tapahtuman tiedot.
 
 **Sisältöesimerkit**
 
-Tapahtuma, jonka id on 3 ja jolle on tallennettu tiedot.
+Tapahtuma, jonka id on 1 ja jolle on tallennettu tiedot.
 
 ```json
 {
-    "tapahtumaId": 3,
-    "nimi": "Tapahtuma 3",
-    "kuvaus": "Kuvaus 3",
-    "kategoria": "Kategoria 3",
-    "aloituspvm": "2024-10-03T19:21:48.312169",
-    "lopetuspvm": "2024-10-04T19:21:48.312169",
-    "katuosoite": "Katuosoite3",
-    "lippujaJaljella": 300,
+    "nimi": "Tuska Festival 2025",
+    "kuvaus": "Tuska on Helsingin Suvilahdessa järjestettävä metallimusiikkiin keskittynyt festivaali.",
+    "kategoria": "Festivaali",
+    "aloituspvm": "2025-06-27T12:00",
+    "lopetuspvm": "2025-06-29T23:00",
+    "katuosoite": "Kaasutehtaankatu 1",
     "osoite": {
-        "osoiteId": 3,
-        "postinumero": "00300",
-        "postitmp": "Vantaa",
-        "lipunmyyntipisteet": []
+        "osoiteId": 1,
+        "postinumero": "00540",
+        "postitmp": "Helsinki"
     },
-    "liput": [],
-    "tapahtumanLipputyypit": []
+    "lippujaJaljella": 994,
+    "lipputyypit": [
+        {
+            "id": {
+                "tapahtumaId": 1,
+                "lipputyyppiId": 1
+            },
+            "nimi": "Normaali",
+            "kuvaus": "Normaali lippu",
+            "hinta": 25.0
+        },
+        {
+            "id": {
+                "tapahtumaId": 1,
+                "lipputyyppiId": 2
+            },
+            "nimi": "VIP",
+            "kuvaus": "VIP lippu",
+            "hinta": 50.0
+        }
+    ]
 }
 ```
-
-
-
 
 ## Epäonnistunut vastaus
 
@@ -48,13 +59,15 @@ Tapahtuma, jonka id on 3 ja jolle on tallennettu tiedot.
 
 **Sisältöesimerkit**
 
-Tapahtuma, jonka id on 5 ja jolle ei ole tallennettu tietoja.
+Tapahtuma, jonka id on 8 ja jolle ei ole tallennettu tietoja.
 
 ```json
-{}
+{
+    "viesti": "Tapahtumaa ei löytynyt ID:llä 8",
+    "aikaleima": "2024-11-12T13:54:05.3566644",
+    "tilakoodi": 404,
+    "tila": "Not Found",
+    "polku": "uri=/api/tapahtumat/8",
+    "virheet": {}
+}
 ```
-
-## Huomautukset
-
-Autentikointi tullaan lisäämään tulevaisuudessa.
-

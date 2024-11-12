@@ -6,9 +6,7 @@ Luo uusi myyntitapahtuma, jossa on liput
 
 **Metodi** : `POST`
 
-**Autentikointi vaaditaan** : EI TOISTAISEKSI
-
-**Oikeudet vaaditaan** : EI TOISTAISEKSI
+**Oikeudet vaaditaan** : ADMIN tai USER
 
 **Reunaehdot**
 
@@ -46,29 +44,32 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 ```json
 {
-    "myyntitapahtumaId": 5,
+    "myyntitapahtumaId": 8,
     "summa": 100.0,
     "maksutapa": "Käteinen",
-    "maksupvm": "2024-10-08T21:23:04.8335254",
+    "maksupvm": "2024-11-12T13:15:58.6666105",
     "kayttajaId": 2,
     "liput": [
         {
-            "koodi": "4bce29f1-82fb-4500-9f1c-879009d78124",
+            "koodi": "cb682c31-a674-4d1a-bb35-3db31ba6b842",
             "tapahtumaId": 1,
             "lipputyyppi": "Normaali",
-            "tila": "AKTIIVINEN"
+            "tila": 1,
+            "kayttoaika": null
         },
         {
-            "koodi": "d7c32be0-c05d-45a2-808e-322ded6dffba",
+            "koodi": "f9dc965d-09e7-4567-8b44-0f81b7e62417",
             "tapahtumaId": 1,
             "lipputyyppi": "Normaali",
-            "tila": "AKTIIVINEN"
+            "tila": 1,
+            "kayttoaika": null
         },
         {
-            "koodi": "0df59b60-2768-4dae-994f-0771e5e4cef4",
+            "koodi": "a685d8ca-6f3d-4029-b4fc-d8d4e6875f74",
             "tapahtumaId": 1,
             "lipputyyppi": "VIP",
-            "tila": "AKTIIVINEN"
+            "tila": 1,
+            "kayttoaika": null
         }
     ]
 }
@@ -100,8 +101,21 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältö** : `Lipputyypin tulee löytyä tapahtumasta`
+**Sisältö** : {
 
+```json
+[
+    {
+        "viesti": "Lipputyyppi ei kuulu tapahtumaan",
+        "aikaleima": "2024-11-12T13:20:38.9804115",
+        "tilakoodi": 400,
+        "tila": "Bad Request",
+        "polku": "uri=/api/myyntitapahtumat/",
+        "virheet": {}
+    }
+]
+```
+}
 
 ### Tai
 
@@ -110,10 +124,38 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 ```json
 {
-    "kayttajaId": 10 // Oletetaan ettei löydy käyttäjää, jonka id on 10
+    "maksutapaId": 1,
+    "maksupvm": "2024-10-01T12:00:00",
+    "kayttajaId": 10,
+    "liput": [
+            {
+            "tapahtumaId": 1,
+            "lipputyyppiId": 2,
+            "maara": 2
+            },
+            {
+            "tapahtumaId": 1,
+            "lipputyyppiId": 2,
+            "maara": 1
+        }
+    ]
 }
 ```
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältö** : `Käyttäjää ei löydy tietokannasta`
+**Sisältö** : {
+
+```json
+[
+    {
+        "viesti": "Käyttäjää ei löydy",
+        "aikaleima": "2024-11-12T13:24:11.7406636",
+        "tilakoodi": 404,
+        "tila": "Not Found",
+        "polku": "uri=/api/myyntitapahtumat/",
+        "virheet": {}
+    }
+]
+```
+}
