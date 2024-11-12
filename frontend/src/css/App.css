@@ -102,5 +102,12 @@ body {
 
 .success-message {
     color: green;
-    margin-bottom: 1rem;
+    margin-top: 10px;
+    font-weight: bold;
 }
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+    font-weight: bold;
+  }

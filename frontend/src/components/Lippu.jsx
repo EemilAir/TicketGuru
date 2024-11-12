@@ -9,7 +9,6 @@ import { generateQRCode } from '../api/qrcode';
 export default function Lippu({ lippu: initialLippu, setError, setSuccess }) {
 
     const [expanded, setExpanded] = useState(false); // Uusi tila lisätietojen näyttämiseksi
-    const [showDetails, setShowDetails] = useState(false);
     const [lippu, setLippu] = useState(initialLippu);
 
     const handleEditLippu = async () => {
@@ -35,7 +34,7 @@ export default function Lippu({ lippu: initialLippu, setError, setSuccess }) {
     }
 
     const apiUrl = import.meta.env.VITE_APP_API_URL;
-    const qrCodeValue = `${apiUrl}/api/liput/checkin?id=${lippu.lippuId}`;
+    const qrCodeValue = `${apiUrl}/api/liput/${lippu.lippuId}`;
     const qrCodeUrl = generateQRCode(qrCodeValue); // Luo QR-koodi Data URL -muodossa
 
     return (
@@ -58,7 +57,6 @@ export default function Lippu({ lippu: initialLippu, setError, setSuccess }) {
                     <img src={qrCodeUrl} alt="QR-koodi" width="128" height="128" />
                 </div>
             )}
-            {/* Näytä lisätiedot, jos expanded-tila on true */}
             {expanded && (
                 <div className="lippu-extra-details">
                     <pre>{JSON.stringify(lippu, null, 2)}</pre>
