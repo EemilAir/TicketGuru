@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { fetchLippuById, fetchLiput } from '../api/liput';
 import Lippu from './Lippu';
+import '../css/Liput.css';
 
 export default function Liput({ liput, setLiput, setError, setSuccess }) {
 
@@ -27,7 +28,7 @@ export default function Liput({ liput, setLiput, setError, setSuccess }) {
     }
 
     return (
-        <div>
+        <div className='liput'>
             <h1>Liput</h1>
             <div>
                 <button onClick={handleFetchLiput}>Hae kaikki liput</button>
@@ -43,10 +44,20 @@ export default function Liput({ liput, setLiput, setError, setSuccess }) {
                 <button type="submit">Hae Lippu</button>
             </form>
 
-            {liput && liput.length > 0 ?
-                liput.map(lippu => <Lippu key={lippu.lippuId} lippu={lippu} setError={setError} setSuccess={setSuccess} />)
-                : <p>Ei lippuja</p>
-            }
+            <div className="lippu-list">
+                {liput && liput.length > 0 ? (
+                liput.map((lippu) => (
+                    <Lippu
+                    key={lippu.lippuId}
+                    lippu={lippu}
+                    setError={setError}
+                    setSuccess={setSuccess}
+                    />
+                ))
+                ) : (
+                <p>Ei lippuja</p>
+                )}
+            </div>
         </div>
     )
 }
