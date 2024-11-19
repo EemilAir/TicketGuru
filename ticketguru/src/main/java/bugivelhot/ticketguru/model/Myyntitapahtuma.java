@@ -105,13 +105,13 @@ public class Myyntitapahtuma {
         this.kayttaja = kayttaja;
     }
 
-    /* public List<Lippu> getLiput() {
+    public List<Lippu> getLiput() {
         return liput;
     }
 
     public void setLiput(List<Lippu> liput) {
         this.liput = liput;
-    } */
+    }
 
     @Override
     public String toString() {
