@@ -1,6 +1,7 @@
 package bugivelhot.ticketguru;
 
 import bugivelhot.ticketguru.model.Myyntitapahtuma;
+import bugivelhot.ticketguru.model.Tapahtuma;
 import bugivelhot.ticketguru.model.Maksutapa;
 import bugivelhot.ticketguru.model.Kayttaja;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,4 +78,17 @@ public class MyyntitapahtumaTest {
         ConstraintViolation<Myyntitapahtuma> violation = violations.iterator().next();
         assertEquals("Summan pitää olla positiivinen luku", violation.getMessage());
     }
+
+    // Testataan, että myyntitapahtuman-olio ei hyväksy null-arvoa maksupvm:lle
+    @Test
+    public void shouldNotAcceptNullMaksupvm() {
+        myyntitapahtuma.setMaksupvm(null);
+    
+        Set<ConstraintViolation<Myyntitapahtuma>> violations = validator.validate(myyntitapahtuma);
+        assertFalse(violations.isEmpty());
+
+        ConstraintViolation<Myyntitapahtuma> violation = violations.iterator().next();
+        assertEquals("Maksupvm ei voi olla tyhjä", violation.getMessage());
+    }
+
 }
