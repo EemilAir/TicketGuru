@@ -14,7 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -53,25 +55,21 @@ public class MyyntitapahtumaRestControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
+    // Testi, joka testaa myyntitapahtuman luomista
+    // Käytetään mock-oliota myyntitapahtumaService.luoMyyntitapahtumaJaLiput(any())
     public void shouldCreateMyyntitapahtuma() throws Exception {
-        when(myyntitapahtumaService.luoMyyntitapahtumaJaLiput(any())).thenReturn(myyntitapahtumaResponseDTO);
+        when(myyntitapahtumaService.luoMyyntitapahtumaJaLiput(any())) // Kun myyntitapahtumaService.luoMyyntitapahtumaJaLiput(any())-metodia kutsutaan
+                .thenReturn(myyntitapahtumaResponseDTO); // niin palautetaan ennalta määritelty myyntitapahtumaResponseDTO-olio
 
         // Testataan POST /api/myyntitapahtumat/
-        mockMvc.perform(post("/api/myyntitapahtumat/") // POST /api/myyntitapahtumat/
-                .contentType("application/json") // Content-Type: application/json
-                .content("{ \"kayttajaId\": 1, \"maksutapaId\": 1, \"liput\": [ { \"tapahtumaId\": 1, \"lipputyyppiId\": 1, \"maara\": 3 } ] }")) // Request body
-                .andExpect(status().isCreated()) // Statuskoodi 201 CREATED
+        mockMvc.perform(post("/api/myyntitapahtumat/") 
+                .contentType("application/json")
+                .content("{ \"kayttajaId\": 1, \"maksutapaId\": 1, \"liput\": [ { \"tapahtumaId\": 1, \"lipputyyppiId\": 1, \"maara\": 3 } ] }"))
+                .andExpect(status().isCreated()) // Tarkistetaan, että vastaus on HTTP 201 Created
                 .andExpect(jsonPath("$.myyntitapahtumaId").value(1L)) // Varmistetaan, että vastauksessa on myyntitapahtumaId
                 .andExpect(jsonPath("$.summa").value(100.0)) // Varmistetaan, että vastauksessa on summa
                 .andExpect(jsonPath("$.maksupvm").value("2024-10-01T10:00:00")) // Varmistetaan, että vastauksessa on maksupvm
                 .andExpect(jsonPath("$.maksutapa").value("Käteinen")) // Varmistetaan, että vastauksessa on maksutapa
                 .andExpect(jsonPath("$.kayttajaId").value(1L)); // Varmistetaan, että vastauksessa on kayttajaId
-
-        MyyntitapahtumaResponseDTO result = myyntitapahtumaService.luoMyyntitapahtumaJaLiput(any());
-        assertEquals(1L, result.getMyyntitapahtumaId()); // Varmistetaan, että myyntitapahtumaId on oikein
-        assertEquals(100, result.getSumma()); // Varmistetaan, että summa on oikein
-        //assertEquals("2024-10-01T10:00", result.getMaksupvm()); // Varmistetaan, että maksupvm on oikein
-        assertEquals("Käteinen", result.getMaksutapa()); // Varmistetaan, että maksutapa on oikein
-        assertEquals(1L, result.getKayttajaId()); // Varmistetaan, että kayttajaId on oikein
     }
 }
