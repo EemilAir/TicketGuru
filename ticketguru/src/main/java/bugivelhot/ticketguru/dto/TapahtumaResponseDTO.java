@@ -4,6 +4,7 @@ import java.util.List;
 
 public class TapahtumaResponseDTO {
 
+    private Long tapahtumaId;
     private String nimi;
     private String kuvaus;
     private String kategoria;
@@ -14,6 +15,12 @@ public class TapahtumaResponseDTO {
     private Integer lippujaJaljella;
     private List<TapahtumanLipputyyppiDTO> lipputyypit;
 
+    public Long getTapahtumaId() {
+        return tapahtumaId;
+    }
+    public void setTapahtumaId(Long tapahtumaId) {
+        this.tapahtumaId = tapahtumaId;
+    }
     public String getNimi() {
         return nimi;
     }

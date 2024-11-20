@@ -37,6 +37,7 @@ public class TapahtumaService {
 
     public TapahtumaResponseDTO mapToResponseDTO(Tapahtuma tapahtuma) {
         TapahtumaResponseDTO responseDTO = new TapahtumaResponseDTO();
+        responseDTO.setTapahtumaId(tapahtuma.getTapahtumaId());
         responseDTO.setNimi(tapahtuma.getNimi());
         responseDTO.setKuvaus(tapahtuma.getKuvaus());
         responseDTO.setKategoria(tapahtuma.getKategoria());
