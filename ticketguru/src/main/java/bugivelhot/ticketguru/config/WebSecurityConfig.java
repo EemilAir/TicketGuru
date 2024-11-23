@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,44 +34,22 @@ public class WebSecurityConfig {
                 .cors(Customizer.withDefaults()) // Uusi tapa konfiguroida CORS
                 // Kaikki pyynnöt vaativat autentikaation
                 .authorizeHttpRequests(authorize -> authorize
-                        // Vain ADMIN-roolilla voi lisätä tapahtumia
-                        .requestMatchers(HttpMethod.POST,"/api/tapahtumat/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH,"/api/tapahtumat/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE,"/api/tapahtumat/**").hasRole("ADMIN")
-                        // Sekä ADMIN- että USER-roolilla voi nähdä tapahtumat (GET)-pyynnöllä
-                        .requestMatchers(HttpMethod.GET,"/api/tapahtumat/**").hasAnyRole("ADMIN", "USER")
-                        // Sekä ADMIN- että USER-roolilla voi käyttää myyntitapahtuman kaikkia endpointteja
-                        .requestMatchers("/api/myyntitapahtumat/**").hasAnyRole("ADMIN", "USER")
-                    // Muut pyynnöt vaativat autentikaation
-                    .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults()
-                )
-                .csrf(csrf -> csrf.ignoringRequestMatchers(toH2Console()).disable())
-                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin())); // H2-konsolin
-                                                                                                      // käyttöön
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .anyRequest().authenticated())
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(sessionManagement -> sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 
         return http.build();
     }
 
     // Tämä metodi määrittää, miten käyttäjät autentikoidaan, kovakoodattu käyttäjä
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user = User.builder() // Ei turvallinen tapa tallentaa salasanoja, ei tuotantoon
-                // Käyttäjänimi ja salasana
-                .username("user")
-                .password(passwordEncoder.encode("user"))
-                .roles("USER")
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("admin"))
-                .roles("ADMIN")
-                .build();
-        // Luodaan lista käyttäjistä
+    public UserDetailsService userDetailsService() {
         List<UserDetails> users = new ArrayList<>();
-        users.add(user);
-        users.add(admin);
-        // Palautetaan käyttäjät
+        users.add(User.builder().username("user").password(passwordEncoder().encode("user")).roles("USER").build());
+        users.add(User.builder().username("admin").password(passwordEncoder().encode("admin")).roles("ADMIN").build());
         return new InMemoryUserDetailsManager(users);
     }
 
@@ -81,13 +59,22 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
+
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
