@@ -11,7 +11,7 @@ Näytä kaikkien tapahtumien tiedot tai suodata tapahtumia nimen ja/tai kategori
 ## Query-parametrit:
 * `nimi` (valinnainen): Tapahtuman nimen suodatus (esim `?nimi=Tapahtuma1`).
 * `kategoria` (valinnainen): Tapahtuman kategorian suodatus (esim `?kategoria=Festivaali`).
-* Voit käyttää kumpaakin parametria yhdessä tai erikseen.
+* Kumpaakin parametria voi käyttää yhdessä tai erikseen.
 
 **Esimerkit:**
 * Hae tapahtumat nimen perusteella: `/api/tapahtumat/?nimi=Ruisrock`

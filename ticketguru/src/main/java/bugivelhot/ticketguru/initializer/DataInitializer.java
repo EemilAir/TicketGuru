@@ -33,7 +33,7 @@ public class DataInitializer {
         tapahtumaInitializer.luoTapahtumat();
         tapahtumanLipputyyppiInitializer.luoTapahtumanLipputyypit();
         kayttajaInitializer.luoKayttajat();
-        // myyntitapahtumaInitializer.luoMyyntitapahtumat();
+        //myyntitapahtumaInitializer.luoMyyntitapahtumat();
     }
 
 }

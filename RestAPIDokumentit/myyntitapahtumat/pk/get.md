@@ -1,4 +1,4 @@
-# Näytä myyntitapahtuma
+    # Näytä myyntitapahtuma
 
 Nayta haetun myyntitapahtuman tiedot.
 
@@ -82,6 +82,27 @@ Myyntitapahtuma, jonka id on 8 ja jolle ei ole tallennettu tietoja.
     "tilakoodi": 404,
     "tila": "Not Found",
     "polku": "uri=/api/myyntitapahtumat/8",
+    "virheet": {}
+}
+```
+
+### Tai
+
+**Ehto** : Jos myyntitapahtumaId on väärässä muodossa
+
+**Koodi** : `400 BAD REQUEST`
+
+**Sisältöesimerkit**
+
+Kun yritetään hakea myyntitapahtumaa id:llä "d".
+
+```json
+{
+    "viesti": "Virheellinen arvo 'd' parametrille 'id'. Odotettu tyyppi on 'Long'",
+    "aikaleima": "2024-11-23T21:49:48.6208161",
+    "tilakoodi": 400,
+    "tila": "Bad Request",
+    "polku": "uri=/api/myyntitapahtumat/f",
     "virheet": {}
 }
 ```
