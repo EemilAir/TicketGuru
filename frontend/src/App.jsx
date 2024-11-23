@@ -1,32 +1,35 @@
-import { useState } from "react";
-import Login from "./components/Login";
-import TicketSalesForm from "./components/TicketSalesForm";
+import { BrowserRouter as Router, Route, Routes } from "react-router";
+import { useAuth, AuthProvider } from "./components/AuthContext";
+import LoginForm from "./components/LoginForm";
+import Dashboard from "./components/Dashboard";
 
 const App = () => {
-    const [auth, setAuth] = useState(null); // Tallennetaan autentikaatiotiedot
-
-    const handleLogin = (credentials) => {
-        const authString = btoa(`${credentials.username}:${credentials.password}`);
-        setAuth(authString); // Tallenna base64-muodossa oleva autentikaatiotieto
-        alert("Kirjautuminen onnistui!");
-    };
-
-    const handleLogout = () => {
-        setAuth(null); // Poista autentikaatiotiedot
-    };
-
     return (
-        <div>
-            {!auth ? (
-                <Login onLogin={handleLogin} />
-            ) : (
-                <>
-                    <button onClick={handleLogout}>Kirjaudu ulos</button>
-                    <TicketSalesForm auth={auth} />
-                </>
-            )}
-        </div>
+        <AuthProvider>
+            <Router>
+                <Routes>
+                    {/* Use PrivateRoute for protected route */}
+                    <Route path="/" element={<PrivateRoute />} />
+                    <Route path="/login" element={<LoginForm />} />
+                </Routes>
+            </Router>
+        </AuthProvider>
     );
+};
+
+// Private Route for authenticated users
+const PrivateRoute = () => {
+    const { isAuthenticated, loading } = useAuth();
+
+    if (loading) {
+        return <div>Loading...</div>; // Render a loading indicator while checking authentication
+    }
+
+    if (!isAuthenticated) {
+        return <LoginForm />; // If not authenticated, show the Login form
+    }
+
+    return <Dashboard />; // Render Dashboard if the user is authenticated
 };
 
 export default App;

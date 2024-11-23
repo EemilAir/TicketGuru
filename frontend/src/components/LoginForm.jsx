@@ -1,44 +1,51 @@
 import { useState } from 'react';
-import { login } from '../api/auth';
-import '../css/LoginForm.css';
+import { useAuth } from './AuthContext';
 
-export default function LoginForm({ handleLoginSuccess, setError }) {
+const LoginForm = () => {
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const {login} = useAuth();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try {
-            await login(username, password);
-            handleLoginSuccess(username);
-        } catch (error) {
-            setError(error.message);
-        }
-    }
+    const handleLogin = (e) => {
+       e.preventDefault();
+       login(username, password);
+    };
 
     return (
-        <form className="login-form" onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="username">Käyttäjänimi: </label>
-                <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    required
-                    onChange={(event) => setUsername(event.target.value)}
-                />
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="card" style={{ width: "20rem" }}>
+                <div className="card-body">
+                    <h5 className="card-title text-center mb-4">Login</h5>
+                    <form onSubmit={handleLogin}>
+                        <div className="mb-3">
+                            <label htmlFor="username" className="form-label">Username</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="password" className="form-label">Password</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <button type="submit" className="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
             </div>
-            <div>
-                <label htmlFor="password">Salasana: </label>
-                <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    required
-                    onChange={(event) => setPassword(event.target.value)}
-                />
-            </div>
-            <button type="submit">Login</button>
-        </form>
+        </div>
     )
-}
+};
+
+export default LoginForm;
