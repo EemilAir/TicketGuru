@@ -36,7 +36,7 @@ Tapahtumalla on oltava nimi, kategoria, aloitus- ja lopetuspvm, katuosoite, Lipp
 
 ## Onnistunut vastaus
 
-**Ehto** : Tapahtuman luominen onnistui
+**Ehto** : Tapahtuman luominen onnistui.
 
 **Koodi** : `201 CREATED`
 
@@ -45,54 +45,41 @@ Tapahtumalla on oltava nimi, kategoria, aloitus- ja lopetuspvm, katuosoite, Lipp
 ```json
 {
     "nimi": "Provinssi 2025",
-    "kuvaus": null,
-    "kategoria": "Festivaali",
-    "aloituspvm": "2025-06-25T12:00",
-    "lopetuspvm": "2025-06-27T23:00",
+    "kuvaus": "Provinssi 2025 -festivaali",
+    "kategoria": "Musiikki",
+    "aloituspvm": "2024-12-01T18:00:00",
+    "lopetuspvm": "2024-12-01T22:00:00",
     "katuosoite": "Törnäväntie 20",
-    "osoite": {
-        "osoiteId": 5,
-        "postinumero": "40100",
-        "postitmp": "Jyväskylä"
-    },
-    "lippujaJaljella": 2500,
+    "osoiteId": 3,
+    "lippujaJaljella": 200,
     "lipputyypit": [
         {
-            "id": {
-                "tapahtumaId": 8,
-                "lipputyyppiId": 1
-            },
-            "nimi": "Normaali",
-            "kuvaus": "Normaali lippu",
-            "hinta": 35.0
+            "id": 1,
+            "hinta": 50.0
         },
         {
-            "id": {
-                "tapahtumaId": 8,
-                "lipputyyppiId": 2
-            },
-            "nimi": "VIP",
-            "kuvaus": "VIP lippu",
-            "hinta": 70.0
+            "id": 2,
+            "hinta": 100.0
         }
     ]
 }
+
 ```
 
 ## Epäonnistunut vastaus
 
-**Ehto** : Jos kenttiä puuttuu
+**Ehto** : Jos vaadittuja parametreja puuttuu.
 
 **Koodi** : `400 BAD REQUEST`
 
 **Sisältöesimerkki**
 
-Tapahtuma, josta puuttuu nimi
+Tapahtuma, josta puuttuu parametri nimi.
 
 ```json
 {
     "viesti": "Validaatiovirhe. Tarkista syöteparametrit.",
-    "aikaleima": "2024-11-12T14:15:39.8239007",
+    "aikaleima": "2024-11-23T22:20:29.3080732",
     "tilakoodi": 400,
     "tila": "Bad Request",
     "polku": "uri=/api/tapahtumat/",

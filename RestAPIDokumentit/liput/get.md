@@ -16,9 +16,9 @@ Näytä lippu lipun koodin perusteella.
 
 **Koodi** : `200 OK`
 
-**Sisältö** :
+**Sisältöesimerkit** :
 
-Lipun koodiin on annettu seuraava arvo "0b2e3362-d3cd-42ca-93ed-8e45a70d1140"
+Lipun koodiin on annettu arvo "0b2e3362-d3cd-42ca-93ed-8e45a70d1140".
 
 Vastaus:
 

@@ -12,6 +12,7 @@ Nayta haetun myyntitapahtuman tiedot.
 
 `id` (pakollinen): Myyntitapahtuman yksilöivä arvo.
 
+
 ## Onnistunut vastaus
 
 **Koodi** : `200 OK`

@@ -12,6 +12,9 @@ Luo uusi myyntitapahtuma, joka sisältää ostetut liput listana.
 
 Myyntitapahtumalla on oltava maksutapaId, maksupvm, kayttajaId, ja liput joissa tapahtumaId, lipputyyppiId ja maara
 
+
+**Sisältöesimerkit** : 
+
 ```json
 {
     "maksutapaId": 1,
@@ -37,7 +40,7 @@ Myyntitapahtumalla on oltava maksutapaId, maksupvm, kayttajaId, ja liput joissa 
 
 **Koodi** : `201 CREATED`
 
-**Sisältöesimerkki**
+**Sisältöesimerkit** :
 
 Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
@@ -78,6 +81,8 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 **Ehto** : Jos lipputyyppi ei kuulu tapahtumaan.
 
+**Sisältöesimerkit** : 
+
 ```json
 {
     "maksutapaId": 1,
@@ -100,7 +105,7 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältö** : {
+**Sisältöesimerkit** : 
 
 ```json
 {
@@ -112,13 +117,13 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
     "virheet": {}
 }
 ```
-}
+
 
 ### Tai
 
 **Ehto** : Jos käyttäjää ei löydy annetulla kayttajaId:llä
 
-
+**Sisältöesimerkit** : 
 ```json
 {
     "maksutapaId": 1,
@@ -141,7 +146,7 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältö** : 
+**Sisältöesimerkit**: 
 
 ```json
 {
@@ -159,6 +164,7 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 **Ehto** : Jos tapahtumaa ei löydy annetulla tapahtumaId:llä
 
 
+**Sisältöesimerkit** : 
 ```json
 {
     "maksutapaId": 1,
@@ -181,7 +187,7 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältö** : 
+**Sisältöesimerkit** :  
 
 ```json
 {
@@ -198,7 +204,7 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 **Ehto** : Jos maksutapaa ei löydy annetulla maksutapaId:llä
 
-
+**Sisältöesimerkit** : 
 ```json
 {
     "maksutapaId": 99,
@@ -220,7 +226,7 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältö** : {
+**Sisältöesimerkit** : 
 
 ```json
 {
@@ -232,4 +238,4 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
     "virheet": {}
 }
 ```
-}
+

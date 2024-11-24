@@ -24,11 +24,12 @@ Näytä kaikkien tapahtumien tiedot tai suodata tapahtumia nimen ja/tai kategori
 
 **Koodi** : `200 OK`
 
-**Sisältö** : Tässä esimerkissä käyttäjä näkee tapahtuman, jonka nimi parametri on "Ruisrock":
+**Sisältö** : Tässä esimerkissä käyttäjä näkee tapahtuman, jonka nimi parametri on "Ruisrock": (/api/tapahtumat/?nimi=Ruisrock)
 
 ```json
 [
     {
+        "tapahtumaId": 2,
         "nimi": "Ruisrock 2025",
         "kuvaus": "Ruisrock on Turun Ruissalossa järjestettävä musiikkifestivaali.",
         "kategoria": "Festivaali",
@@ -67,23 +68,21 @@ Näytä kaikkien tapahtumien tiedot tai suodata tapahtumia nimen ja/tai kategori
 
 ## Epäonnistuneet vastaukset
 
-**Ehto**: Käyttäjä ei näe mitään tapahtumia.
+**Ehto**: Käyttäjä ei näe mitään tapahtumia (esim. localhost:8080/api/tapahtumat/?nimi=Ilovaarirock).
 
 **Koodi** : `404 NOT FOUND`
 
 **Sisältö** : {
 
 ```json
-[
-    {
-        "viesti": "Tapahtumia ei löytynyt",
-        "aikaleima": "2024-11-12T13:49:24.5274969",
-        "tilakoodi": 404,
-        "tila": "Not Found",
-        "polku": "uri=/api/tapahtumat/",
-        "virheet": {}
-    }
-]
+{
+    "viesti": "Tapahtumia ei löytynyt",
+    "aikaleima": "2024-11-24T22:31:15.2869372",
+    "tilakoodi": 404,
+    "tila": "Not Found",
+    "polku": "uri=/api/tapahtumat/",
+    "virheet": {}
+}
 ```
 }
 
