@@ -2,15 +2,16 @@
 
 Poistaa yksittäisen tapahtuman.
 
-**URL** : `/api/events/:pk/`
-
-**URL Parametrit** : `pk=[integer]`, missä `pk` on tapahtuman ID tietokannassa.
+**URL** : `/api/tapahtumat/{id}`
 
 **Metodi** : `DELETE`
 
 **Oikeudet vaaditaan** : ADMIN
 
-**Data** : `{}`
+**Query-parametrit:** 
+
+`id` (pakollinen): Tapahtuman yksilöivä arvo.
+
 
 ## Onnistunut Vastaus
 
@@ -40,4 +41,23 @@ Poistaa yksittäisen tapahtuman.
     }
 ]
 ```
+### Tai
+
+**Ehto** : Jos tapahtumaId on väärässä muodossa
+
+**Koodi** : `400 BAD REQUEST`
+
+**Sisältöesimerkit**
+
+Kun yritetään poistaa tapahtumaa id:llä "d".
+
+```json
+{
+    "viesti": "Virheellinen arvo 'd' parametrille 'id'. Odotettu tyyppi on 'Long'",
+    "aikaleima": "2024-11-23T22:23:38.6256599",
+    "tilakoodi": 400,
+    "tila": "Bad Request",
+    "polku": "uri=/api/tapahtumat/d",
+    "virheet": {}
 }
+```

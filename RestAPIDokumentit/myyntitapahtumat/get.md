@@ -26,7 +26,7 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
 
 **Koodi** : `200 OK`
 
-**Sisältö** : Tässä esimerkissä käyttäjälle näytetään neljä eri myyntitapahtumaa.
+**Sisältöesimerkit** : Tässä esimerkissä käyttäjälle näytetään neljä eri myyntitapahtumaa.
 
 ```json
 [
@@ -166,6 +166,7 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
     }
 ]
 
+
 ```
 
 ## Virhevastaukset
@@ -174,19 +175,17 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältö** : {
+**Sisältöesimerkit** : {
 
 ```json
-[
-    {
-        "viesti": "Myyntitapahtumia ei löytynyt",
-        "aikaleima": "2024-11-12T12:57:36.3371407",
-        "tilakoodi": 404,
-        "tila": "Not Found",
-        "polku": "uri=/api/myyntitapahtumat/",
-        "virheet": {}
-    }
-]
+{
+    "viesti": "Myyntitapahtumia ei löytynyt",
+    "aikaleima": "2024-11-12T12:57:36.3371407",
+    "tilakoodi": 404,
+    "tila": "Not Found",
+    "polku": "uri=/api/myyntitapahtumat/",
+    "virheet": {}
+}
 ```
 }
 
@@ -196,22 +195,16 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
 
 **Koodi** : `400 Bad Request`
 
-**Sisältö** : {
+**Sisältöesimerkit** : {
 
 ```json
-[
-    {
-        "viesti": "Summan muoto on virheellinen",
-        "aikaleima": "2024-11-12T12:54:18.2260416",
-        "tilakoodi": 400,
-        "tila": "Bad Request",
-        "polku": "uri=/api/myyntitapahtumat/",
-        "virheet": {}
-    }
-]
+{
+    "viesti": "Virheellinen arvo 'summa=d' parametrille 'id'. Odotettu tyyppi on 'Long'",
+    "aikaleima": "2024-11-23T21:28:36.5744102",
+    "tilakoodi": 400,
+    "tila": "Bad Request",
+    "polku": "uri=/api/myyntitapahtumat/summa=d",
+    "virheet": {}
+}
 ```
 }
-
-**Huomautukset**
-
-Myöhemmin toteutetaan haut myös muille myyntitapahtuman tiedoille, kuten myyntipäivälle.

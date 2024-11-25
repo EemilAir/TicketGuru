@@ -6,11 +6,11 @@ Näytä haetun myyntitapahtuman liput.
 
 **Metodi** : `GET`
 
+**Oikeudet vaaditaan** : ADMIN tai USER
+
 **Query-parametrit:** 
 
 `id` (pakollinen): Myyntitapahtuman yksilöivä arvo.
-
-**Oikeudet vaaditaan** : ADMIN tai USER
 
 ## Onnistunut vastaus
 
@@ -61,6 +61,27 @@ Myyntitapahtuma, jonka id on 8 ja jolle ei ole tallennettu lippuja.
     "tilakoodi": 404,
     "tila": "Not Found",
     "polku": "uri=/api/myyntitapahtumat/8/liput",
+    "virheet": {}
+}
+```
+
+### Tai
+
+**Ehto** : Jos myyntitapahtumaId on väärässä muodossa
+
+**Koodi** : `400 BAD REQUEST`
+
+**Sisältöesimerkit**
+
+Kun yritetään hakea myyntitapahtumaa id:llä "d".
+
+```json
+{
+    "viesti": "Virheellinen arvo 'd' parametrille 'myyntitapahtumaId'. Odotettu tyyppi on 'Long'",
+    "aikaleima": "2024-11-23T22:09:46.7135188",
+    "tilakoodi": 400,
+    "tila": "Bad Request",
+    "polku": "uri=/api/myyntitapahtumat/d/liput",
     "virheet": {}
 }
 ```

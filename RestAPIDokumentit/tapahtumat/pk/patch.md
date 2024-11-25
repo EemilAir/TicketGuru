@@ -8,7 +8,7 @@ Muokkaa yksittäistä tapahtumaa.
 
 **Oikeudet vaaditaan** : ADMIN
 
-**Data esimerkki**
+**Sisältöesimerkit**
 
 ```json
 {
@@ -69,20 +69,17 @@ Muokkauksen jälkeen:
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältö** : {
+**Sisältöesimerkit** : 
 
 lippujaJaljella arvoksi on annettu x
 
 ```json
-[
-    {
-        "viesti": "Virheellinen JSON-syöte. Tarkista, että arvo on oikeassa muodossa.",
-        "aikaleima": "2024-11-12T14:30:11.0186892",
-        "tilakoodi": 400,
-        "tila": "Bad Request",
-        "polku": "uri=/api/tapahtumat/1",
-        "virheet": {}
-    }
-]
-```
+{
+    "viesti": "Virheellinen JSON-syöte. Tarkista, että arvo on oikeassa muodossa.",
+    "aikaleima": "2024-11-24T22:28:46.6797535",
+    "tilakoodi": 400,
+    "tila": "Bad Request",
+    "polku": "uri=/api/tapahtumat/1",
+    "virheet": {}
 }
+```

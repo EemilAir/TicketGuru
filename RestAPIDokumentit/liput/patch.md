@@ -1,6 +1,6 @@
 # Päivitä lipun tila
 
-Päivitä lipun tila käytetyksi tai käytetyn peruutus
+Päivitä lipun tila käytetyksi tai käytetyn peruutus.
 
 **URL** : `/api/liput/{id}`
 
@@ -8,7 +8,7 @@ Päivitä lipun tila käytetyksi tai käytetyn peruutus
 
 **Oikeudet vaaditaan** : ADMIN tai USER
 
-**Data esimerkki**
+**Sisältöesimerkit**
 
 ```json
 {
@@ -23,7 +23,7 @@ Päivitä lipun tila käytetyksi tai käytetyn peruutus
 
 **Koodi** : `200 OK`
 
-**Sisältö** :
+**Sisältöesimerkit** :
 Lippu, jonka tila arvoksi on muutettu 0
 
 Ennen muokkausta:
@@ -50,24 +50,21 @@ Muokkauksen jälkeen:
 
 ## Epäonnistunut vastaus
 
-**Ehto** : Lipun tilaksi on annettu virheellinen arvo
+**Ehto** : Lipun tilaksi on annettu virheellinen arvo.
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältö** : {
+**Sisältö** : 
 
 Lipun tila arvoksi on annettu 2
 
 ```json
-[
-    {
-        "viesti": "Virheellinen tila: 2. Tilan tulee olla muodossa 0 tai 1",
-        "aikaleima": "2024-11-12T15:22:33.1635709",
-        "tilakoodi": 400,
-        "tila": "Bad Request",
-        "polku": "uri=/api/liput/1",
-        "virheet": {}
-    }
-]
-```
+{
+    "viesti": "Virheellinen tila: 2. Tilan tulee olla muodossa 0 tai 1",
+    "aikaleima": "2024-11-12T15:22:33.1635709",
+    "tilakoodi": 400,
+    "tila": "Bad Request",
+    "polku": "uri=/api/liput/1",
+    "virheet": {}
 }
+```

@@ -1,6 +1,6 @@
 # Luo myyntitapahtuma
 
-Luo uusi myyntitapahtuma, jossa on liput
+Luo uusi myyntitapahtuma, joka sisältää ostetut liput listana.
 
 **URL** : `/api/myyntitapahtumat/`
 
@@ -12,10 +12,12 @@ Luo uusi myyntitapahtuma, jossa on liput
 
 Myyntitapahtumalla on oltava maksutapaId, maksupvm, kayttajaId, ja liput joissa tapahtumaId, lipputyyppiId ja maara
 
+
+**Sisältöesimerkit** : 
+
 ```json
 {
     "maksutapaId": 1,
-    "maksupvm": "2024-10-01T12:00:00",
     "kayttajaId": 2,
     "liput": [
             {
@@ -38,7 +40,7 @@ Myyntitapahtumalla on oltava maksutapaId, maksupvm, kayttajaId, ja liput joissa 
 
 **Koodi** : `201 CREATED`
 
-**Sisältöesimerkki**
+**Sisältöesimerkit** :
 
 Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
@@ -79,6 +81,8 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 **Ehto** : Jos lipputyyppi ei kuulu tapahtumaan.
 
+**Sisältöesimerkit** : 
+
 ```json
 {
     "maksutapaId": 1,
@@ -101,27 +105,25 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältö** : {
+**Sisältöesimerkit** : 
 
 ```json
-[
-    {
-        "viesti": "Lipputyyppi ei kuulu tapahtumaan",
-        "aikaleima": "2024-11-12T13:20:38.9804115",
-        "tilakoodi": 400,
-        "tila": "Bad Request",
-        "polku": "uri=/api/myyntitapahtumat/",
-        "virheet": {}
-    }
-]
-```
+{
+    "viesti": "Lipputyyppi ei kuulu tapahtumaan",
+    "aikaleima": "2024-11-12T13:20:38.9804115",
+    "tilakoodi": 400,
+    "tila": "Bad Request",
+    "polku": "uri=/api/myyntitapahtumat/",
+    "virheet": {}
 }
+```
+
 
 ### Tai
 
 **Ehto** : Jos käyttäjää ei löydy annetulla kayttajaId:llä
 
-
+**Sisältöesimerkit** : 
 ```json
 {
     "maksutapaId": 1,
@@ -144,18 +146,96 @@ Myyntitapahtuma, jolle on annettu ylläolevan JSON:in tiedot.
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältö** : {
+**Sisältöesimerkit**: 
 
 ```json
-[
-    {
-        "viesti": "Käyttäjää ei löydy",
-        "aikaleima": "2024-11-12T13:24:11.7406636",
-        "tilakoodi": 404,
-        "tila": "Not Found",
-        "polku": "uri=/api/myyntitapahtumat/",
-        "virheet": {}
-    }
-]
-```
+{
+    "viesti": "Käyttäjää ei löydy",
+    "aikaleima": "2024-11-12T13:24:11.7406636",
+    "tilakoodi": 404,
+    "tila": "Not Found",
+    "polku": "uri=/api/myyntitapahtumat/",
+    "virheet": {}
 }
+```
+
+### Tai
+
+**Ehto** : Jos tapahtumaa ei löydy annetulla tapahtumaId:llä
+
+
+**Sisältöesimerkit** : 
+```json
+{
+    "maksutapaId": 1,
+    "maksupvm": "2024-10-01T12:00:00",
+    "kayttajaId": 1,
+    "liput": [
+            {
+            "tapahtumaId": 999,
+            "lipputyyppiId": 2,
+            "maara": 2
+            },
+            {
+            "tapahtumaId": 1,
+            "lipputyyppiId": 2,
+            "maara": 1
+        }
+    ]
+}
+```
+
+**Koodi** : `404 NOT FOUND`
+
+**Sisältöesimerkit** :  
+
+```json
+{
+    "viesti": "Tapahtumaa ei löydy",
+    "aikaleima": "2024-11-23T21:35:54.9947078",
+    "tilakoodi": 404,
+    "tila": "Not Found",
+    "polku": "uri=/api/myyntitapahtumat/",
+    "virheet": {}
+}
+```
+
+### Tai
+
+**Ehto** : Jos maksutapaa ei löydy annetulla maksutapaId:llä
+
+**Sisältöesimerkit** : 
+```json
+{
+    "maksutapaId": 99,
+    "kayttajaId": 1,
+    "liput": [
+            {
+            "tapahtumaId": 1,
+            "lipputyyppiId": 1,
+            "maara": 2
+            },
+            {
+            "tapahtumaId": 1,
+            "lipputyyppiId": 2,
+            "maara": 1
+        }
+    ]
+}
+```
+
+**Koodi** : `404 NOT FOUND`
+
+**Sisältöesimerkit** : 
+
+```json
+{
+    "viesti": "Maksutapaa ei löydy",
+    "aikaleima": "2024-11-23T21:47:20.9895224",
+    "tilakoodi": 404,
+    "tila": "Not Found",
+    "polku": "uri=/api/myyntitapahtumat/",
+    "virheet": {}
+}
+```
+
