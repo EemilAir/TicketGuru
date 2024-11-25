@@ -4,23 +4,25 @@ Tiimi: Jere Holopainen, Miikka Vartiainen, Jami Norja, Eemil Airaksinen, Anton A
 
 ## Johdanto
 
-**TicketGuru** on lipunmyyntijärjestelmä, joka on suunniteltu lipputoimiston käyttöön. Järjestelmä mahdollistaa lippujen myymisen, hallinnan ja tulostamisen myyntipisteessä, sekä lipputarkistuksen tapahtumapaikalla. Tulevaisuudessa järjestelmään voidaan lisätä verkkokauppa, joka mahdollistaa lipun ostamisen verkossa.
+**TicketGuru** on lipunmyyntijärjestelmä, joka on suunniteltu lipputoimiston käyttöön. Järjestelmä mahdollistaa lippujen myymisen, hallinnan ja tulostamisen myyntipisteessä, sekä lipputarkistuksen tapahtumapaikalla. Lisäksi järjestelmä mahdollistaa tapahtumien hallinnan. Tulevaisuudessa järjestelmään voidaan lisätä verkkokauppa, joka mahdollistaa lipun ostamisen verkossa.
 
 ### Toteutus- ja toimintaympäristö
 - **Palvelinpuolen ratkaisut ja teknologiat:**
     - Palvelinpuoli toteutetaan **Spring Boot** -kehystä käyttäen
-    - **Tietokannan suunnittelu UML-Kaaviota käyttäen**
-    - **REST API** *
-    - **Rajapinta ja olioiden väliset yhteydet JPA:ta käyttäen**
-    - **Vastauskoodit ja virhetilanteiden käsittely** *
-    - **Autentikointi ja auktorisointi** *
-    - **Tietokanta MySQL:n avulla ja julkaisu** *
+    - **Tietokannan suunnittelu**: UML-kaaviot
+    - **REST API**: Spring Boot RESTful web services
+    - **ORM**: JPA (Java Persistence API) Hibernate
+    - **Tietokanta**: MySQL
+    - **Vastauskoodit ja virhetilanteiden käsittely**: Mukautetut HTTP-vastauskoodit ja poikkeusten käsittely
+    - **Autentikointi ja auktorisointi**: Spring Security
+    - **Yksikkötestaus ja integraatiotestaus**: JUnit, Spring Boot Test ja MockMvc
+    - **Julkaisu**: Rahti (Rahti.csc.fi)
 
 - **Käyttöliittymäratkaisut ja teknologiat:**
     - Järjestelmä suunnitellaan **desktop-laitteille**, mutta se on responsiivinen, jolloin se toimii myös tabletilla ja mobiililaitteilla. 
     - **Web-ohjelmointi ReactJS-kirjastoa apuna käyttäen**
-    
-`NOTE: [tähdellä (*) merkittyjen kohtien tarkemmat tiedot lisätään kurssin edetessä.]`
+    - **Rakennustyökalu**: Vite
+    - **HTTP-kutsut**: Axios
 
 ### Projektin lopputulos
 
