@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router";
 import { useAuth, AuthProvider } from "./components/AuthContext";
 import LoginForm from "./components/LoginForm";
 import Dashboard from "./components/Dashboard";
+import Tapahtumat from "./components/Tapahtumat";
+import PrivateLayout from "./components/PrivateLayout";
 
 const App = () => {
     return (
@@ -9,8 +11,26 @@ const App = () => {
             <Router>
                 <Routes>
                     {/* Use PrivateRoute for protected route */}
-                    <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
                     <Route path="/login" element={<PublicRoute><LoginForm /></PublicRoute>} />
+                    <Route path="/"
+                        element={
+                            <PrivateLayout header="Dashboard">
+                                <PrivateRoute>
+                                    <Dashboard />
+                                </PrivateRoute>
+                            </PrivateLayout>
+                        }
+                    />
+                    <Route path="/tapahtumat"
+                        element={
+                            <PrivateLayout header="Tapahtumat">
+                                <PrivateRoute>
+                                    <Tapahtumat />
+                                </PrivateRoute>
+                            </PrivateLayout>
+                        }
+                    />
+                    <Route path="*" element={<CatchAllRoute />} />
                 </Routes>
             </Router>
         </AuthProvider>
@@ -45,6 +65,21 @@ const PublicRoute = ({ children }) => {
     }
 
     return children; // Render Login page if not authenticated
+};
+
+// Catch all invalid routes and redirect to dashboard or login page based on the authentication status
+const CatchAllRoute = () => {
+    const { isAuthenticated, loading } = useAuth();
+    
+    if (loading) {
+        return <div>Loading...</div>; // Render a loading indicator while checking authentication
+    }
+
+    if (isAuthenticated) {
+        return <Navigate to="/" />;
+    } else {
+        return <Navigate to="/login" />;
+    }
 };
 
 export default App;
