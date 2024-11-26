@@ -26,7 +26,7 @@ Myyntitapahtumilla voidaan luoda hallita tapahtumien myyntejä ja niihin kuuluvi
 * [Näytä kaikki myyntitapahtumat](myyntitapahtumat/get.md) : `GET /api/myyntitapahtumat/`
 * [Luo uusi myyntitapahtuma](myyntitapahtumat/post.md) : `POST /api/myyntitapahtumat/`
 * [Näytä myyntitapahtuma](myyntitapahtumat/pk/get.md) : `GET /api/myyntitapahtumat/id`
-* [Poista myyntitapahtuma](myyntitapahtumat/pk/delete.md) : `DELETE /api/myyntitapahtumat/`
+* [Poista myyntitapahtuma](myyntitapahtumat/pk/delete.md) : `DELETE /api/myyntitapahtumat/id`
 
 * [Näytä myyntitapahtumaan kuuluvat liput](myyntitapahtumat/pk/myyntitapahtumanLiput/get.md) : `Get /api/myyntitapahtumat/id/liput`
 
@@ -34,3 +34,11 @@ Myyntitapahtumilla voidaan luoda hallita tapahtumien myyntejä ja niihin kuuluvi
 
 * [Näytä lippu koodin perusteella](liput/get.md) : `GET /api/liput?koodi={koodi}`
 * [Muokkaa lipun tila](liput/patch.md) : `PATCH /api/liput/id`
+
+## Lipputyyppeihin kuuluvat
+
+* [Näytä kaikki lipputyypit](lipputyypit/get.md) : `GET /api/lipputyypit/`
+* [Luo uusi lipputyyppi](lipputyypit/post.md) : `POST /api/lipputyypit/`
+* [Näytä lipputyyppi](lipputyypit/pk/get.md) : `GET /api/lipputyypit/id`
+* [Muokkaa lipputyyppiä](lipputyypit/pk/patch.md) : `PATCH /api/lipputyypit/id`
+* [Poista lipputyyppi](lipputyypit/pk/delete.md) : `DELETE /api/lipputyypit/id`
