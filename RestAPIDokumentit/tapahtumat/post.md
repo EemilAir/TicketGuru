@@ -40,7 +40,7 @@ Tapahtumalla on oltava nimi, kategoria, aloitus- ja lopetuspvm, katuosoite, Lipp
 
 **Koodi** : `201 CREATED`
 
-**Sisältöesimerkki**
+**Sisältöesimerkit** :
 
 ```json
 {
@@ -72,7 +72,7 @@ Tapahtumalla on oltava nimi, kategoria, aloitus- ja lopetuspvm, katuosoite, Lipp
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältöesimerkki**
+**Sisältöesimerkit** :
 
 Tapahtuma, josta puuttuu parametri nimi.
 

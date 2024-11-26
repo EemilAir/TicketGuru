@@ -175,7 +175,7 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältöesimerkit** : {
+**Sisältöesimerkit** : 
 
 ```json
 {
@@ -187,7 +187,7 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
     "virheet": {}
 }
 ```
-}
+
 
 ### Tai
 
@@ -195,7 +195,7 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
 
 **Koodi** : `400 Bad Request`
 
-**Sisältöesimerkit** : {
+**Sisältöesimerkit** : 
 
 ```json
 {
@@ -207,4 +207,3 @@ Näytä kaikkien myyntitapahtumien tiedot tai suodata tapahtumia summan, maksuta
     "virheet": {}
 }
 ```
-}

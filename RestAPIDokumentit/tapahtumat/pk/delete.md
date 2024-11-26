@@ -27,27 +27,25 @@ Poistaa yksittäisen tapahtuman.
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältö** : {
+**Sisältöesimerkit** : 
 
 ```json
-[
-    {
-        "viesti": "Tapahtumaa ei löydy ID:llä 8",
-        "aikaleima": "2024-11-12T14:20:01.2268692",
-        "tilakoodi": 404,
-        "tila": "Not Found",
-        "polku": "uri=/api/tapahtumat/8",
-        "virheet": {}
-    }
-]
+{
+    "viesti": "Tapahtumaa ei löydy ID:llä 8",
+    "aikaleima": "2024-11-12T14:20:01.2268692",
+    "tilakoodi": 404,
+    "tila": "Not Found",
+    "polku": "uri=/api/tapahtumat/8",
+    "virheet": {}
+}
 ```
 ### Tai
 
-**Ehto** : Jos tapahtumaId on väärässä muodossa
+**Ehto** : Jos tapahtuman id on väärässä muodossa
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältöesimerkit**
+**Sisältöesimerkit** :
 
 Kun yritetään poistaa tapahtumaa id:llä "d".
 

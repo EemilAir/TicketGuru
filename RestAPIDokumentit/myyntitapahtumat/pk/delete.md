@@ -19,7 +19,8 @@ Poistaa yksittäisen myyntitapahtuman.
 
 **Koodi** : `204 NO CONTENT`
 
-**Sisältöesimerkit** : `{}`
+**Sisältöesimerkit** : 
+`{}`
 
 ## Epäonnistunut vastaus
 
@@ -27,7 +28,7 @@ Poistaa yksittäisen myyntitapahtuman.
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältö** : 
+**Sisältöesimerkit** : 
 
 ```json
 {
@@ -42,11 +43,11 @@ Poistaa yksittäisen myyntitapahtuman.
 
 ### Tai
 
-**Ehto** : Jos myyntitapahtumaId on väärässä muodossa
+**Ehto** : Jos myyntitapahtuman id on väärässä muodossa
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältöesimerkit**
+**Sisältöesimerkit** :
 
 Kun yritetään poistaa myyntitapahtumaa id:llä "d".
 

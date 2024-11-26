@@ -24,7 +24,7 @@ Näytä kaikkien tapahtumien tiedot tai suodata tapahtumia nimen ja/tai kategori
 
 **Koodi** : `200 OK`
 
-**Sisältö** : Tässä esimerkissä käyttäjä näkee tapahtuman, jonka nimi parametri on "Ruisrock": (/api/tapahtumat/?nimi=Ruisrock)
+**Sisältöesimerkit** : Tässä esimerkissä käyttäjä näkee tapahtuman, jonka nimi parametri on "Ruisrock": (/api/tapahtumat/?nimi=Ruisrock)
 
 ```json
 [
@@ -72,7 +72,7 @@ Näytä kaikkien tapahtumien tiedot tai suodata tapahtumia nimen ja/tai kategori
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältö** : {
+**Sisältöesimerkit** : 
 
 ```json
 {
@@ -84,5 +84,5 @@ Näytä kaikkien tapahtumien tiedot tai suodata tapahtumia nimen ja/tai kategori
     "virheet": {}
 }
 ```
-}
+
 

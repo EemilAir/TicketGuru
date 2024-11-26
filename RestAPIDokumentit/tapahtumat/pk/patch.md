@@ -22,7 +22,7 @@ Muokkaa yksittäistä tapahtumaa.
 
 **Koodi** : `200 OK`
 
-**Sisältöesimerkki** :
+**Sisältöesimerkit** :
 Tapahtuma 1, jonka lippujaJaljella arvoksi on muutettu 0
 
 Ennen muokkausta:
@@ -71,7 +71,7 @@ Muokkauksen jälkeen:
 
 **Sisältöesimerkit** : 
 
-lippujaJaljella arvoksi on annettu x
+lippujaJaljella arvoksi on annettu x.
 
 ```json
 {
@@ -80,6 +80,26 @@ lippujaJaljella arvoksi on annettu x
     "tilakoodi": 400,
     "tila": "Bad Request",
     "polku": "uri=/api/tapahtumat/1",
+    "virheet": {}
+}
+```
+### Tai
+
+**Ehto** : Jos tapahtumaa ei löydy.
+
+**Koodi** : `404 NOT FOUND`
+
+**Sisältöesimerkit** :
+
+Kun yritetään hakea tapahtumaa id:llä 9999.
+
+```json
+{
+    "viesti": "Tapahtumaa ei löydy",
+    "aikaleima": "2024-11-26T23:34:32.1103245",
+    "tilakoodi": 404,
+    "tila": "Not Found",
+    "polku": "uri=/api/tapahtumat/9999",
     "virheet": {}
 }
 ```

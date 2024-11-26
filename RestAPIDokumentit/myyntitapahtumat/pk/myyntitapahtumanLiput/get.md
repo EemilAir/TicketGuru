@@ -16,7 +16,7 @@ Näytä haetun myyntitapahtuman liput.
 
 **Koodi** : `200 OK`
 
-**Sisältöesimerkit**
+**Sisältöesimerkit** :
 
 Lista lippuja, jotka liittyvät myyntitapahtumaan, jonka id on 1.
 
@@ -50,7 +50,7 @@ Lista lippuja, jotka liittyvät myyntitapahtumaan, jonka id on 1.
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältöesimerkit**
+**Sisältöesimerkit** :
 
 Myyntitapahtuma, jonka id on 8 ja jolle ei ole tallennettu lippuja.
 
@@ -71,7 +71,7 @@ Myyntitapahtuma, jonka id on 8 ja jolle ei ole tallennettu lippuja.
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältöesimerkit**
+**Sisältöesimerkit** : 
 
 Kun yritetään hakea myyntitapahtumaa id:llä "d".
 

@@ -12,7 +12,6 @@ Päivitä lipun tila käytetyksi tai käytetyn peruutus.
 
 ```json
 {
-    
     "tila": 0
 }
 ```
@@ -54,7 +53,7 @@ Muokkauksen jälkeen:
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältö** : 
+**Sisältöesimerkit** : 
 
 Lipun tila arvoksi on annettu 2
 
@@ -65,6 +64,26 @@ Lipun tila arvoksi on annettu 2
     "tilakoodi": 400,
     "tila": "Bad Request",
     "polku": "uri=/api/liput/1",
+    "virheet": {}
+}
+```
+### Tai
+
+**Ehto** : Jos lippua ei löydy.
+
+**Koodi** : `404 NOT FOUND`
+
+**Sisältöesimerkit** :
+
+Kun yritetään hakea lippua id:llä 9999.
+
+```json
+{
+    "viesti": "Lippua ei löytynyt ID:llä 9999",
+    "aikaleima": "2024-11-26T23:33:01.1406661",
+    "tilakoodi": 404,
+    "tila": "Not Found",
+    "polku": "uri=/api/liput/9999",
     "virheet": {}
 }
 ```

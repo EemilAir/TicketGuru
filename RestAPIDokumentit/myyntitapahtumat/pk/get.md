@@ -1,4 +1,4 @@
-    # Näytä myyntitapahtuma
+# Näytä myyntitapahtuma
 
 Nayta haetun myyntitapahtuman tiedot.
 
@@ -17,7 +17,7 @@ Nayta haetun myyntitapahtuman tiedot.
 
 **Koodi** : `200 OK`
 
-**Sisältöesimerkit**
+**Sisältöesimerkit** :
 
 Myyntitapahtuma, jonka id on 2 ja jolle on tallennettu vaaditut tiedot.
 
@@ -72,7 +72,7 @@ Myyntitapahtuma, jonka id on 2 ja jolle on tallennettu vaaditut tiedot.
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältöesimerkit**
+**Sisältöesimerkit** :
 
 Myyntitapahtuma, jonka id on 8 ja jolle ei ole tallennettu tietoja.
 
@@ -93,7 +93,7 @@ Myyntitapahtuma, jonka id on 8 ja jolle ei ole tallennettu tietoja.
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältöesimerkit**
+**Sisältöesimerkit** :
 
 Kun yritetään hakea myyntitapahtumaa id:llä "d".
 

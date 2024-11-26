@@ -82,7 +82,7 @@ Tapahtuma, jonka id on 8 ja jolle ei ole tallennettu tietoja.
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältöesimerkit**
+**Sisältöesimerkit** :
 
 Kun yritetään poistaa tapahtumaa id:llä "x".
 
