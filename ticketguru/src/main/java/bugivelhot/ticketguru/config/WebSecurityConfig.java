@@ -48,8 +48,8 @@ public class WebSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         List<UserDetails> users = new ArrayList<>();
-        users.add(User.builder().username("user").password(passwordEncoder().encode("user")).roles("USER").build());
-        users.add(User.builder().username("admin").password(passwordEncoder().encode("admin")).roles("ADMIN").build());
+        users.add(User.builder().username("pekka").password(passwordEncoder().encode("pekka321")).roles("USER").build());
+        users.add(User.builder().username("admin").password(passwordEncoder().encode("admin321")).roles("ADMIN").build());
         return new InMemoryUserDetailsManager(users);
     }
 
