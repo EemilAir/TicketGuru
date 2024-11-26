@@ -239,10 +239,22 @@ Tämän lisäksi
 
 ## Testaus
 
-Tässä kohdin selvitetään, miten ohjelmiston oikea toiminta varmistetaan
-testaamalla projektin aikana: millaisia testauksia tehdään ja missä vaiheessa.
-Testauksen tarkemmat sisällöt ja testisuoritusten tulosten raportit kirjataan
-erillisiin dokumentteihin.
+Projektissa käytettujen testien on tarkoitus testata sovelluksen tärkeimpien elementtien toimintaa ja varmistaa ohjelmiston oikea toiminta. **Yksikkötesteillä** on varmistettu yksittäisten komponenttien ja luokkien toiminta erillään muista järjestelmän osista. **Integraatiotesteillä** on testattu useiden komponenttien toimintaa yhdessä ja varmistettu niiden yhteistoiminnan sujuvuus. **End-to-end** testauksella on varmistettu koko järjestelmän oikeanlainen toiminta käyttäjän näkökulmasta. Alla listattuna projektiin tehtyjä testejä:
+
+- **Yksikkötestaus**: Yksikkötestauksessa on käytetty JUnit kirjastoa automaattisten ja eristettyjen testitapauksien toteuttamiseksi
+    
+    - `TapahtumaTest` testaa, että `Tapahtuma`-luokan attribuutit luodaan ja päivittyvät oikein ja että validointisäännöt toimivat (esim. nimi ei voi olla alle 3 merkkiä pitkä).
+    - `MyyntitapahtumaTest` testaa, että `Myyntitapahtuma`-luokan attribuutit luodaan ja päivittyvät oikein ja että validointisäännöt toimivat (esim. summa ei voi olla negatiivinen).
+>
+- **Integraatiotestaus**: Integraatiotestauksessa on käytetty Spring Boot Test- ja MockMvc-kirjastoja mahdollistamaan useamman eri komponentin yhteisen toiminnan testaamisen.
+ 
+    - `TapahtumaRestControllerTest` testaa `TapahtumaRestController`-luokan endpointteja ja samalla testaa eri käyttäjäroolien toimintaa. (esim. ADMIN-roolilla pystyy poistamaan tapahtuman, mutta USER-roolilla ei pysty).
+    - `MyyntitapahtumaRestControllerTest` testaa `MyyntitapahtumaRestController`-luokan endpointteja luomalla testimyyntitapahtuman, lähettämällä sen POST-pyynnöllä ja tarkastamalla, että luodun myyntitapahtuman tiedot tallentuvat oikein.
+    - `MyyntitapahtumaIntegrationTest` testaa myyntitapahtuman luontia ja hakua tietokannasta, varmistaa että myyntitapahtuman tiedot tallentuvat, ja testaa myös vähän validointia (Myyntitapahtuman luonti epäonnistuu, jos kayttajaId on tyhjä).
+>
+- **End-to-end-testaus**:  
+
+Testauksen tarkemmat sisällöt ja testisuoritusten tulosten raportit kirjataan erillisiin dokumentteihin.
 
 Tänne kirjataan myös lopuksi järjestelmän tunnetut ongelmat, joita ei ole korjattu.
 
