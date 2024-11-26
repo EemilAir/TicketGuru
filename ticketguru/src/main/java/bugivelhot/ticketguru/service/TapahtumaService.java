@@ -177,29 +177,37 @@ public class TapahtumaService {
                         .orElseThrow(() -> new ResourceNotFoundException("Osoite ei löydy")));
             }
 
-            // Päivitä tai lisää lipputyypit tapahtumalle vain, jos DTO:ssa on lipputyyppejä
             List<TapahtumanLipputyyppi> updatedTapahtumanLipputyypit = muokattuTapahtumaDTO.getLipputyypit() != null
-                    ? muokattuTapahtumaDTO.getLipputyypit().stream().map(dto -> {
-                        // Hae lipputyyppi tai luo uusi
-                        Lipputyyppi lipputyyppi = lipputyyppiRepository.findById(dto.getId()).orElse(new Lipputyyppi());
-                        lipputyyppi.setLipputyyppiNimi(dto.getLipputyyppiNimi());
-                        lipputyyppi.setKuvaus(dto.getKuvaus());
+            ? muokattuTapahtumaDTO.getLipputyypit().stream().map(dto -> {
+                // Find existing TapahtumanLipputyyppi or create new
+                TapahtumanLipputyyppiId tapahtumanLipputyyppiId = new TapahtumanLipputyyppiId();
+                tapahtumanLipputyyppiId.setLipputyyppiId(dto.getId());
+                tapahtumanLipputyyppiId.setTapahtumaId(tapahtuma.getTapahtumaId());
 
-                        // Luo tai päivitä TapahtumanLipputyyppi
-                        TapahtumanLipputyyppi tapahtumanLipputyyppi = new TapahtumanLipputyyppi();
+                // Try to find existing TapahtumanLipputyyppi
+                TapahtumanLipputyyppi tapahtumanLipputyyppi = tapahtumanLipputyyppiRepository
+                    .findById(tapahtumanLipputyyppiId)
+                    .orElseGet(() -> {
+                        // If not found, create new with basic setup
+                        TapahtumanLipputyyppi uusi = new TapahtumanLipputyyppi();
+                        uusi.setId(tapahtumanLipputyyppiId);
+                        uusi.setTapahtuma(tapahtuma);
+                        uusi.setLipputyyppi(lipputyyppiRepository.findById(dto.getId())
+                            .orElseThrow(() -> new ResourceNotFoundException("Lipputyyppi not found with id: " + dto.getId())));
+                        return uusi;
+                    });
 
-                        TapahtumanLipputyyppiId tapahtumanLipputyyppiId = new TapahtumanLipputyyppiId();
-                        tapahtumanLipputyyppiId.setLipputyyppiId(dto.getId()); // DTO:n lipputyyppiId
-                        tapahtumanLipputyyppiId.setTapahtumaId(tapahtuma.getTapahtumaId()); // Tapahtuman id
+                // Update only provided fields
+                if (dto.getHinta() != 0.0) {
+                    tapahtumanLipputyyppi.setHinta(dto.getHinta());
+                }
+                if (dto.getKuvaus() != null) {
+                    tapahtumanLipputyyppi.getLipputyyppi().setKuvaus(dto.getKuvaus());
+                }
 
-                        tapahtumanLipputyyppi.setId(tapahtumanLipputyyppiId);
-                        tapahtumanLipputyyppi.setLipputyyppi(lipputyyppi);
-                        tapahtumanLipputyyppi.setTapahtuma(tapahtuma);
-                        tapahtumanLipputyyppi.setHinta(dto.getHinta());
-
-                        return tapahtumanLipputyyppi;
-                    }).collect(Collectors.toList())
-                    : new ArrayList<>(); // Jos lipputyypit on null, käytetään tyhjää listaa
+                return tapahtumanLipputyyppi;
+            }).collect(Collectors.toList())
+            : new ArrayList<>();
 
             // Päivitä tapahtuman lipputyypit
             tapahtuma.setTapahtumanLipputyypit(updatedTapahtumanLipputyypit);
