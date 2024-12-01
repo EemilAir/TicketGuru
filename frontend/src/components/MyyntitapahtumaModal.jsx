@@ -7,11 +7,10 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
         lipputyyppiId: lipputyyppi.id,
         maara: 0
     })));
+    const [summa, setSumma] = useState(0);
     const [myyntitapahtuma, setMyyntitapahtuma] = useState({
         maksutapaId: null,
-        kayttajaId: 1,
-        summa: 0,
-        tapahtumaId: tapahtuma.tapahtumaId,
+        kayttajaId: 2,
         liput: []
     });
 
@@ -20,7 +19,7 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
             try {
                 const response = await haeMaksutavat();
                 setMaksutavat(response);
-                setMyyntitapahtuma(prevState => ({ ...prevState, maksutapaId: response[0].maksutapaId }));
+                setMyyntitapahtuma(prevState => ({ ...prevState, maksutapaId: parseInt(response[0].maksutapaId) }));
             } catch (error) {
                 console.error("Failed to fetch maksutavat:", error);
             }
@@ -36,14 +35,14 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
         let summa = 0;
         myyntitapahtuma.liput.forEach(lippu => {
             const lipputyyppi = tapahtuma.lipputyypit.find(lt =>
-                lt.id.tapahtumaId === lippu.lipputyyppiId.tapahtumaId &&
-                lt.id.lipputyyppiId === lippu.lipputyyppiId.lipputyyppiId
+                lt.id.tapahtumaId === lippu.tapahtumaId &&
+                lt.id.lipputyyppiId === lippu.lipputyyppiId
             );
             if (lipputyyppi) {
                 summa += lipputyyppi.hinta * lippu.maara;
             }
         });
-        setMyyntitapahtuma(prevState => ({ ...prevState, summa }));
+        setSumma(summa);
     };
 
     const handleMaaraChange = (index, delta) => {
@@ -58,14 +57,18 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
 
         newLiput.forEach(newLippu => {
             const existingLippuIndex = updatedLiput.findIndex(lippu =>
-                lippu.lipputyyppiId.tapahtumaId === newLippu.lipputyyppiId.tapahtumaId &&
-                lippu.lipputyyppiId.lipputyyppiId === newLippu.lipputyyppiId.lipputyyppiId
+                lippu.tapahtumaId === newLippu.lipputyyppiId.tapahtumaId &&
+                lippu.lipputyyppiId === newLippu.lipputyyppiId.lipputyyppiId
             );
 
             if (existingLippuIndex !== -1) {
                 updatedLiput[existingLippuIndex].maara += newLippu.maara;
             } else {
-                updatedLiput.push(newLippu);
+                updatedLiput.push({
+                    tapahtumaId: newLippu.lipputyyppiId.tapahtumaId,
+                    lipputyyppiId: newLippu.lipputyyppiId.lipputyyppiId,
+                    maara: newLippu.maara
+                });
             }
         });
 
@@ -90,12 +93,9 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const myyntitapahtumaData = {
-            ...myyntitapahtuma,
-            liput: myyntitapahtuma.liput.filter(lippu => lippu.maara > 0)
-        };
+        if (myyntitapahtuma.liput.length === 0) return;
         try {
-            await onSell(myyntitapahtumaData);
+            await onSell(myyntitapahtuma);
             handleClose();
         } catch (error) {
             console.error("Selling tickets failed:", error);
@@ -131,8 +131,8 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
                                     <ul className="list-group mb-3">
                                         {myyntitapahtuma.liput.map((lippu, index) => (
                                             <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                                                {tapahtuma.lipputyypit.find(lt => lt.id.lipputyyppiId === lippu.lipputyyppiId.lipputyyppiId).nimi} - {lippu.maara} kpl
-                                                <span>{tapahtuma.lipputyypit.find(lt => lt.id.lipputyyppiId === lippu.lipputyyppiId.lipputyyppiId).hinta * lippu.maara} €</span>
+                                                {tapahtuma.lipputyypit.find(lt => lt.id.lipputyyppiId === lippu.lipputyyppiId).nimi} - {lippu.maara} kpl
+                                                <span>{tapahtuma.lipputyypit.find(lt => lt.id.lipputyyppiId === lippu.lipputyyppiId).hinta * lippu.maara} €</span>
                                                 <button type="button" className="btn btn-danger btn-sm" onClick={() => handleRemoveFromCart(index)}>Poista</button>
                                             </li>
                                         ))}
@@ -144,11 +144,11 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
                                     <label htmlFor="maksutapa" className="form-label">Maksutapa</label>
                                     <select className="form-control" id="maksutapa" value={myyntitapahtuma.maksutapaId} onChange={(e) => setMyyntitapahtuma({ ...myyntitapahtuma, maksutapaId: e.target.value })} required>
                                         {maksutavat.map((maksutapa, idx) => (
-                                            <option key={idx} value={maksutapa.maksutapaId}>{maksutapa.maksutapaNimi}</option>
+                                            <option key={idx} value={parseInt(maksutapa.maksutapaId)}>{maksutapa.maksutapaNimi}</option>
                                         ))}
                                     </select>
                                 </div>
-                                <p>Summa {myyntitapahtuma.summa} €</p>
+                                <p>Summa {summa} €</p>
                                 <button type="submit" className="btn btn-primary">Vahvista valinnat</button>
                             </form>
                         </div>

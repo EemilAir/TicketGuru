@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchTapahtumat } from '../api/tapahtumat';
-import { sellTickets } from '../api/maksutapahtuma';
+import { sellTickets } from '../api/myyntitapahtumat';
 import Tapahtuma from './Tapahtuma';
 
 import EditTapahtumaModal from './EditTapahtumaModal';
