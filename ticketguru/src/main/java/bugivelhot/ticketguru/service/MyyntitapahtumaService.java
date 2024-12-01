@@ -22,10 +22,14 @@ import bugivelhot.ticketguru.repository.MyyntitapahtumaRepository;
 import bugivelhot.ticketguru.repository.TapahtumaRepository;
 import bugivelhot.ticketguru.repository.TapahtumanLipputyyppiRepository;
 
+import org.springframework.boot.autoconfigure.jms.JmsProperties.Listener.Session;
 // Spring
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -45,16 +49,21 @@ public class MyyntitapahtumaService {
     private TapahtumanLipputyyppiRepository tapahtumaLipputyyppiRepository;
     private KayttajaRepository kayttajaRepository;
     private MaksutapaRepository maksutapaRepository;
+    private SessionService sessionService;
+    private KayttajaService KayttajaService;
 
     public MyyntitapahtumaService(MyyntitapahtumaRepository myyntitapahtumaRepository, LippuRepository lippuRepository,
             TapahtumaRepository tapahtumaRepository, TapahtumanLipputyyppiRepository tapahtumaLipputyyppiRepository,
-            KayttajaRepository kayttajaRepository, MaksutapaRepository maksutapaRepository) {
+            KayttajaRepository kayttajaRepository, MaksutapaRepository maksutapaRepository,
+            SessionService sessionService, KayttajaService KayttajaService) {
         this.myyntitapahtumaRepository = myyntitapahtumaRepository;
         this.lippuRepository = lippuRepository;
         this.tapahtumaRepository = tapahtumaRepository;
         this.tapahtumaLipputyyppiRepository = tapahtumaLipputyyppiRepository;
         this.kayttajaRepository = kayttajaRepository;
         this.maksutapaRepository = maksutapaRepository;
+        this.sessionService = sessionService;
+        this.KayttajaService = KayttajaService;
     }
 
     public MyyntitapahtumaResponseDTO mapToResponseDTO(Myyntitapahtuma myyntitapahtuma) {
@@ -86,11 +95,7 @@ public class MyyntitapahtumaService {
 
         // Hae käyttäjä, joka luo myyntitapahtuman, jos id on null tai käyttäjää ei
         // löydy se heittää virheen
-        Optional<Kayttaja> kayttajaOptional = kayttajaRepository.findById(dto.getKayttajaId());
-        if (!kayttajaOptional.isPresent()) {
-            throw new ResourceNotFoundException("Käyttäjää ei löydy");
-        }
-        Kayttaja kayttaja = kayttajaOptional.get();
+        Kayttaja kayttaja = KayttajaService.haeKayttajaIdlla(dto.getKayttajaId());
 
         // Luo uusi myyntitapahtuma ja aseta käyttäjä sille
         Myyntitapahtuma myyntitapahtuma = new Myyntitapahtuma();
@@ -167,7 +172,24 @@ public class MyyntitapahtumaService {
         myyntitapahtumaRepository.save(myyntitapahtuma);
 
         // Palautetaan myyntitapahtuma ja liput responseDTO-muodossa
-        return mapToResponseDTO(myyntitapahtuma);
+        MyyntitapahtumaResponseDTO responseDTO = new MyyntitapahtumaResponseDTO();
+        responseDTO.setMyyntitapahtumaId(myyntitapahtuma.getMyyntitapahtumaId());
+        responseDTO.setTapahtumaId(dto.getLiput().get(0).getTapahtumaId()); // Set tapahtumaId
+        responseDTO.setSumma(myyntitapahtuma.getSumma());
+        responseDTO.setMaksupvm(myyntitapahtuma.getMaksupvm());
+        responseDTO.setKayttajaId(myyntitapahtuma.getKayttaja().getKayttajaId());
+        responseDTO.setMaksutapa(myyntitapahtuma.getMaksutapa().getMaksutapaNimi());
+        responseDTO.setLiput(lippuLista.stream().map(lippu -> {
+            LippuResponseDTO lippuResponseDTO = new LippuResponseDTO();
+            lippuResponseDTO.setKoodi(lippu.getKoodi());
+            lippuResponseDTO.setTapahtumaId(lippu.getTapahtuma().getTapahtumaId());
+            lippuResponseDTO.setLipputyyppi(lippu.getLipputyyppi().getLipputyyppiNimi());
+            lippuResponseDTO.setTila(lippu.getLipunTila());
+            lippuResponseDTO.setKayttoaika(lippu.getKayttoaika());
+            return lippuResponseDTO;
+        }).collect(Collectors.toList()));
+
+        return responseDTO;
     }
 
     public List<MyyntitapahtumaResponseDTO> haeKaikkiMyyntitapahtumat(Double summa, String maksutapa,
@@ -187,7 +209,7 @@ public class MyyntitapahtumaService {
             myyntitapahtumat = myyntitapahtumaRepository.findAll();
         }
 
-        if(myyntitapahtumat.isEmpty()){
+        if (myyntitapahtumat.isEmpty()) {
             throw new ResourceNotFoundException("Myyntitapahtumia ei löytynyt");
         }
 
