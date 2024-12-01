@@ -18,7 +18,7 @@ public class LippuResponseDTO {
 
     // Tila on enum, jolle asetetaan aina joko 1 tai 2, validointi ei välttämättä tarpeellinen
     @NotNull(message = "Lipun tila ei voi olla tyhjä")
-    private Integer tila; // Lipun tila (esim. AKTIIVINEN, KÄYTETTY)
+    private Integer tila; // Lipun tila (esim. 1 aktiivinen, 0 käytetty)
 
     private LocalDateTime kayttoaika;
 

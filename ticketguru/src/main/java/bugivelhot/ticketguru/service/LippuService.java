@@ -40,9 +40,9 @@ public class LippuService {
     }
 
     @Transactional
-    public LippuResponseDTO paivitaLipunTila(Long lippuId, LippuPatchDTO dto) {
-        Lippu lippu = lippuRepository.findById(lippuId)
-            .orElseThrow(() -> new ResourceNotFoundException("Lippua ei löytynyt ID:llä " + lippuId));
+    public LippuResponseDTO paivitaLipunTila(String koodi, LippuPatchDTO dto) {
+        Lippu lippu = lippuRepository.findByKoodi(koodi)
+            .orElseThrow(() -> new ResourceNotFoundException("Lippua ei löytynyt koodilla " + koodi));
 
         // Tarkista, että tila on kelvollinen (esimerkiksi 0 tai 1)
         if (dto.getTila() == null || (dto.getTila() != 0 && dto.getTila() != 1)) {

@@ -34,10 +34,10 @@ public class LippuRestController {
     }
 
     @CrossOrigin
-    @PatchMapping("/{lippuId}")
+    @PatchMapping("/{koodi}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<LippuResponseDTO> paivitaLipunTila(@PathVariable Long lippuId, @RequestBody LippuPatchDTO dto) {
-        LippuResponseDTO updatedLippu = lippuService.paivitaLipunTila(lippuId, dto);
+    public ResponseEntity<LippuResponseDTO> paivitaLipunTila(@PathVariable("koodi") String koodi, @RequestBody LippuPatchDTO dto) {
+        LippuResponseDTO updatedLippu = lippuService.paivitaLipunTila(koodi, dto);
         return ResponseEntity.ok(updatedLippu);
     }
 }
