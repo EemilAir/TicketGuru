@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+
+import { useNavigate } from 'react-router';
+
 import { fetchTapahtumat } from '../api/tapahtumat';
 import { sellTickets } from '../api/myyntitapahtumat';
 import Tapahtuma from './Tapahtuma';
@@ -7,6 +10,8 @@ import EditTapahtumaModal from './EditTapahtumaModal';
 import MyyntitapahtumaModal from './MyyntitapahtumaModal';
 
 export default function Tapahtumat() {
+    let navigate = useNavigate();
+
     const [tapahtumat, setTapahtumat] = useState([]);
     const [selectedTapahtuma, setSelectedTapahtuma] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +48,18 @@ export default function Tapahtumat() {
     const handleSell = async (myyntitapahtuma) => {
         try {
             const response = await sellTickets(myyntitapahtuma);
-            console.log("Sold tickets:", response);
+            console.log("Tickets sold:", response);
+            const soldTicketCount = response.liput.length || 0;
+            const tapahtumaId = response.tapahtumaId;
+            const myyntitapahtumaId = response.myyntitapahtumaId;
+
+            setTapahtumat(tapahtumat.map(tapahtuma =>
+                tapahtuma.tapahtumaId === tapahtumaId
+                    ? { ...tapahtuma, lippujaJaljella: tapahtuma.lippujaJaljella - soldTicketCount }
+                    : tapahtuma
+            ));
+
+            navigate(`/myyntitapahtuma/${myyntitapahtumaId}`);
         } catch (error) {
             console.error("Failed to sell tickets:", error);
         }

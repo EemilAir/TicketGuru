@@ -1,63 +1,16 @@
-import { useState } from 'react';
-import { fetchLippuById, fetchLiput } from '../api/liput';
 import Lippu from './Lippu';
-import '../css/Liput.css';
 
-export default function Liput({ liput, setLiput, setError, setSuccess }) {
-
-    const [lippuId, setLippuId] = useState(null);
-
-    const handleFetchLiput = async () => {
-        try {
-            const liput = await fetchLiput();
-            setLiput(liput);
-        } catch (error) {
-            setError(error.message);
-        }
-    }
-
-    const handleFetchLippu = async (e) => {
-        e.preventDefault();
-        if (!lippuId) return;
-        try {
-            const lippu = await fetchLippuById(lippuId);
-            setLiput([lippu]);
-        } catch (error) {
-            setError(error.message);
-        }
-    }
-
+export default function Liput({ liput }) {
     return (
-        <div className='liput'>
-            <h1>Liput</h1>
-            <div>
-                <button onClick={handleFetchLiput}>Hae kaikki liput</button>
-            </div>
-            <form onSubmit={handleFetchLippu}>
-                <input
-                    type="number"
-                    id="lippu-id"
-                    placeholder='lipun id'
-                    min="1"
-                    onChange={(event) => setLippuId(event.target.value)}
-                    required />
-                <button type="submit">Hae Lippu</button>
-            </form>
-
-            <div className="lippu-list">
-                {liput && liput.length > 0 ? (
-                liput.map((lippu) => (
-                    <Lippu
-                    key={lippu.lippuId}
-                    lippu={lippu}
-                    setError={setError}
-                    setSuccess={setSuccess}
-                    />
-                ))
-                ) : (
-                <p>Ei lippuja</p>
-                )}
+        <div className='container'>
+            <h1 className="my-4">Liput</h1>
+            <div className="row">
+                {liput.map((lippu) => (
+                    <div key={lippu.koodi} className="col-md-4">
+                        <Lippu lippu={lippu} />
+                    </div>
+                ))}
             </div>
         </div>
-    )
+    );
 }

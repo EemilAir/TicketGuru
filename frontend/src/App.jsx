@@ -3,6 +3,7 @@ import { useAuth, AuthProvider } from "./components/AuthContext";
 import LoginForm from "./components/LoginForm";
 import Dashboard from "./components/Dashboard";
 import Tapahtumat from "./components/Tapahtumat";
+import Myyntitapahtuma from "./components/Myyntitapahtuma";
 import PrivateLayout from "./components/PrivateLayout";
 
 const App = () => {
@@ -26,6 +27,15 @@ const App = () => {
                             <PrivateLayout header="Tapahtumat">
                                 <PrivateRoute>
                                     <Tapahtumat />
+                                </PrivateRoute>
+                            </PrivateLayout>
+                        }
+                    />
+                    <Route path="/myyntitapahtuma/:id"
+                        element={
+                            <PrivateLayout>
+                                <PrivateRoute>
+                                    <Myyntitapahtuma />
                                 </PrivateRoute>
                             </PrivateLayout>
                         }

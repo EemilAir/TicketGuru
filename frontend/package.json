@@ -19,7 +19,8 @@
     "react-dom": "^18.3.1",
     "react-qr-code": "^2.0.15",
     "react-qr-scanner": "^1.0.0-alpha.11",
-    "react-router": "^7.0.1"
+    "react-router": "^7.0.1",
+    "react-to-print": "^3.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

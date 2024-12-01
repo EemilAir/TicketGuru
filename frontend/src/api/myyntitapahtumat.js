@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:8080/api/myyntitapahtumat/';
+const baseUrl = 'http://localhost:8080/api/myyntitapahtumat';
 
 export const sellTickets = async (myyntitapahtuma) => {
     console.log("Selling tickets:", myyntitapahtuma);
@@ -18,3 +18,13 @@ export const sellTickets = async (myyntitapahtuma) => {
         return null;
     }
 };
+
+export const fetchMyyntitapahtuma = async (id) => {
+    try {
+        const response = await axios.get(`${baseUrl}/${id}`, { withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.error("Fetching myyntitapahtuma failed:", error);
+        return null;
+    }
+}
