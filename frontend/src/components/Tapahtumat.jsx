@@ -1,11 +1,19 @@
 import { useEffect, useState } from 'react';
 import { fetchTapahtumat } from '../api/tapahtumat';
+import { sellTickets } from '../api/maksutapahtuma';
 import Tapahtuma from './Tapahtuma';
+
+import EditTapahtumaModal from './EditTapahtumaModal';
+import MyyntitapahtumaModal from './MyyntitapahtumaModal';
 
 export default function Tapahtumat() {
     const [tapahtumat, setTapahtumat] = useState([]);
+    const [selectedTapahtuma, setSelectedTapahtuma] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [search, setSearch] = useState('');
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showSellModal, setShowSellModal] = useState(false);
+
 
     useEffect(() => {
         const getTapahtumat = async () => {
@@ -32,9 +40,13 @@ export default function Tapahtumat() {
         ));
     };
 
-    const handleSellTickets = (id) => {
-        console.log(`Sell tickets for event with id: ${id}`);
-        // Implement sell tickets functionality here
+    const handleSell = async (myyntitapahtuma) => {
+        try {
+            const response = await sellTickets(myyntitapahtuma);
+            console.log("Sold tickets:", response);
+        } catch (error) {
+            console.error("Failed to sell tickets:", error);
+        }
     };
 
     const handleSearch = (event) => {
@@ -52,6 +64,26 @@ export default function Tapahtumat() {
     if (tapahtumat.length === 0) {
         return <p>No events found</p>
     }
+
+    const handleShowEditModal = (tapahtuma) => {
+        setShowEditModal(true);
+        setSelectedTapahtuma(tapahtuma);
+    };
+
+    const handleCloseEditModal = () => {
+        setShowEditModal(false);
+        setSelectedTapahtuma(null);
+    };
+
+    const handleShowSellModal = (tapahtuma) => {
+        setShowSellModal(true);
+        setSelectedTapahtuma(tapahtuma);
+    };
+
+    const handleCloseSellModal = () => {
+        setShowSellModal(false);
+        setSelectedTapahtuma(null);
+    };
 
     return (
         <div className="container mt-4">
@@ -72,12 +104,27 @@ export default function Tapahtumat() {
                         <Tapahtuma
                             tapahtuma={tapahtuma}
                             onDelete={handleDelete}
-                            onEdit={handleEdit}
-                            onSellTickets={handleSellTickets}
+                            openEditModal={() => handleShowEditModal(tapahtuma)}
+                            openSellModal={() => handleShowSellModal(tapahtuma)}
                         />
                     </div>
                 ))}
             </div>
+            {showEditModal &&
+                <EditTapahtumaModal
+                    show={showEditModal}
+                    handleClose={handleCloseEditModal}
+                    tapahtuma={selectedTapahtuma}
+                    onEdit={handleEdit}
+                />}
+            {showSellModal &&
+                <MyyntitapahtumaModal
+                    show={showSellModal}
+                    handleClose={handleCloseSellModal}
+                    tapahtuma={selectedTapahtuma}
+                    onSell={handleSell}
+                />
+            }
         </div>
     );
 }

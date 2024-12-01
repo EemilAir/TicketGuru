@@ -24,6 +24,7 @@ public class MaksutapaRestController {
     @GetMapping
     public ResponseEntity<List<Maksutapa>> haeKaikkiMaksutavat() {
         List<Maksutapa> maksutavat = maksutapaService.haeKaikkiMaksutavat();
+        maksutavat.forEach(maksutapa -> maksutapa.setMyyntitapahtumat(null));
         return ResponseEntity.ok(maksutavat);
     }
 }
