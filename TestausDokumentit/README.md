@@ -2,9 +2,7 @@
 
 ## Yleiskatsaus
 
-Tämä dokumentaatio kattaa **TicketGuru-projektin** testaustoiminnan ja testausympäristön kuvauksen. Projektissa on useita eri komponentteja, kuten REST-rajapintoja ja liiketoimintalogiikkaa, joita testataan yksikkötesteillä, integraatiotesteillä sekä API-testauksella.
-
-Testauksella varmistetaan, että projektin toiminnallisuus on virheetöntä, ja että kaikki rajapinnat, kuten **MyyntitapahtumaRestController** ja muut komponentit, toimivat odotetusti. Dokumentissa käsitellään käytetyt testausvälineet, testitapaukset sekä testausympäristön asetukset.
+Tämä dokumentaatio kattaa **TicketGuru-projektin** testaustoiminnan ja testausympäristön kuvauksen.
 
 Testauksen pääasialliset tavoitteet ovat:
 
@@ -19,7 +17,6 @@ Testauksen pääasialliset tavoitteet ovat:
 2. Entityt
     2.1 [MyyntitapahtumatTestit](entityt/MyyntitapahtumaTestit.md)
 
----* [Näytä tapahtumat](tapahtumat/get.md) : `GET /api/tapahtumat/`
 
 **Tärkeimmät testityökalut ja -menetelmät:**
 
