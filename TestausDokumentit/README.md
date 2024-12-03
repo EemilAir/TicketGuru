@@ -13,9 +13,11 @@ Testauksen pääasialliset tavoitteet ovat:
 ## Sisällysluettelo
 
 1. Controllerit
-    1.1 [MyyntitapahtumatRestControllerTestit](controllerit/MyyntitapahtumatRestControllerTestit.md)
+    1.1 [MyyntitapahtumaRestControllerTestit](controllerit/MyyntitapahtumaRestControllerTestit.md)
+    1.2 [TapahtumaRestControllerTestit](controllerit/TapahtumaRestControllerTestit.md)
 2. Entityt
-    2.1 [MyyntitapahtumatTestit](entityt/MyyntitapahtumaTestit.md)
+    2.1 [MyyntitapahtumaTestit](entityt/MyyntitapahtumaTestit.md)
+    2.2 [TapahtumaTestit](entityt/TapahtumaTestit.md)
 
 
 **Tärkeimmät testityökalut ja -menetelmät:**
@@ -29,9 +31,10 @@ Testauksen pääasialliset tavoitteet ovat:
 
 **Liittyvät tiedostot:**
 
-- **Controller**: `MyyntitapahtumaRestController.java`
+- **Controller**: `MyyntitapahtumaRestController.java`, `TapahtumaRestController.java`
 - **Service**: `MyyntitapahtumaService.java`
-- **Model**: `Myyntitapahtuma.java`, `Maksutapa.java`, `Kayttaja.java`
-- **Testitiedostot**: `MyyntitapahtumaRestControllerTest.java`, `MyyntitapahtumaTest.java`
+- **Repository**: `TapahtumaRepository.java`
+- **Model**: `Myyntitapahtuma.java`, `Maksutapa.java`, `Kayttaja.java`, `Tapahtuma.java`
+- **Testitiedostot**: `MyyntitapahtumaRestControllerTest.java`, `MyyntitapahtumaTest.java`, `TapahtumaRestControllerTest.java`, `TapahtumaTest.java`
 
 ---

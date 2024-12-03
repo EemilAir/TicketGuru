@@ -15,7 +15,7 @@ Tiimi: Jere Holopainen, Miikka Vartiainen, Jami Norja, Eemil Airaksinen, Anton A
     - **Tietokanta**: MySQL
     - **Vastauskoodit ja virhetilanteiden käsittely**: Mukautetut HTTP-vastauskoodit ja poikkeusten käsittely
     - **Autentikointi ja auktorisointi**: Spring Security
-    - **Yksikkötestaus ja integraatiotestaus**: JUnit, Spring Boot Test ja MockMvc
+    - **Yksikkötestaus ja integraatiotestaus**: JUnit, Spring Boot Test, MockMvc ja Mockito
     - **Julkaisu**: Rahti (Rahti.csc.fi)
 
 - **Käyttöliittymäratkaisut ja teknologiat:**
