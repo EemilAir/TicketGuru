@@ -14,13 +14,13 @@
 
 **1. Testi: Tapahtumien haku USER-roolilla (testGetTapahtumat)**
 
--**Kuvaus:** Testaa, että USER-roolilla näkee kaikki tapahtumat.
--**Polku:** GET /api/tapahtumat/
+- **Kuvaus:** Testaa, että USER-roolilla näkee kaikki tapahtumat.
+- **Polku:** GET /api/tapahtumat/
 
 **Odotettu tulos:** 
 
--**HTTP-statuskoodi:** 200 OK
--**Vastaus JSON-muodossa:**
+- **HTTP-statuskoodi:** 200 OK
+- **Vastaus JSON-muodossa:**
 
 ```json
 {
@@ -77,8 +77,8 @@ Myös muut tietokannasta löytyvät tapahtumat olisivat listattuna tämän tapah
 
 **Odotettu tulos:** 
 
--**HTTP-statuskoodi:** 204 No Content
--**Vastaus JSON-muodossa:**
+- **HTTP-statuskoodi:** 204 No Content
+- **Vastaus JSON-muodossa:**
 
 ```json
 {}

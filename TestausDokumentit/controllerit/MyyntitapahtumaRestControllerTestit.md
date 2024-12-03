@@ -15,9 +15,9 @@
 
 **1. Testi: Myyntitapahtuman luominen**
 
--**Kuvaus:** Testaa myyntitapahtuman luontia POST:lla.
--**Polku:** POST /api/myyntitapahtumat/
--**Syöte:**
+- **Kuvaus:** Testaa myyntitapahtuman luontia POST:lla.
+- **Polku:** POST /api/myyntitapahtumat/
+- **Syöte:**
 
 ```json
 {
@@ -35,8 +35,8 @@ MyyntitapahtumaService.luoMyyntitapahtumaJaLiput() palauttaa testidatan.
 
 **Odotettu tulos:**
 
--**HTTP-statuskoodi:** 201 Created
--**Vastaus JSON-muodossa:**
+- **HTTP-statuskoodi:** 201 Created
+- **Vastaus JSON-muodossa:**
 
 ```json
 {

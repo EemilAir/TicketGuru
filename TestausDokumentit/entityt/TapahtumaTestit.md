@@ -38,10 +38,10 @@ assertEquals(100, tapahtuma.getLippujaJaljella());
 
 **2. Testi: Tapahtuman päivitys (shouldUpdateAttributesCorrectly)**
 
-### Kuvaus:
+- **Kuvaus:**
 Testaa, että tapahtuman attribuutit päivittyvät oikein.
 
-### Syöte:
+- **Syöte:**
 Muutetaan tapahtuman attribuutteja seuraavilla metodeilla:
 - `setNimi()`
 - `setKuvaus()`
@@ -74,10 +74,10 @@ assertEquals(200, tapahtuma.getLippujaJaljella());
 
 **3. Testi: Tapahtuman nimen validointi (shouldNotAcceptNullNimi)**
 
-### Kuvaus:
+- **Kuvaus:**
 Testaa, että tapahtuman nimi ei voi olla null.
 
-### Syöte:
+- **Syöte:**
 Asetetaan tapahtuman nimi-arvoksi `null`.
 
 ### Odotettu tulos:
@@ -95,10 +95,10 @@ assertEquals("Tapahtuman nimi ei voi olla tyhjä", violation.getMessage());
 
 **4. Testi: Tapahtuman nimen validointi (shouldNotAcceptTooShortNimi)**
 
-### Kuvaus:
+- **Kuvaus:**
 Testaa, että tapahtuman nimi ei voi olla kolmea merkkiä lyhyempi.
 
-### Syöte:
+- **Syöte:**
 Asetetaan tapahtuman nimeksi `Ta`.
 
 ### Odotettu tulos:
