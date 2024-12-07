@@ -11,8 +11,5 @@ public interface MyyntitapahtumaRepository extends JpaRepository<Myyntitapahtuma
     List<Myyntitapahtuma> findByMaksutapa_MaksutapaNimiContainingIgnoreCase(String maksutapaNimi); // metodin nimeä muutettu, koska maksutavan nimi on muutettu -> maksutapaNimi. Spring Boot ei osaa muuttaa tätä automaattisesti.
     List<Myyntitapahtuma> findByKayttajaKayttajanimiContainingIgnoreCase(String kayttaja);
     List<Myyntitapahtuma> findBySummaAndMaksutapa_MaksutapaNimiContainingIgnoreCase(Double summa, String maksutapaNimi); // metodin nimeä muutettu, koska maksutavan nimi on muutettu -> maksutapaNimi. Spring Boot ei osaa muuttaa tätä automaattisesti.
-   
-    /*TODO:  
-    Muut mahdolliset haut
-    */
+    List<Myyntitapahtuma> findByTapahtuma_TapahtumaId(Long tapahtumaId);
 }

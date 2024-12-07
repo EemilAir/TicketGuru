@@ -43,19 +43,20 @@ import java.util.List;
 @Validated
 public class MyyntitapahtumaService {
 
-    private MyyntitapahtumaRepository myyntitapahtumaRepository;
-    private LippuRepository lippuRepository;
-    private TapahtumaRepository tapahtumaRepository;
-    private TapahtumanLipputyyppiRepository tapahtumaLipputyyppiRepository;
-    private KayttajaRepository kayttajaRepository;
-    private MaksutapaRepository maksutapaRepository;
-    private SessionService sessionService;
-    private KayttajaService KayttajaService;
+    private final MyyntitapahtumaRepository myyntitapahtumaRepository;
+    private final LippuRepository lippuRepository;
+    private final TapahtumaRepository tapahtumaRepository;
+    private final TapahtumanLipputyyppiRepository tapahtumaLipputyyppiRepository;
+    private final KayttajaRepository kayttajaRepository;
+    private final MaksutapaRepository maksutapaRepository;
+    private final SessionService sessionService;
+    private final KayttajaService kayttajaService;
+    private final TapahtumaService tapahtumaService;
 
     public MyyntitapahtumaService(MyyntitapahtumaRepository myyntitapahtumaRepository, LippuRepository lippuRepository,
             TapahtumaRepository tapahtumaRepository, TapahtumanLipputyyppiRepository tapahtumaLipputyyppiRepository,
             KayttajaRepository kayttajaRepository, MaksutapaRepository maksutapaRepository,
-            SessionService sessionService, KayttajaService KayttajaService) {
+            SessionService sessionService, KayttajaService kayttajaService, TapahtumaService tapahtumaService) {
         this.myyntitapahtumaRepository = myyntitapahtumaRepository;
         this.lippuRepository = lippuRepository;
         this.tapahtumaRepository = tapahtumaRepository;
@@ -63,7 +64,8 @@ public class MyyntitapahtumaService {
         this.kayttajaRepository = kayttajaRepository;
         this.maksutapaRepository = maksutapaRepository;
         this.sessionService = sessionService;
-        this.KayttajaService = KayttajaService;
+        this.kayttajaService = kayttajaService;
+        this.tapahtumaService = tapahtumaService;
     }
 
     public MyyntitapahtumaResponseDTO mapToResponseDTO(Myyntitapahtuma myyntitapahtuma) {
@@ -73,6 +75,7 @@ public class MyyntitapahtumaService {
         responseDTO.setMaksupvm(myyntitapahtuma.getMaksupvm());
         responseDTO.setKayttajaId(myyntitapahtuma.getKayttaja().getKayttajaId());
         responseDTO.setMaksutapa(myyntitapahtuma.getMaksutapa().getMaksutapaNimi());
+        responseDTO.setTapahtumaId(myyntitapahtuma.getTapahtuma().getTapahtumaId());
 
         List<Lippu> lippuLista = lippuRepository.findByMyyntitapahtuma(myyntitapahtuma);
         List<LippuResponseDTO> lippuResponseDTOLista = lippuLista.stream().map(lippu -> {
@@ -89,20 +92,20 @@ public class MyyntitapahtumaService {
         return responseDTO;
     }
 
-    @Transactional // Pitää huolen, että kaikki operaatiot suoritetaan yhdessä transaktiossa, jos
-                   // jokin niistä epäonnistuu, niin kaikki peruutetaan
+    @Transactional // Pitää huolen, että kaikki operaatiot suoritetaan yhdessä transaktiossa, jos jokin niistä epäonnistuu, niin kaikki peruutetaan
     public MyyntitapahtumaResponseDTO luoMyyntitapahtumaJaLiput(@Valid MyyntitapahtumaJaLiputDTO dto) {
 
         // Hae käyttäjä, joka luo myyntitapahtuman, jos id on null tai käyttäjää ei
         // löydy se heittää virheen
-        Kayttaja kayttaja = KayttajaService.haeKayttajaIdlla(dto.getKayttajaId());
+        Kayttaja kayttaja = kayttajaService.haeKayttajaIdlla(dto.getKayttajaId());
 
-        // Luo uusi myyntitapahtuma ja aseta käyttäjä sille
+        // haetaan tapahtuma, johon liput liittyvät, jos id on null tai tapahtumaa ei löydy se heittää virheen
+        Tapahtuma tapahtuma = tapahtumaService.haeTapahtumaIdlla(dto.getTapahtumaId());
+        
+        // Luo uusi myyntitapahtuma ja aseta sille käyttäjä ja tapahtuma
         Myyntitapahtuma myyntitapahtuma = new Myyntitapahtuma();
         myyntitapahtuma.setKayttaja(kayttaja);
-
-        // Tallenna myyntitapahtuma
-        myyntitapahtuma = myyntitapahtumaRepository.save(myyntitapahtuma);
+        myyntitapahtuma.setTapahtuma(tapahtuma);
 
         // Luo ja tallenna liput
         List<Lippu> lippuLista = new ArrayList<>();
@@ -116,13 +119,6 @@ public class MyyntitapahtumaService {
             if (lippuDTO.getMaara() < 1) {
                 throw new IllegalArgumentException("Lippujen määrä ei voi olla pienempi kuin 1");
             }
-
-            // Hae tapahtuma tietokannasta ja heitä virhe jos tapahtumaa ei löydy
-            Optional<Tapahtuma> tapahtumaOptional = tapahtumaRepository.findById(lippuDTO.getTapahtumaId());
-            if (!tapahtumaOptional.isPresent()) {
-                throw new ResourceNotFoundException("Tapahtumaa ei löydy");
-            }
-            Tapahtuma tapahtuma = tapahtumaOptional.get();
 
             // Hae tapahtuman ja lipputyypin yhdistelmä (TapahtumaLipputyyppi) ja heitä
             // virhe jos ei löydy
@@ -213,6 +209,17 @@ public class MyyntitapahtumaService {
             throw new ResourceNotFoundException("Myyntitapahtumia ei löytynyt");
         }
 
+        return myyntitapahtumat.stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<MyyntitapahtumaResponseDTO> haeMyyntitapahtumatTapahtumalle(Long tapahtumaId) {
+        List<Myyntitapahtuma> myyntitapahtumat = myyntitapahtumaRepository.findByTapahtuma_TapahtumaId(tapahtumaId);
+
+        if (myyntitapahtumat.isEmpty()) {
+            throw new ResourceNotFoundException("Myyntitapahtumia ei löytynyt tapahtumalle ID: " + tapahtumaId);
+        }
         return myyntitapahtumat.stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());

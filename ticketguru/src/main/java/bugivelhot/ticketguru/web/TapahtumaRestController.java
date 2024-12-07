@@ -100,4 +100,14 @@ public class TapahtumaRestController {
         formData.put("lipputyypit", lipputyyppiService.haeKaikkiLipputyypit());
         return ResponseEntity.ok(formData);
     }
+
+    // TODO: haetaan myyntitapahtumat tapahtuman ID:llä
+    /* @GetMapping({"/{id}/myyntitapahtumat/", "/{id}/myyntitapahtumat"})
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<Object> haeTapahtumanMyyntitapahtumat(@PathVariable("id") Long id) {
+        Tapahtuma tapahtuma = tapahtumaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Tapahtumaa ei löytynyt ID:llä " + id)); // 404 Not
+                                                                                                          // Found
+        return ResponseEntity.ok(tapahtumaService.haeTapahtumanMyyntitapahtumat(tapahtuma));
+    } */
 }

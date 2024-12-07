@@ -28,7 +28,8 @@ public class Tapahtuma {
 
     // tietokantataulun kentät
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Määrittää, että tapahtumaId on pääavain ja se generoidaan automaattisesti
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Määrittää, että tapahtumaId on pääavain ja se generoidaan
+                                                        // automaattisesti
     private Long tapahtumaId;
 
     @NotBlank(message = "Tapahtuman nimi ei voi olla tyhjä")
@@ -57,7 +58,7 @@ public class Tapahtuma {
     @PositiveOrZero(message = "LippujaJaljella on oltava positiivinen tai nolla")
     private Integer lippujaJaljella;
 
-    @JsonIgnore //TempFix
+    @JsonIgnore // TempFix
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "osoite_id")
@@ -68,13 +69,17 @@ public class Tapahtuma {
     @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
     private List<Lippu> liput;
 
-    @JsonIgnore //TempFix
+    @JsonIgnore // TempFix
     @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<TapahtumanLipputyyppi> tapahtumanLipputyypit;
 
+    @OneToMany(mappedBy = "tapahtuma", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Myyntitapahtuma> myyntitapahtumat;
+
     public Tapahtuma(String nimi, String kuvaus, String kategoria, LocalDateTime aloituspvm, LocalDateTime lopetuspvm,
-    String katuosoite, Osoite osoite, Integer lippujaJaljella) {
+            String katuosoite, Osoite osoite, Integer lippujaJaljella) {
         this.nimi = nimi;
         this.kuvaus = kuvaus;
         this.kategoria = kategoria;
@@ -177,11 +182,12 @@ public class Tapahtuma {
         this.tapahtumanLipputyypit = tapahtumanLipputyypit;
     }
 
-    @Override
-    public String toString() {
-        return "Tapahtuma [tapahtumaId=" + tapahtumaId + ", nimi=" + nimi + ", kuvaus=" + kuvaus + ", kategoria="
-                + kategoria + ", aloituspvm=" + aloituspvm + ", lopetuspvm=" + lopetuspvm + ", katuosoite=" + katuosoite
-                + ", lippujaJaljella=" + lippujaJaljella + "]";
+    public List<Myyntitapahtuma> getMyyntitapahtumat() {
+        return myyntitapahtumat;
+    }
+
+    public void setMyyntitapahtumat(List<Myyntitapahtuma> myyntitapahtumat) {
+        this.myyntitapahtumat = myyntitapahtumat;
     }
 
 }

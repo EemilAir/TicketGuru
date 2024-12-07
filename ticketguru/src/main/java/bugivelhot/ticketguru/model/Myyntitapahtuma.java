@@ -10,7 +10,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.CascadeType;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -34,7 +33,6 @@ public class Myyntitapahtuma {
 
     @NotNull(message = "Maksupvm ei voi olla tyhjä")
     private LocalDateTime maksupvm;
-
     
     @ManyToOne
     @JsonBackReference
@@ -50,10 +48,10 @@ public class Myyntitapahtuma {
     @JsonManagedReference
     private List<Lippu> liput;
 
-    /* @ManyToOne
-    @JoinColumn(name = "myyntikanava_id")
-    @JsonManagedReference
-    private Myyntikanava myyntikanava; */
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "tapahtuma_id")
+    private Tapahtuma tapahtuma;
 
     // konstruktorit
     public Myyntitapahtuma() {
@@ -113,10 +111,14 @@ public class Myyntitapahtuma {
         this.liput = liput;
     }
 
-    @Override
-    public String toString() {
-        return "Myyntitapahtuma [myyntitapahtumaId=" + myyntitapahtumaId + ", summa=" + summa + ", maksupvm=" + maksupvm
-                + ", maksutapa=" + maksutapa + ", kayttaja=" + kayttaja /* + ", liput=" + liput */ + "]";
+    public Tapahtuma getTapahtuma() {
+        return tapahtuma;
     }
+
+    public void setTapahtuma(Tapahtuma tapahtuma) {
+        this.tapahtuma = tapahtuma;
+    }
+
+    
 
 }

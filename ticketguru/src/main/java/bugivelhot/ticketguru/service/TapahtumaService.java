@@ -178,36 +178,37 @@ public class TapahtumaService {
             }
 
             List<TapahtumanLipputyyppi> updatedTapahtumanLipputyypit = muokattuTapahtumaDTO.getLipputyypit() != null
-            ? muokattuTapahtumaDTO.getLipputyypit().stream().map(dto -> {
-                // Find existing TapahtumanLipputyyppi or create new
-                TapahtumanLipputyyppiId tapahtumanLipputyyppiId = new TapahtumanLipputyyppiId();
-                tapahtumanLipputyyppiId.setLipputyyppiId(dto.getId());
-                tapahtumanLipputyyppiId.setTapahtumaId(tapahtuma.getTapahtumaId());
+                    ? muokattuTapahtumaDTO.getLipputyypit().stream().map(dto -> {
+                        // Find existing TapahtumanLipputyyppi or create new
+                        TapahtumanLipputyyppiId tapahtumanLipputyyppiId = new TapahtumanLipputyyppiId();
+                        tapahtumanLipputyyppiId.setLipputyyppiId(dto.getId());
+                        tapahtumanLipputyyppiId.setTapahtumaId(tapahtuma.getTapahtumaId());
 
-                // Try to find existing TapahtumanLipputyyppi
-                TapahtumanLipputyyppi tapahtumanLipputyyppi = tapahtumanLipputyyppiRepository
-                    .findById(tapahtumanLipputyyppiId)
-                    .orElseGet(() -> {
-                        // If not found, create new with basic setup
-                        TapahtumanLipputyyppi uusi = new TapahtumanLipputyyppi();
-                        uusi.setId(tapahtumanLipputyyppiId);
-                        uusi.setTapahtuma(tapahtuma);
-                        uusi.setLipputyyppi(lipputyyppiRepository.findById(dto.getId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Lipputyyppi not found with id: " + dto.getId())));
-                        return uusi;
-                    });
+                        // Try to find existing TapahtumanLipputyyppi
+                        TapahtumanLipputyyppi tapahtumanLipputyyppi = tapahtumanLipputyyppiRepository
+                                .findById(tapahtumanLipputyyppiId)
+                                .orElseGet(() -> {
+                                    // If not found, create new with basic setup
+                                    TapahtumanLipputyyppi uusi = new TapahtumanLipputyyppi();
+                                    uusi.setId(tapahtumanLipputyyppiId);
+                                    uusi.setTapahtuma(tapahtuma);
+                                    uusi.setLipputyyppi(lipputyyppiRepository.findById(dto.getId())
+                                            .orElseThrow(() -> new ResourceNotFoundException(
+                                                    "Lipputyyppi not found with id: " + dto.getId())));
+                                    return uusi;
+                                });
 
-                // Update only provided fields
-                if (dto.getHinta() != 0.0) {
-                    tapahtumanLipputyyppi.setHinta(dto.getHinta());
-                }
-                if (dto.getKuvaus() != null) {
-                    tapahtumanLipputyyppi.getLipputyyppi().setKuvaus(dto.getKuvaus());
-                }
+                        // Update only provided fields
+                        if (dto.getHinta() != 0.0) {
+                            tapahtumanLipputyyppi.setHinta(dto.getHinta());
+                        }
+                        if (dto.getKuvaus() != null) {
+                            tapahtumanLipputyyppi.getLipputyyppi().setKuvaus(dto.getKuvaus());
+                        }
 
-                return tapahtumanLipputyyppi;
-            }).collect(Collectors.toList())
-            : new ArrayList<>();
+                        return tapahtumanLipputyyppi;
+                    }).collect(Collectors.toList())
+                    : new ArrayList<>();
 
             // Päivitä tapahtuman lipputyypit
             tapahtuma.setTapahtumanLipputyypit(updatedTapahtumanLipputyypit);
@@ -226,7 +227,8 @@ public class TapahtumaService {
         if (tapahtumaRepository.findTapahtumaByNimiContainingIgnoreCase(nimi).isPresent()) {
             throw new ResourceAlreadyExistsException("Tapahtuma on jo olemassa nimellä: " + nimi);
         }
-        Tapahtuma tapahtuma = new Tapahtuma(nimi, kuvaus, kategoria, aloitusPvm, lopetusPvm, katuosoite, osoite, lippujaJaljella);
+        Tapahtuma tapahtuma = new Tapahtuma(nimi, kuvaus, kategoria, aloitusPvm, lopetusPvm, katuosoite, osoite,
+                lippujaJaljella);
         return tapahtumaRepository.save(tapahtuma);
     }
 
@@ -244,76 +246,8 @@ public class TapahtumaService {
         return tapahtumaRepository.findTapahtumaByNimiContainingIgnoreCase(nimi).get();
     }
 
-    /*
-     * public Optional<Tapahtuma> muokkaaTapahtuma(Long id, Tapahtuma
-     * muokattuTapahtuma) {
-     * Optional<Tapahtuma> tapahtumaOptional = tapahtumaRepository.findById(id);
-     * 
-     * if (tapahtumaOptional.isPresent()) {
-     * Tapahtuma tapahtuma = tapahtumaOptional.get();
-     * 
-     * if (muokattuTapahtuma.getNimi() != null) {
-     * tapahtuma.setNimi(muokattuTapahtuma.getNimi());
-     * }
-     * if (muokattuTapahtuma.getKuvaus() != null) {
-     * tapahtuma.setKuvaus(muokattuTapahtuma.getKuvaus());
-     * }
-     * if (muokattuTapahtuma.getKategoria() != null) {
-     * tapahtuma.setKategoria(muokattuTapahtuma.getKategoria());
-     * }
-     * if (muokattuTapahtuma.getAloituspvm() != null) {
-     * tapahtuma.setAloituspvm(muokattuTapahtuma.getAloituspvm());
-     * }
-     * if (muokattuTapahtuma.getLopetuspvm() != null) {
-     * tapahtuma.setLopetuspvm(muokattuTapahtuma.getLopetuspvm());
-     * }
-     * if (muokattuTapahtuma.getKatuosoite() != null) {
-     * tapahtuma.setKatuosoite(muokattuTapahtuma.getKatuosoite());
-     * }
-     * if (muokattuTapahtuma.getLippujaJaljella() > 0) {
-     * tapahtuma.setLippujaJaljella(muokattuTapahtuma.getLippujaJaljella());
-     * }
-     * if (muokattuTapahtuma.getOsoite() != null) {
-     * tapahtuma.setOsoite(muokattuTapahtuma.getOsoite());
-     * }
-     * 
-     * return Optional.of(tapahtumaRepository.save(tapahtuma));
-     * }
-     * 
-     * throw new ResourceNotFoundException("Tapahtumaa ei löydy");
-     * }
-     * 
-     * public List<Tapahtuma> haeKaikkiTapahtumat(String nimi, String kategoria) {
-     * List<Tapahtuma> tapahtumat;
-     * 
-     * if (nimi != null && kategoria != null) {
-     * tapahtumat = tapahtumaRepository.
-     * findTapahtumatByNimiContainingIgnoreCaseAndKategoriaContainingIgnoreCase(
-     * nimi, kategoria);
-     * } else if (nimi != null) {
-     * tapahtumat =
-     * tapahtumaRepository.findTapahtumatByNimiContainingIgnoreCase(nimi);
-     * } else if (kategoria != null) {
-     * tapahtumat =
-     * tapahtumaRepository.findByKategoriaContainingIgnoreCase(kategoria);
-     * } else {
-     * tapahtumat = tapahtumaRepository.findAll();
-     * }
-     * 
-     * return tapahtumat;
-     * }
-     * 
-     * //TODO: TDO + Lipputyypit + Osoite
-     * public Tapahtuma lisaaTapahtuma(@Valid Tapahtuma tapahtuma) {
-     * // Tarkista, että kaikki tarvittavat tiedot ovat mukana
-     * if (tapahtuma.getNimi() == null || tapahtuma.getKategoria() == null ||
-     * tapahtuma.getAloituspvm() == null) {
-     * throw new
-     * IllegalArgumentException("Tapahtuman nimi, kategoria ja aloituspäivämäärä ovat pakollisia"
-     * );
-     * }
-     * // Tallenna tapahtuma ilman osoitetta ja lipputyyppiä
-     * return tapahtumaRepository.save(tapahtuma);
-     * }
-     */
+    public Tapahtuma haeTapahtumaIdlla(Long TapahtumaId) {
+        return tapahtumaRepository.findById(TapahtumaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Tapahtumaa ei löydy id:llä: " + TapahtumaId));
+    }
 }

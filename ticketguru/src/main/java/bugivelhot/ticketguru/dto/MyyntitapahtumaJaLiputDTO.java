@@ -15,6 +15,10 @@ public class MyyntitapahtumaJaLiputDTO {
     @Positive(message = "MaksutapaId ei voi olla negatiivinen")
     private Long maksutapaId; // maksutapa
 
+    @NotNull(message = "Tapahtuman ID ei voi olla tyhjä")
+    @Positive(message = "Tapahtuman ID ei voi olla negatiivinen")
+    private Long tapahtumaId; // tapahtuma
+
     @NotNull(message = "Lippuja tulee olla vähintään 1kpl myyntitapahtumassa")
     private List<LippuDTO> liput; // liput listana, sillä niitä voi olla useita samassa myyntitapahtumassa
 
@@ -36,6 +40,12 @@ public class MyyntitapahtumaJaLiputDTO {
     }
     public void setLiput(List<LippuDTO> liput) {
         this.liput = liput;
+    }
+    public Long getTapahtumaId() {
+        return tapahtumaId;
+    }
+    public void setTapahtumaId(Long tapahtumaId) {
+        this.tapahtumaId = tapahtumaId;
     }
     
 }

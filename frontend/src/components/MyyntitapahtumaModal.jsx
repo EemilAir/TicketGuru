@@ -16,7 +16,8 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
     const [myyntitapahtuma, setMyyntitapahtuma] = useState({
         maksutapaId: "",
         kayttajaId: 2,
-        liput: []
+        liput: [],
+        tapahtumaId: tapahtuma.tapahtumaId
     });
 
     useEffect(() => {
