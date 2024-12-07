@@ -13,22 +13,15 @@ export default function UusiTapahtuma() {
     const [isLoading, setIsLoading] = useState(true);
     const [tapahtumat, setTapahtumat] = useState([]);
     const [tapahtumaDTO, setTapahtumaDTO] = useState({
-        nimi: 'Testi',
-        kuvaus: 'Testi kuvaus',
-        kategoria: 'Testi',
+        nimi: '',
+        kuvaus: '',
+        kategoria: '',
         aloituspvm: '',
         lopetuspvm: '',
-        katuosoite: 'Testikatu 5',
+        katuosoite: '',
         lippujaJaljella: 1000,
         osoiteId: 1,
-        lipputyypit: [{
-            id: 1,
-            hinta: 0
-        },
-        {
-            id: 2,
-            hinta: 0
-        }]
+        lipputyypit: []
     });
     const [nimiExists, setNimiExists] = useState(false);
 
