@@ -31,23 +31,17 @@ public class AuthRestController {
 
     private final SessionService sessionService;
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
 
     public AuthRestController(SessionService sessionService, AuthenticationManager authenticationManager,
             UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         this.sessionService = sessionService;
         this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping({"/login", "/login/"})
     public ResponseEntity<Object> login(HttpServletResponse response, @RequestBody LoginRequest loginRequest) {
         try {
             // Authenticate the user
-            System.out.println(loginRequest.getUsername());
-            System.out.println(loginRequest.getPassword());
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 

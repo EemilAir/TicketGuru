@@ -68,7 +68,7 @@ export default function Tapahtumat() {
                     : tapahtuma
             ));
 
-            navigate(`/myyntitapahtuma/${myyntitapahtumaId}`);
+            navigate(`/myyntitapahtumat/${myyntitapahtumaId}`);
         } catch (error) {
             console.error("Failed to sell tickets:", error);
         }

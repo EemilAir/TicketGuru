@@ -1,6 +1,5 @@
 package bugivelhot.ticketguru.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -42,5 +41,15 @@ public class LippuRestController {
     public ResponseEntity<LippuResponseDTO> paivitaLipunTila(@PathVariable("koodi") String koodi, @RequestBody LippuPatchDTO dto) {
         LippuResponseDTO updatedLippu = lippuService.paivitaLipunTila(koodi, dto);
         return ResponseEntity.ok(updatedLippu);
+    }
+
+    @CrossOrigin
+    @GetMapping("/{koodi}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<LippuResponseDTO> paivitaLipunTilaQR(@PathVariable("koodi") String koodi, @RequestParam("tila") int tila) {
+        LippuPatchDTO dto = new LippuPatchDTO();
+        dto.setTila(tila);
+        LippuResponseDTO responseDTO = lippuService.paivitaLipunTila(koodi, dto);
+        return ResponseEntity.ok(responseDTO);
     }
 }

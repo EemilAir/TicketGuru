@@ -1,16 +1,14 @@
+import { Row, Col } from 'react-bootstrap';
 import Lippu from './Lippu';
 
-export default function Liput({ liput }) {
+export default function Liput({ liput, handleLipunTila }) {
     return (
-        <div className='container'>
-            <h1 className="my-4">Liput</h1>
-            <div className="row">
-                {liput.map((lippu) => (
-                    <div key={lippu.koodi} className="col-md-4">
-                        <Lippu lippu={lippu} />
-                    </div>
-                ))}
-            </div>
-        </div>
+        <Row>
+            {liput.map((lippu) => (
+                <Col key={lippu.koodi} xs={12} md={6} lg={4} className="mb-4">
+                    <Lippu lippu={lippu} handleLipunTila={handleLipunTila} />
+                </Col>
+            ))}
+        </Row>
     );
 }

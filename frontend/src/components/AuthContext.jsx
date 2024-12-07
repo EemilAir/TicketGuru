@@ -1,6 +1,5 @@
-import { createContext, useState, useContext, useEffect } from "react";
-import axios from "axios";
-
+import { createContext, useState, useContext, useEffect, useMemo } from "react";
+import { checkAuth, login, logout } from '../api/auth';
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -11,56 +10,54 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true); // Add loading state
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/auth/check-auth', { withCredentials: true })
-            .then((response) => {
-                if (response.status === 200 && response.data.username) {
-                    setIsAuthenticated(true);
-                    setUsername(response.data.username);
-                } else {
-                    setIsAuthenticated(false);
-                    setUsername(null);
-                }
-            })
-            .catch(() => {
+        const checkAuthentication = async () => {
+            try {
+                const response = await checkAuth();
+                setIsAuthenticated(true);
+                setUsername(response.username);
+            } catch (error) {
                 setIsAuthenticated(false);
                 setUsername(null);
-            })
-            .finally(() => {
-                setLoading(false); // Set loading to false after the check
-            });
+                console.error(error);
+            } finally {
+                setLoading(false); // Set loading to false when done
+            }
+        };
+        checkAuthentication();
     }, []);
 
-    const login = async (username, password) => {
+    const handleLogin = async (username, password) => {
         try {
-            const response = await axios.post('http://localhost:8080/api/auth/login', {
-                username,
-                password
-            }, {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                withCredentials: true
-            });
-
-            if (response.status === 200) {
-                setIsAuthenticated(true);
-                setUsername(response.data.username);
-            }
+            const response = await login(username, password);
+            setIsAuthenticated(true);
+            setUsername(response.data.username);
         } catch (error) {
-            console.error("Login failed:", error);
             setIsAuthenticated(false);
             setUsername(null);
+            console.error(error);
+        }
+    }
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            setIsAuthenticated(false);
+            setUsername(null);
+        } catch (error) {
+            console.error(error);
         }
     };
 
-    const logout = () => {
-        setIsAuthenticated(false);
-        setUsername(null);
-        axios.post('http://localhost:8080/api/auth/logout', {}, { withCredentials: true });
-    };
+    const contextValue = useMemo(() => ({
+        isAuthenticated,
+        username,
+        login: handleLogin,
+        logout: handleLogout,
+        loading
+    }), [isAuthenticated, username, loading]);
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, username, login, logout, loading }}>
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
     );

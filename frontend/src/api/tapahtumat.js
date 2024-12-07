@@ -50,6 +50,6 @@ export const luoTapahtuma = async (tapahtumaDTO) => {
         const response = await axios.post(baseUrl, JSON.stringify(tapahtumaDTO), { withCredentials: true, headers: { 'Content-Type': 'application/json' } });
         return response.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }

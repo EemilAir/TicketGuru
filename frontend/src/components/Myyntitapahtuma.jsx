@@ -1,52 +1,60 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { fetchMyyntitapahtuma } from '../api/myyntitapahtumat';
+import { Card, Spinner } from 'react-bootstrap';
 import Liput from './Liput';
+import { fetchMyyntitapahtuma } from '../api/myyntitapahtumat';
+import { formatDate } from '../utils/formatDate';
+import { updateLipunTila } from '../api/liput';
 
-function Myyntitapahtuma() {
+export default function Myyntitapahtuma() {
     const { id } = useParams();
-    const [myyntitapahtuma, setMyyntitapahtuma] = useState(null);
+    const [myyntitapahtuma, setMyyntitapahtuma] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const getMyyntitapahtuma = async () => {
             try {
-                const data = await fetchMyyntitapahtuma(id);
-                setMyyntitapahtuma(data);
-                setIsLoading(false);
+                const response = await fetchMyyntitapahtuma(id);
+                setMyyntitapahtuma(response);
             } catch (error) {
-                console.error("Fetching myyntitapahtuma failed:", error);
+                console.error("Error fetching myyntitapahtuma:", error);
+            } finally {
                 setIsLoading(false);
             }
-        }
+        };
         getMyyntitapahtuma();
     }, [id]);
 
-    const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
+    const handleLipunTila = async (koodi, tila) => {
+        try {
+            const response = await updateLipunTila(koodi, tila);
+            setMyyntitapahtuma((prev) => ({
+                ...prev,
+                liput: prev.liput.map(lippu => lippu.koodi === koodi ? response : lippu)
+            }));
+        } catch (error) {
+            console.error("Failed to update ticket:", error);
+        }
     };
 
     return (
-        <div className="container mt-5">
-            {isLoading && <div>Loading...</div>}
+        <>
+            {isLoading && <Spinner animation="border" />}
             {!isLoading && myyntitapahtuma &&
-                <div className="card">
-                    <div className="card-header">
+                <Card>
+                    <Card.Header>
                         <h1>Myyntitapahtuma: {myyntitapahtuma.myyntitapahtumaId}</h1>
-                    </div>
-                    <div className="card-body">
+                    </Card.Header>
+                    <Card.Body>
                         <p><strong>Summa:</strong> {myyntitapahtuma.summa} €</p>
                         <p><strong>Maksutapa:</strong> {myyntitapahtuma.maksutapa}</p>
                         <p><strong>Maksupäivämäärä:</strong> {formatDate(myyntitapahtuma.maksupvm)}</p>
                         <p><strong>Käyttäjä ID:</strong> {myyntitapahtuma.kayttajaId}</p>
-                        <p><strong>Tapahtuma ID:</strong> {myyntitapahtuma.tapahtumaId ? myyntitapahtuma.tapahtumaId : 'N/A'}</p>
-                        <Liput liput={myyntitapahtuma.liput} />
-                    </div>
-                </div>
+                        <p><strong>Tapahtuma ID:</strong> {myyntitapahtuma.tapahtumaId}</p>
+                        <Liput liput={myyntitapahtuma.liput} handleLipunTila={handleLipunTila} />
+                    </Card.Body>
+                </Card>
             }
-        </div>
+        </>
     );
 }
-
-export default Myyntitapahtuma;

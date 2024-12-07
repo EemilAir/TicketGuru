@@ -5,7 +5,7 @@ import { BarLoader } from 'react-spinners';
 import OsoiteValinta from './OsoiteValinta';
 import LipputyyppiValinta from './LipputyyppiValinta';
 import { useNavigate } from 'react-router';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
 export default function UusiTapahtuma() {
     const navigate = useNavigate();
@@ -53,7 +53,7 @@ export default function UusiTapahtuma() {
             [name]: numericValue
         }));
 
-        if(name === 'nimi'){
+        if (name === 'nimi') {
             const exists = tapahtumat.some(tapahtuma => tapahtuma.nimi.toLowerCase() === value.toLowerCase());
             setNimiExists(exists);
         }
@@ -82,7 +82,7 @@ export default function UusiTapahtuma() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(nimiExists) return;
+        if (nimiExists) return;
         try {
             await luoTapahtuma(tapahtumaDTO);
             navigate("/tapahtumat");
@@ -92,37 +92,35 @@ export default function UusiTapahtuma() {
     };
 
     return (
-        <Container className="mb-2">
-            <Form onSubmit={handleSubmit}>
-                <FormField
-                    label="Tapahtuman nimi"
-                    type="text"
-                    id="nimi"
-                    name="nimi"
-                    value={tapahtumaDTO.nimi}
-                    onChange={handleChange}
-                    required 
-                />
-                <FormField label="Tapahtuman kuvaus" type="textarea" id="kuvaus" name="kuvaus" value={tapahtumaDTO.kuvaus} onChange={handleChange} required />
-                <FormField label="Tapahtuman kategoria" type="text" id="kategoria" name="kategoria" value={tapahtumaDTO.kategoria} onChange={handleChange} required />
-                <FormField label="Aloituspäivämäärä" type="datetime-local" id="aloituspvm" name="aloituspvm" value={tapahtumaDTO.aloituspvm} onChange={handleChange} required />
-                <FormField label="Lopetuspäivämäärä" type="datetime-local" id="lopetuspvm" name="lopetuspvm" value={tapahtumaDTO.lopetuspvm} onChange={handleChange} required />
-                <FormField label="Katuosoite" type="text" id="katuosoite" name="katuosoite" value={tapahtumaDTO.katuosoite} onChange={handleChange} required />
-                <FormField label="Lippuja jäljellä" type="number" id="lippujaJaljella" name="lippujaJaljella" value={tapahtumaDTO.lippujaJaljella} onChange={handleChange} required />
-                {isLoading &&
-                    <div>
-                        <p>Ladataan osoitteet ja lipputyypit...</p>
-                        <BarLoader color="#6610f2" className='mb-2' />
-                    </div>
-                }
-                {!isLoading &&
-                    <>
-                        <OsoiteValinta osoitteet={osoitteet} tapahtumaDTO={tapahtumaDTO} handleChange={handleChange} />
-                        <LipputyyppiValinta lipputyypit={lipputyypit} tapahtumaDTO={tapahtumaDTO} handleChange={handleCheckboxChange} handleLipputyyppiChange={handleLipputyyppiChange} />
-                    </>
-                }
-                <Button variant="primary" type="submit">Lisää tapahtuma</Button>
-            </Form>
-        </Container>
+        <Form onSubmit={handleSubmit}>
+            <FormField
+                label="Tapahtuman nimi"
+                type="text"
+                id="nimi"
+                name="nimi"
+                value={tapahtumaDTO.nimi}
+                onChange={handleChange}
+                required
+            />
+            <FormField label="Tapahtuman kuvaus" type="textarea" id="kuvaus" name="kuvaus" value={tapahtumaDTO.kuvaus} onChange={handleChange} required />
+            <FormField label="Tapahtuman kategoria" type="text" id="kategoria" name="kategoria" value={tapahtumaDTO.kategoria} onChange={handleChange} required />
+            <FormField label="Aloituspäivämäärä" type="datetime-local" id="aloituspvm" name="aloituspvm" value={tapahtumaDTO.aloituspvm} onChange={handleChange} required />
+            <FormField label="Lopetuspäivämäärä" type="datetime-local" id="lopetuspvm" name="lopetuspvm" value={tapahtumaDTO.lopetuspvm} onChange={handleChange} required />
+            <FormField label="Katuosoite" type="text" id="katuosoite" name="katuosoite" value={tapahtumaDTO.katuosoite} onChange={handleChange} required />
+            <FormField label="Lippuja jäljellä" type="number" id="lippujaJaljella" name="lippujaJaljella" value={tapahtumaDTO.lippujaJaljella} onChange={handleChange} required />
+            {isLoading &&
+                <div>
+                    <p>Ladataan osoitteet ja lipputyypit...</p>
+                    <BarLoader color="#6610f2" className='mb-2' />
+                </div>
+            }
+            {!isLoading &&
+                <>
+                    <OsoiteValinta osoitteet={osoitteet} tapahtumaDTO={tapahtumaDTO} handleChange={handleChange} />
+                    <LipputyyppiValinta lipputyypit={lipputyypit} tapahtumaDTO={tapahtumaDTO} handleChange={handleCheckboxChange} handleLipputyyppiChange={handleLipputyyppiChange} />
+                </>
+            }
+            <Button variant="primary" type="submit">Lisää tapahtuma</Button>
+        </Form>
     );
 }

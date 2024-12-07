@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router";
-import { useAuth, AuthProvider } from "./components/AuthContext";
+import { useAuth } from "./components/AuthContext";
 import LoginForm from "./components/LoginForm";
 import Dashboard from "./components/Dashboard";
 import Tapahtumat from "./components/Tapahtumat";
@@ -9,51 +9,49 @@ import UusiTapahtuma from "./components/UusiTapahtuma";
 
 const App = () => {
     return (
-        <AuthProvider>
-            <Router>
-                <Routes>
-                    {/* Use PrivateRoute for protected route */}
-                    <Route path="/login" element={<PublicRoute><LoginForm /></PublicRoute>} />
-                    <Route path="/"
-                        element={
-                            <PrivateLayout header="Dashboard">
-                                <PrivateRoute>
-                                    <Dashboard />
-                                </PrivateRoute>
-                            </PrivateLayout>
-                        }
-                    />
-                    <Route path="/tapahtumat"
-                        element={
-                            <PrivateLayout header="Tapahtumat">
-                                <PrivateRoute>
-                                    <Tapahtumat />
-                                </PrivateRoute>
-                            </PrivateLayout>
-                        }
-                    />
-                    <Route path="/tapahtumat/uusi"
-                        element={
-                            <PrivateLayout header="Uusi tapahtuma">
-                                <PrivateRoute>
-                                    <UusiTapahtuma />
-                                </PrivateRoute>
-                            </PrivateLayout>
-                        }
-                    />
-                    <Route path="/myyntitapahtuma/:id"
-                        element={
-                            <PrivateLayout>
-                                <PrivateRoute>
-                                    <Myyntitapahtuma />
-                                </PrivateRoute>
-                            </PrivateLayout>
-                        }
-                    />
-                    <Route path="*" element={<CatchAllRoute />} />
-                </Routes>
-            </Router>
-        </AuthProvider>
+        <Router>
+            <Routes>
+                {/* Use PrivateRoute for protected route */}
+                <Route path="/login" element={<PublicRoute><LoginForm /></PublicRoute>} />
+                <Route path="/"
+                    element={
+                        <PrivateLayout header="Hallintapaneeli">
+                            <PrivateRoute>
+                                <Dashboard />
+                            </PrivateRoute>
+                        </PrivateLayout>
+                    }
+                />
+                <Route path="/tapahtumat"
+                    element={
+                        <PrivateLayout header="Tapahtumat">
+                            <PrivateRoute>
+                                <Tapahtumat />
+                            </PrivateRoute>
+                        </PrivateLayout>
+                    }
+                />
+                <Route path="/tapahtumat/uusi"
+                    element={
+                        <PrivateLayout header="Uusi tapahtuma">
+                            <PrivateRoute>
+                                <UusiTapahtuma />
+                            </PrivateRoute>
+                        </PrivateLayout>
+                    }
+                />
+                <Route path="/myyntitapahtumat/:id"
+                    element={
+                        <PrivateLayout>
+                            <PrivateRoute>
+                                <Myyntitapahtuma />
+                            </PrivateRoute>
+                        </PrivateLayout>
+                    }
+                />
+                <Route path="*" element={<CatchAllRoute />} />
+            </Routes>
+        </Router>
     );
 };
 
