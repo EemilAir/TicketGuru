@@ -39,7 +39,8 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(sessionManagement -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(true));
 
         return http.build();
     }
@@ -48,8 +49,10 @@ public class WebSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         List<UserDetails> users = new ArrayList<>();
-        users.add(User.builder().username("pekka").password(passwordEncoder().encode("pekka321")).roles("USER").build());
-        users.add(User.builder().username("admin").password(passwordEncoder().encode("admin321")).roles("ADMIN").build());
+        users.add(
+                User.builder().username("pekka").password(passwordEncoder().encode("pekka321")).roles("USER").build());
+        users.add(
+                User.builder().username("admin").password(passwordEncoder().encode("admin321")).roles("ADMIN").build());
         return new InMemoryUserDetailsManager(users);
     }
 
@@ -74,7 +77,8 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
