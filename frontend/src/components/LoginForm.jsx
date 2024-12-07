@@ -1,51 +1,47 @@
 import { useState } from 'react';
 import { useAuth } from './AuthContext';
+import { Form, Button, Card } from 'react-bootstrap';
 
 const LoginForm = () => {
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const {login} = useAuth();
+    const { login } = useAuth();
 
     const handleLogin = (e) => {
-       e.preventDefault();
-       login(username, password);
+        e.preventDefault();
+        login(username, password);
     };
 
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
-            <div className="card" style={{ width: "20rem" }}>
-                <div className="card-body">
-                    <h5 className="card-title text-center mb-4">Login</h5>
-                    <form onSubmit={handleLogin}>
-                        <div className="mb-3">
-                            <label htmlFor="username" className="form-label">Username</label>
-                            <input
+            <Card style={{ width: "20rem" }}>
+                <Card.Body>
+                    <Card.Title className="text-center mb-4">Login</Card.Title>
+                    <Form onSubmit={handleLogin}>
+                        <Form.Group className="mb-3" controlId="username">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control
                                 type="text"
-                                className="form-control"
-                                id="username"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="password" className="form-label">Password</label>
-                            <input
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="password">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
                                 type="password"
-                                className="form-control"
-                                id="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
-                        </div>
-                        <button type="submit" className="btn btn-primary w-100">Login</button>
-                    </form>
-                </div>
-            </div>
+                        </Form.Group>
+                        <Button variant="primary" type="submit" className="w-100">Login</Button>
+                    </Form>
+                </Card.Body>
+            </Card>
         </div>
-    )
+    );
 };
 
 export default LoginForm;

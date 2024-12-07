@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react';
+import { Modal, Button, Form, InputGroup, ListGroup } from 'react-bootstrap';
 import { haeMaksutavat } from '../api/maksutavat';
+import FormField from './FormField';
 
 export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onSell }) {
     const [maksutavat, setMaksutavat] = useState([]);
     const [liput, setLiput] = useState(tapahtuma.lipputyypit.map(lipputyyppi => ({
-        lipputyyppiId: lipputyyppi.id,
-        maara: 0
+        lipputyyppiId: lipputyyppi.id.lipputyyppiId,
+        tapahtumaId: lipputyyppi.id.tapahtumaId,
+        maara: 0,
+        nimi: lipputyyppi.nimi,
+        hinta: lipputyyppi.hinta
     })));
     const [summa, setSumma] = useState(0);
     const [myyntitapahtuma, setMyyntitapahtuma] = useState({
-        maksutapaId: null,
+        maksutapaId: "",
         kayttajaId: 2,
         liput: []
     });
@@ -34,10 +39,7 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
     const laskeSumma = () => {
         let summa = 0;
         myyntitapahtuma.liput.forEach(lippu => {
-            const lipputyyppi = tapahtuma.lipputyypit.find(lt =>
-                lt.id.tapahtumaId === lippu.tapahtumaId &&
-                lt.id.lipputyyppiId === lippu.lipputyyppiId
-            );
+            const lipputyyppi = liput.find(lt => lt.lipputyyppiId === lippu.lipputyyppiId && lt.tapahtumaId === lippu.tapahtumaId);
             if (lipputyyppi) {
                 summa += lipputyyppi.hinta * lippu.maara;
             }
@@ -56,39 +58,23 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
         const updatedLiput = [...myyntitapahtuma.liput];
 
         newLiput.forEach(newLippu => {
-            const existingLippuIndex = updatedLiput.findIndex(lippu =>
-                lippu.tapahtumaId === newLippu.lipputyyppiId.tapahtumaId &&
-                lippu.lipputyyppiId === newLippu.lipputyyppiId.lipputyyppiId
-            );
-
-            if (existingLippuIndex !== -1) {
-                updatedLiput[existingLippuIndex].maara += newLippu.maara;
+            const existingLippu = updatedLiput.find(lippu => lippu.lipputyyppiId === newLippu.lipputyyppiId && lippu.tapahtumaId === newLippu.tapahtumaId);
+            if (existingLippu) {
+                existingLippu.maara += newLippu.maara;
             } else {
-                updatedLiput.push({
-                    tapahtumaId: newLippu.lipputyyppiId.tapahtumaId,
-                    lipputyyppiId: newLippu.lipputyyppiId.lipputyyppiId,
-                    maara: newLippu.maara
-                });
+                updatedLiput.push(newLippu);
             }
         });
 
-        setMyyntitapahtuma(prevState => ({
-            ...prevState,
-            liput: updatedLiput
-        }));
-
-        setLiput(tapahtuma.lipputyypit.map(lipputyyppi => ({
-            lipputyyppiId: lipputyyppi.id,
-            maara: 0
-        })));
+        setMyyntitapahtuma(prevState => ({ ...prevState, liput: updatedLiput }));
+        // Nollataan liput-tilan määrät
+        setLiput(liput.map(lippu => ({ ...lippu, maara: 0 })));
     };
 
     const handleRemoveFromCart = (index) => {
-        const updatedLiput = myyntitapahtuma.liput.filter((_, i) => i !== index);
-        setMyyntitapahtuma(prevState => ({
-            ...prevState,
-            liput: updatedLiput
-        }));
+        const newLiput = [...myyntitapahtuma.liput];
+        newLiput.splice(index, 1);
+        setMyyntitapahtuma(prevState => ({ ...prevState, liput: newLiput }));
     };
 
     const handleSubmit = async (e) => {
@@ -103,58 +89,57 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
     };
 
     return (
-        <>
-            {show && <div className="modal-backdrop fade show"></div>}
-            <div className={`modal fade ${show ? 'show' : ''}`} style={{ display: show ? 'block' : 'none' }} tabIndex="-1" aria-labelledby="myyntitapahtumaModalLabel" aria-hidden={!show}>
-                <div className="modal-dialog modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="myyntitapahtumaModalLabel">Myy Lippuja {tapahtuma.nimi} tapahtumaan</h5>
-                            <button type="button" className="btn-close" aria-label="Close" onClick={handleClose}></button>
-                        </div>
-                        <div className="modal-body">
-                            <form onSubmit={handleSubmit}>
-                                {liput.map((lippu, index) => (
-                                    <div key={index} className="mb-3">
-                                        <label className="form-label">{tapahtuma.lipputyypit.find(lt => lt.id.lipputyyppiId === lippu.lipputyyppiId.lipputyyppiId).nimi} - {tapahtuma.lipputyypit.find(lt => lt.id.lipputyyppiId === lippu.lipputyyppiId.lipputyyppiId).hinta} €</label>
-                                        <div className="input-group">
-                                            <button type="button" className="btn btn-outline-secondary" onClick={() => handleMaaraChange(index, -1)}>-</button>
-                                            <input type="number" className="form-control" value={lippu.maara} readOnly />
-                                            <button type="button" className="btn btn-outline-secondary" onClick={() => handleMaaraChange(index, 1)}>+</button>
-                                        </div>
-                                    </div>
-                                ))}
-                                <button type="button" className="btn btn-secondary mb-3" onClick={handleAddToCart}>Lisää ostoskoriin</button>
-                                <hr />
-                                <h5>Ostoskorissa olevat liput</h5>
-                                {myyntitapahtuma.liput.length > 0 ? (
-                                    <ul className="list-group mb-3">
-                                        {myyntitapahtuma.liput.map((lippu, index) => (
-                                            <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                                                {tapahtuma.lipputyypit.find(lt => lt.id.lipputyyppiId === lippu.lipputyyppiId).nimi} - {lippu.maara} kpl
-                                                <span>{tapahtuma.lipputyypit.find(lt => lt.id.lipputyyppiId === lippu.lipputyyppiId).hinta * lippu.maara} €</span>
-                                                <button type="button" className="btn btn-danger btn-sm" onClick={() => handleRemoveFromCart(index)}>Poista</button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <p>Ostoskorissa ei ole lippuja.</p>
-                                )}
-                                <div className="mb-3">
-                                    <label htmlFor="maksutapa" className="form-label">Maksutapa</label>
-                                    <select className="form-control" id="maksutapa" value={myyntitapahtuma.maksutapaId} onChange={(e) => setMyyntitapahtuma({ ...myyntitapahtuma, maksutapaId: e.target.value })} required>
-                                        {maksutavat.map((maksutapa, idx) => (
-                                            <option key={idx} value={parseInt(maksutapa.maksutapaId)}>{maksutapa.maksutapaNimi}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <p>Summa {summa} €</p>
-                                <button type="submit" className="btn btn-primary">Vahvista valinnat</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
+        <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+            <Modal.Header closeButton>
+                <Modal.Title>Myy Lippuja {tapahtuma.nimi} tapahtumaan</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form onSubmit={handleSubmit}>
+                    {liput.map((lippu, index) => (
+                        <Form.Group key={index} className="mb-3">
+                            <Form.Label>
+                                {lippu.nimi} - {lippu.hinta} €
+                            </Form.Label>
+                            <InputGroup>
+                                <Button variant="outline-secondary" onClick={() => handleMaaraChange(index, -1)}>-</Button>
+                                <Form.Control type="number" value={lippu.maara} readOnly />
+                                <Button variant="outline-secondary" onClick={() => handleMaaraChange(index, 1)}>+</Button>
+                            </InputGroup>
+                        </Form.Group>
+                    ))}
+                    <Button variant="secondary" className="mb-3" onClick={handleAddToCart}>Lisää ostoskoriin</Button>
+                    <hr />
+                    <h5>Ostoskorissa olevat liput</h5>
+                    {myyntitapahtuma.liput.length > 0 ? (
+                        <ListGroup className="mb-3">
+                            {myyntitapahtuma.liput.map((lippu, index) => (
+                                <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center">
+                                    {liput.find(lt => lt.lipputyyppiId === lippu.lipputyyppiId && lt.tapahtumaId === lippu.tapahtumaId)?.nimi} - {lippu.maara} kpl
+                                    <span>{liput.find(lt => lt.lipputyyppiId === lippu.lipputyyppiId && lt.tapahtumaId === lippu.tapahtumaId)?.hinta * lippu.maara} €</span>
+                                    <Button variant="danger" size="sm" onClick={() => handleRemoveFromCart(index)}>Poista</Button>
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    ) : (
+                        <p>Ostoskorissa ei ole lippuja.</p>
+                    )}
+                    <FormField
+                        label="Maksutapa"
+                        type="select"
+                        id="maksutapaId"
+                        name="maksutapaId"
+                        value={myyntitapahtuma.maksutapaId}
+                        onChange={(e) => setMyyntitapahtuma({ ...myyntitapahtuma, maksutapaId: e.target.value })}
+                        options={maksutavat}
+                        optionKey={(option) => option.maksutapaId}
+                        optionValue={(option) => option.maksutapaId}
+                        optionLabel={(option) => option.maksutapaNimi}
+                        required
+                    />
+                    <p>Summa {summa} €</p>
+                    <Button variant="primary" type="submit">Vahvista myynti</Button>
+                </Form>
+            </Modal.Body>
+        </Modal>
     );
 }
