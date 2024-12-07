@@ -1,9 +1,7 @@
-    package bugivelhot.ticketguru.web;
-
+package bugivelhot.ticketguru.web;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +12,16 @@ import bugivelhot.ticketguru.dto.LipputyyppiResponseDTO;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 @RestController
-@RequestMapping("/api/lipputyypit/")
+@RequestMapping("/api/lipputyypit")
 public class LipputyyppiRestController {
 
-    @Autowired
-    private LipputyyppiService lipputyyppiService;
+    private final LipputyyppiService lipputyyppiService;
 
-    @GetMapping
+    public LipputyyppiRestController(LipputyyppiService lipputyyppiService) {
+        this.lipputyyppiService = lipputyyppiService;
+    }
+
+    @GetMapping({ "/", "" })
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<List<LipputyyppiResponseDTO>> haeKaikkiLipputyypit() {
         List<LipputyyppiResponseDTO> lipputyypit = lipputyyppiService.haeKaikkiLipputyypit();
@@ -28,7 +29,7 @@ public class LipputyyppiRestController {
     }
 
     // POST: http://localhost:8080/api/lipputyypit
-    @PostMapping
+    @PostMapping({ "/", "" })
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<LipputyyppiResponseDTO> luoLipputyyppi(@RequestBody LipputyyppiDTO lipputyyppiDTO) {
         LipputyyppiResponseDTO luotuLipputyyppi = lipputyyppiService.luoLipputyyppi(lipputyyppiDTO);
@@ -36,12 +37,12 @@ public class LipputyyppiRestController {
     }
 
     // PATCH: http://localhost:8080/api/lipputyypit/{id}
-    @PatchMapping("/{id}")
+    @PatchMapping({ "/{id}", "/{id}/" })
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<LipputyyppiResponseDTO> paivitaLipputyyppi(
             @PathVariable("id") Long id,
             @RequestBody LipputyyppiDTO lipputyyppiDTO) {
-        
+
         LipputyyppiResponseDTO paivitettyLipputyyppi = lipputyyppiService.paivitaLipputyyppi(id, lipputyyppiDTO);
         if (paivitettyLipputyyppi == null) {
             throw new ResourceNotFoundException("Lipputyyppiä ei löydy ID:llä " + id);
@@ -50,7 +51,7 @@ public class LipputyyppiRestController {
     }
 
     // DELETE: http://localhost:8080/api/lipputyypit/{id}
-    @DeleteMapping("/{id}")
+    @DeleteMapping({ "/{id}", "/{id}/" })
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> poistaLipputyyppi(@PathVariable("id") Long id) {
         boolean poistettu = lipputyyppiService.poistaLipputyyppi(id);

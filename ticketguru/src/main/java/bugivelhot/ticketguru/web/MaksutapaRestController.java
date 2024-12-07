@@ -21,7 +21,7 @@ public class MaksutapaRestController {
     }
 
     // Tämä metodi palauttaa kaikki maksutavat
-    @GetMapping
+    @GetMapping({"/", ""})
     public ResponseEntity<List<Maksutapa>> haeKaikkiMaksutavat() {
         List<Maksutapa> maksutavat = maksutapaService.haeKaikkiMaksutavat();
         maksutavat.forEach(maksutapa -> maksutapa.setMyyntitapahtumat(null));

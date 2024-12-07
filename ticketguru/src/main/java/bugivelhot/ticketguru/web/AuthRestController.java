@@ -42,7 +42,7 @@ public class AuthRestController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/login")
+    @PostMapping({"/login", "/login/"})
     public ResponseEntity<Object> login(HttpServletResponse response, @RequestBody LoginRequest loginRequest) {
         try {
             // Authenticate the user
@@ -75,7 +75,7 @@ public class AuthRestController {
         }
     }
 
-    @GetMapping("/check-auth")
+    @GetMapping({"/check-auth", "/check-auth/"})
     public ResponseEntity<Map<String, String>> checkAuth(
             @CookieValue(name = "SESSIONID", defaultValue = "") String sessionId) {
         String username = sessionService.getSession(sessionId);
@@ -90,7 +90,7 @@ public class AuthRestController {
         }
     }
 
-    @PostMapping("/logout")
+    @PostMapping({"/logout", "/logout/"})
     public ResponseEntity<Map<String, String>> logout(HttpServletResponse response,
             @CookieValue(name = "SESSIONID", defaultValue = "") String sessionId) {
         sessionService.removeSession(sessionId); // Remove session from store

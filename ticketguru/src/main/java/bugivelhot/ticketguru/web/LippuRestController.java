@@ -23,18 +23,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/api/liput")
 public class LippuRestController {
 
-    @Autowired
-    private LippuService lippuService;
+    private final LippuService lippuService;
+
+    public LippuRestController(LippuService lippuService) {
+        this.lippuService = lippuService;
+    }
 
     @CrossOrigin
-    @GetMapping
+    @GetMapping({"/", ""})
     public ResponseEntity<LippuTapahtumaResponseDTO> haeLippuKoodilla(@RequestParam("koodi") String koodi) {
         LippuTapahtumaResponseDTO responseDTO = lippuService.haeLippuKoodilla(koodi);
         return ResponseEntity.ok(responseDTO);
     }
 
     @CrossOrigin
-    @PatchMapping("/{koodi}")
+    @PatchMapping({"/{koodi}", "/{koodi}/"})
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<LippuResponseDTO> paivitaLipunTila(@PathVariable("koodi") String koodi, @RequestBody LippuPatchDTO dto) {
         LippuResponseDTO updatedLippu = lippuService.paivitaLipunTila(koodi, dto);
