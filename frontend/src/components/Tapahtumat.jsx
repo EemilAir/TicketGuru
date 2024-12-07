@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
-
 import { useNavigate } from 'react-router';
-
-import { fetchTapahtumat } from '../api/tapahtumat';
+import { fetchTapahtumat, editTapahtuma, deleteTapahtuma } from '../api/tapahtumat';
 import { sellTickets } from '../api/myyntitapahtumat';
 import Tapahtuma from './Tapahtuma';
-
 import EditTapahtumaModal from './EditTapahtumaModal';
 import MyyntitapahtumaModal from './MyyntitapahtumaModal';
+import DeleteTapahtumaModal from './DeleteTapahtumaModal';
 
 export default function Tapahtumat() {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [tapahtumat, setTapahtumat] = useState([]);
     const [selectedTapahtuma, setSelectedTapahtuma] = useState(null);
@@ -18,6 +16,7 @@ export default function Tapahtumat() {
     const [search, setSearch] = useState('');
     const [showEditModal, setShowEditModal] = useState(false);
     const [showSellModal, setShowSellModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 
     useEffect(() => {
@@ -34,21 +33,31 @@ export default function Tapahtumat() {
         getTapahtumat();
     }, []);
 
-    const handleDelete = (id) => {
-        console.log(`Delete event with id: ${id}`);
-        // Implement delete functionality here
+    const handleDelete = async (id) => {
+        try {
+            await deleteTapahtuma(id);
+            setTapahtumat(prev => prev.filter(tapahtuma => tapahtuma.tapahtumaId !== id));
+            handleCloseDeleteModal();
+        } catch (error) {
+            console.error("Failed to delete event:", error);
+        }
     };
 
-    const handleEdit = (id, updatedTapahtuma) => {
-        setTapahtumat(tapahtumat.map(tapahtuma =>
-            tapahtuma.tapahtumaId === id ? { ...tapahtuma, ...updatedTapahtuma } : tapahtuma
-        ));
+    const handleEdit = async (id, updatedTapahtuma) => {
+        try {
+            await editTapahtuma(id, updatedTapahtuma);
+            setTapahtumat(tapahtumat.map(tapahtuma =>
+                tapahtuma.tapahtumaId === id ? { ...tapahtuma, ...updatedTapahtuma } : tapahtuma
+            ));
+            setShowEditModal(false);
+        } catch (error) {
+            console.error("Failed to edit event:", error);
+        }
     };
 
     const handleSell = async (myyntitapahtuma) => {
         try {
             const response = await sellTickets(myyntitapahtuma);
-            console.log("Tickets sold:", response);
             const soldTicketCount = response.liput.length || 0;
             const tapahtumaId = response.tapahtumaId;
             const myyntitapahtumaId = response.myyntitapahtumaId;
@@ -82,6 +91,7 @@ export default function Tapahtumat() {
     }
 
     const handleShowEditModal = (tapahtuma) => {
+        setShowSellModal(false);
         setShowEditModal(true);
         setSelectedTapahtuma(tapahtuma);
     };
@@ -92,12 +102,25 @@ export default function Tapahtumat() {
     };
 
     const handleShowSellModal = (tapahtuma) => {
+        setShowEditModal(false);
         setShowSellModal(true);
         setSelectedTapahtuma(tapahtuma);
     };
 
     const handleCloseSellModal = () => {
         setShowSellModal(false);
+        setSelectedTapahtuma(null);
+    };
+
+    const handleShowDeleteModal = (tapahtuma) => {
+        setShowSellModal(false);
+        setShowEditModal(false);
+        setShowDeleteModal(true);
+        setSelectedTapahtuma(tapahtuma);
+    }
+
+    const handleCloseDeleteModal = () => {
+        setShowDeleteModal(false);
         setSelectedTapahtuma(null);
     };
 
@@ -119,26 +142,34 @@ export default function Tapahtumat() {
                     <div className="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex" key={tapahtuma.tapahtumaId}>
                         <Tapahtuma
                             tapahtuma={tapahtuma}
-                            onDelete={handleDelete}
                             openEditModal={() => handleShowEditModal(tapahtuma)}
                             openSellModal={() => handleShowSellModal(tapahtuma)}
+                            openDeleteModal={() => handleShowDeleteModal(tapahtuma)}
                         />
                     </div>
                 ))}
             </div>
             {showEditModal &&
                 <EditTapahtumaModal
-                    show={showEditModal}
                     handleClose={handleCloseEditModal}
                     tapahtuma={selectedTapahtuma}
                     onEdit={handleEdit}
+                    show={showEditModal}
                 />}
             {showSellModal &&
                 <MyyntitapahtumaModal
-                    show={showSellModal}
                     handleClose={handleCloseSellModal}
                     tapahtuma={selectedTapahtuma}
                     onSell={handleSell}
+                    show={showSellModal}
+                />
+            }
+            {showDeleteModal &&
+                <DeleteTapahtumaModal
+                    tapahtuma={selectedTapahtuma}
+                    show={showDeleteModal}
+                    handleClose={handleCloseDeleteModal}
+                    handleDelete={handleDelete}
                 />
             }
         </div>
