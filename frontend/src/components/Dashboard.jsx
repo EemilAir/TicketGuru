@@ -1,11 +1,7 @@
-import { Link } from 'react-router';
-
-
 const Dashboard = () => {
     return (
-        <>
-            <Link to="/tapahtumat">Tapahtumat</Link>
-        </>
+        <div className="d-flex justify-content-center align-items-center vh-100">
+        </div>
     );
 }
 
