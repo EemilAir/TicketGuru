@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { editTapahtuma } from '../api/tapahtumat';
+import FormField from './FormField';
+import { Modal, Button } from 'react-bootstrap';
 
 export default function EditTapahtumaModal({ show, handleClose, tapahtuma, onEdit }) {
     const [nimi, setNimi] = useState(tapahtuma.nimi);
@@ -9,79 +10,38 @@ export default function EditTapahtumaModal({ show, handleClose, tapahtuma, onEdi
     const [lopetuspvm, setLopetuspvm] = useState(tapahtuma.lopetuspvm);
     const [lippujaJaljella, setLippujaJaljella] = useState(tapahtuma.lippujaJaljella);
 
-    // Track initial values
-    const initialValues = {
-        nimi: tapahtuma.nimi,
-        kuvaus: tapahtuma.kuvaus,
-        kategoria: tapahtuma.kategoria,
-        aloituspvm: tapahtuma.aloituspvm,
-        lopetuspvm: tapahtuma.lopetuspvm,
-        lippujaJaljella: tapahtuma.lippujaJaljella
-    };
-
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        const editedFields = {};
+        const updatedFields = {};
 
-        // Compare current values with initial values and add changed fields to editedFields
-        if (nimi !== initialValues.nimi) editedFields.nimi = nimi;
-        if (kuvaus !== initialValues.kuvaus) editedFields.kuvaus = kuvaus;
-        if (kategoria !== initialValues.kategoria) editedFields.kategoria = kategoria;
-        if (aloituspvm !== initialValues.aloituspvm) editedFields.aloituspvm = aloituspvm;
-        if (lopetuspvm !== initialValues.lopetuspvm) editedFields.lopetuspvm = lopetuspvm;
-        if (lippujaJaljella !== initialValues.lippujaJaljella) editedFields.lippujaJaljella = lippujaJaljella;
+        if (nimi !== tapahtuma.nimi) updatedFields.nimi = nimi;
+        if (kuvaus !== tapahtuma.kuvaus) updatedFields.kuvaus = kuvaus;
+        if (kategoria !== tapahtuma.kategoria) updatedFields.kategoria = kategoria;
+        if (aloituspvm !== tapahtuma.aloituspvm) updatedFields.aloituspvm = aloituspvm;
+        if (lopetuspvm !== tapahtuma.lopetuspvm) updatedFields.lopetuspvm = lopetuspvm;
+        if (lippujaJaljella !== tapahtuma.lippujaJaljella) updatedFields.lippujaJaljella = lippujaJaljella;
 
-        try {
-            const response = await editTapahtuma(tapahtuma.tapahtumaId, editedFields);
-            onEdit(tapahtuma.tapahtumaId, response);
-            handleClose();
-        } catch (error) {
-            console.error("Updating tapahtuma failed:", error);
-        }
+        onEdit(tapahtuma.tapahtumaId, updatedFields);
+        handleClose();
     };
-
     return (
-        <>
-            {show && <div className="modal-backdrop fade show"></div>}
-            <div className={`modal fade ${show ? 'show' : ''}`} style={{ display: show ? 'block' : 'none' }} tabIndex="-1" aria-labelledby="editTapahtumaModalLabel" aria-hidden={!show}>
-                <div className="modal-dialog modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="editTapahtumaModalLabel">Muokkaa Tapahtumaa</h5>
-                            <button type="button" className="btn-close" aria-label="Close" onClick={handleClose}></button>
-                        </div>
-                        <div className="modal-body">
-                            <form onSubmit={handleSubmit}>
-                                <div className="mb-3">
-                                    <label htmlFor="nimi" className="form-label">Nimi</label>
-                                    <input type="text" className="form-control" id="nimi" value={nimi} onChange={(e) => setNimi(e.target.value)} />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="kuvaus" className="form-label">Kuvaus</label>
-                                    <input type="text" className="form-control" id="kuvaus" value={kuvaus} onChange={(e) => setKuvaus(e.target.value)} />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="kategoria" className="form-label">Kategoria</label>
-                                    <input type="text" className="form-control" id="kategoria" value={kategoria} onChange={(e) => setKategoria(e.target.value)} />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="aloituspvm" className="form-label">Aloituspvm</label>
-                                    <input type="datetime-local" className="form-control" id="aloituspvm" value={aloituspvm} onChange={(e) => setAloituspvm(e.target.value)} />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="lopetuspvm" className="form-label">Lopetuspvm</label>
-                                    <input type="datetime-local" className="form-control" id="lopetuspvm" value={lopetuspvm} onChange={(e) => setLopetuspvm(e.target.value)} />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="lippujaJaljella" className="form-label">Lippuja Jäljella</label>
-                                    <input type="number" className="form-control" id="lippujaJaljella" value={lippujaJaljella} onChange={(e) => setLippujaJaljella(e.target.value)} />
-                                </div>
-                                <button type="submit" className="btn btn-primary">Tallenna</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Muokkaa tapahtumaa</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <form onSubmit={handleSubmit}>
+                    <FormField label="Nimi" type="text" id="nimi" name="nimi" value={nimi} onChange={(e) => setNimi(e.target.value)} required />
+                    <FormField label="Kuvaus" type="text" id="kuvaus" name="kuvaus" value={kuvaus} onChange={(e) => setKuvaus(e.target.value)} required />
+                    <FormField label="Kategoria" type="text" id="kategoria" name="kategoria" value={kategoria} onChange={(e) => setKategoria(e.target.value)} required />
+                    <FormField label="Aloituspvm" type="datetime-local" id="aloituspvm" name="aloituspvm" value={aloituspvm} onChange={(e) => setAloituspvm(e.target.value)} required />
+                    <FormField label="Lopetuspvm" type="datetime-local" id="lopetuspvm" name="lopetuspvm" value={lopetuspvm} onChange={(e) => setLopetuspvm(e.target.value)} required />
+                    <FormField label="Lippuja Jäljellä" type="number" id="lippujaJaljella" name="lippujaJaljella" value={lippujaJaljella} onChange={(e) => setLippujaJaljella(e.target.value)} required />
+                    <Button variant="primary" type="submit">
+                        Tallenna
+                    </Button>
+                </form>
+            </Modal.Body>
+        </Modal>
     );
-};
+}
