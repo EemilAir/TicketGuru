@@ -3,6 +3,7 @@ package bugivelhot.ticketguru.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 public class LipputyyppiDTO {
@@ -12,7 +13,7 @@ public class LipputyyppiDTO {
     private Long id;
 
     @NotNull(message = "hinta ei voi olla null")
-    @Positive(message = "hinta ei voi olla negatiivinen")
+    @PositiveOrZero(message = "hinta ei voi olla negatiivinen")
     private double hinta;
 
     @NotBlank(message = "lipputyypinNimi ei voi olla tyhjä")

@@ -5,6 +5,7 @@ import Dashboard from "./components/Dashboard";
 import Tapahtumat from "./components/Tapahtumat";
 import Myyntitapahtuma from "./components/Myyntitapahtuma";
 import PrivateLayout from "./components/PrivateLayout";
+import UusiTapahtuma from "./components/UusiTapahtuma";
 
 const App = () => {
     return (
@@ -27,6 +28,15 @@ const App = () => {
                             <PrivateLayout header="Tapahtumat">
                                 <PrivateRoute>
                                     <Tapahtumat />
+                                </PrivateRoute>
+                            </PrivateLayout>
+                        }
+                    />
+                    <Route path="/tapahtumat/uusi"
+                        element={
+                            <PrivateLayout header="Uusi tapahtuma">
+                                <PrivateRoute>
+                                    <UusiTapahtuma />
                                 </PrivateRoute>
                             </PrivateLayout>
                         }
@@ -80,7 +90,7 @@ const PublicRoute = ({ children }) => {
 // Catch all invalid routes and redirect to dashboard or login page based on the authentication status
 const CatchAllRoute = () => {
     const { isAuthenticated, loading } = useAuth();
-    
+
     if (loading) {
         return <div>Loading...</div>; // Render a loading indicator while checking authentication
     }
