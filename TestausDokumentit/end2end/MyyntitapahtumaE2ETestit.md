@@ -1,12 +1,14 @@
 # Myyntitapahtuma End-to-End Testit
 
-## Testin Tavoite
+## Myyntitapahtuman luonti
+
+### Testin Tavoite
 Tarkistaa, että käyttäjä voi onnistuneesti luoda myyntitapahtuman järjestelmän läpi, mukaan lukien:
 - Frontend-lomake
 - Backend REST API
 - Tietokannan päivitys
 
-## Testin Vaiheet
+### Testin Vaiheet
 1. **Luo Myyntitapahtuma**
     - Avaa sovellus selaimessa.
     - Kirjaudu tunnuksilla `admin/admin321`.
@@ -59,7 +61,7 @@ Tarkistaa, että käyttäjä voi onnistuneesti luoda myyntitapahtuman järjestel
     **Tai**
     - Valitse sovelluksen ylävalikosta "Myyntitapahtumat" ja kirjoita avautuvaan hakukenttään uuden myyntitapahtuman id.
 
-## Testien Riippuvuudet
+### Testien Riippuvuudet
 - Testitietokanta: MySQL/Mahdollisesti H2 testivaiheessa
 - Palvelimet: 
   - Backend: Spring Boot
@@ -67,6 +69,6 @@ Tarkistaa, että käyttäjä voi onnistuneesti luoda myyntitapahtuman järjestel
 - Testikäyttäjät: 
   - admin/admin321
 
-## Virhetilanteet
+### Virhetilanteet
 - Myyntitapahtuma-ikkunassa ei voi asettaa negatiivista arvoa lippujen määrälle eikä myyntitapahtumaa voi tehdä ilman yhtään valittua lippua. 
     Virheilmoitusta ei tule, toimintoa ei saa suoritettua.
