@@ -24,9 +24,11 @@ export default function Tapahtumat() {
             try {
                 const data = await fetchTapahtumat();
                 setTapahtumat(data);
-                setIsLoading(false);
             } catch (error) {
                 console.error("Fetching tapahtumat failed:", error);
+                setTapahtumat([]);
+            } finally {
+                setIsLoading(false);
             }
         }
 

@@ -6,6 +6,7 @@ import Tapahtumat from "./components/Tapahtumat";
 import Myyntitapahtuma from "./components/Myyntitapahtuma";
 import PrivateLayout from "./components/PrivateLayout";
 import UusiTapahtuma from "./components/UusiTapahtuma";
+import Myyntitapahtumat from "./components/Myyntitapahtumat";
 import './css/App.css';
 
 const App = () => {
@@ -46,6 +47,15 @@ const App = () => {
                         <PrivateLayout>
                             <PrivateRoute>
                                 <Myyntitapahtuma />
+                            </PrivateRoute>
+                        </PrivateLayout>
+                    }
+                />
+                <Route path="/myyntitapahtumat"
+                    element={
+                        <PrivateLayout header="Myyntitapahtumat">
+                            <PrivateRoute>
+                                <Myyntitapahtumat />
                             </PrivateRoute>
                         </PrivateLayout>
                     }

@@ -27,3 +27,13 @@ export const fetchMyyntitapahtuma = async (id) => {
         return null;
     }
 }
+
+export const fetchMyyntitapahtumat = async () => {
+    try {
+        const response = await axios.get(baseUrl, { withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.error("Fetching myyntitapahtumat failed:", error);
+        return [];
+    }
+};

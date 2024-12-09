@@ -122,9 +122,9 @@ body {
 .active-link::after {
     content: '';
     position: absolute;
-    bottom: -5px; /* Adjust this value based on your design */
+    bottom: -5px; 
     left: 0;
     right: 0;
-    height: 2px; /* Adjust this value based on your design */
-    background-color: blue; /* Adjust this value based on your design */
+    height: 2px; 
+    background-color: blue; 
 }
