@@ -8,7 +8,7 @@ export const fetchTapahtumat = async () => {
         return response.data;
     } catch (error) {
         console.error("Fetching tapahtumat failed:", error);
-        return error;
+        return [];
     }
 }
 
