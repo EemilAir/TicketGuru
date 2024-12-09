@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             setIsAuthenticated(false);
             setUsername(null);
-            console.error(error);
+            throw error;
         }
     }
 

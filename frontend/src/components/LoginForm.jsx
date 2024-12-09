@@ -1,16 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from './AuthContext';
 import { Form, Button, Card } from 'react-bootstrap';
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const usernameRef = useRef(null);
+    const [error, setError] = useState(null); 
+    
     const { login } = useAuth();
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        login(username, password);
+        try {
+            await login(username, password);
+        } catch (err) {
+            setError('Käyttäjänimi tai salasana on väärin.');
+            setUsername('');
+            setPassword('');
+            usernameRef.current.focus();
+        }
     };
+
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(null);
+            }, 5000); 
+
+            return () => clearTimeout(timer); 
+        }
+    }, [error]);
 
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
@@ -24,6 +44,7 @@ const LoginForm = () => {
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
+                                ref={usernameRef}
                                 required
                             />
                         </Form.Group>
@@ -36,6 +57,7 @@ const LoginForm = () => {
                                 required
                             />
                         </Form.Group>
+                        {error && <div className="text-danger mb-3">{error}</div>}
                         <Button variant="primary" type="submit" className="w-100">Login</Button>
                     </Form>
                 </Card.Body>

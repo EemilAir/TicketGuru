@@ -1,16 +1,37 @@
 import { Card, Button, Row, Col, Form, InputGroup } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { fetchMyyntitapahtuma } from '../api/myyntitapahtumat';
 
 export default function Dashboard() {
     const [myyntitapahtumaId, setMyyntitapahtumaId] = useState('');
+    const [error, setError] = useState(null); 
     const navigate = useNavigate();
 
-    const handleSearch = () => {
+    const handleSearch = async () => {
         if (myyntitapahtumaId) {
-            navigate(`/myyntitapahtumat/${myyntitapahtumaId}`);
+            try {
+                const myyntitapahtuma = await fetchMyyntitapahtuma(myyntitapahtumaId);
+                if (myyntitapahtuma) {
+                    navigate(`/myyntitapahtumat/${myyntitapahtumaId}`);
+                } else {
+                    setError(`Myyntitapahtumaa ei löydy ID:llä ${myyntitapahtumaId}.`);
+                }
+            } catch (err) {
+                setError('Virhe haettaessa myyntitapahtumaa.');
+            }
         }
     };
+
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(null);
+            }, 4000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
 
     return (
         <Row className="mb-4 d-flex align-items-stretch">
@@ -46,6 +67,7 @@ export default function Dashboard() {
                                 </Form.FloatingLabel>
                                 <Button variant="secondary" onClick={handleSearch}>Hae</Button>
                             </InputGroup>
+                            {error && <Form.Text className="text-danger">{error}</Form.Text>}
                         </Form.Group>
                     </Card.Body>
                 </Card>

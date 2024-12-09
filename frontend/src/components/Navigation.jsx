@@ -1,18 +1,39 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from './AuthContext';
 import { Navbar, Nav, NavDropdown, Container, Form, InputGroup, Button } from 'react-bootstrap';
+import { fetchMyyntitapahtuma } from '../api/myyntitapahtumat';
 
 export default function Navigation() {
     const { logout, username } = useAuth();
     const navigate = useNavigate();
+    const [error, setError] = useState(null);
     const [myyntitapahtumaId, setMyyntitapahtumaId] = useState('');
 
-    const handleSearch = () => {
+    const handleSearch = async () => {
         if (myyntitapahtumaId) {
-            navigate(`/myyntitapahtumat/${myyntitapahtumaId}`);
+            try {
+                const myyntitapahtuma = await fetchMyyntitapahtuma(myyntitapahtumaId);
+                if (myyntitapahtuma) {
+                    navigate(`/myyntitapahtumat/${myyntitapahtumaId}`);
+                } else {
+                    setError(`Myyntitapahtumaa ei löydy ID:llä ${myyntitapahtumaId}.`);
+                }
+            } catch (err) {
+                setError('Virhe haettaessa myyntitapahtumaa.');
+            }
         }
     };
+
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(null);
+            }, 4000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
 
     return (
         <Navbar bg="light" expand="md">
@@ -41,6 +62,7 @@ export default function Navigation() {
                                     </Form.FloatingLabel>
                                     <Button variant="secondary" onClick={handleSearch}>Hae</Button>
                                 </InputGroup>
+                                {error && <Form.Text className="text-danger">{error}</Form.Text>}
                             </Form.Group>
                         </NavDropdown>
                     </Nav>

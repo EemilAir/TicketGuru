@@ -27,6 +27,7 @@ export default function UusiTapahtuma() {
 
     const [osoitteet, setOsoitteet] = useState([]);
     const [lipputyypit, setLipputyypit] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -56,6 +57,11 @@ export default function UusiTapahtuma() {
         if (name === 'nimi') {
             const exists = tapahtumat.some(tapahtuma => tapahtuma.nimi.toLowerCase() === value.toLowerCase());
             setNimiExists(exists);
+            if (exists) {
+                setError(`Tapahtuma nimellä "${value}" on jo olemassa.`);
+            } else {
+                setError(null);
+            }
         }
     };
 
@@ -102,6 +108,7 @@ export default function UusiTapahtuma() {
                 onChange={handleChange}
                 required
             />
+            {error && <p className="text-danger">{error}</p>}
             <FormField label="Tapahtuman kuvaus" type="textarea" id="kuvaus" name="kuvaus" value={tapahtumaDTO.kuvaus} onChange={handleChange} required />
             <FormField label="Tapahtuman kategoria" type="text" id="kategoria" name="kategoria" value={tapahtumaDTO.kategoria} onChange={handleChange} required />
             <FormField label="Aloituspäivämäärä" type="datetime-local" id="aloituspvm" name="aloituspvm" value={tapahtumaDTO.aloituspvm} onChange={handleChange} required />
