@@ -9,7 +9,7 @@ Tarkistaa, että käyttäjä voi onnistuneesti luoda tapahtuman järjestelmän l
 - Tietokannan päivitys
 
 ### Testin Vaiheet
-1. **Luo tapahtupa**
+1. **Luo tapahtuma**
     - Avaa sovellus selaimessa.
     - Kirjaudu tunnuksilla `admin/admin321`.
     - Navigoi kohtaan "Tapahtumat - Uusi tapahtuma".
@@ -51,14 +51,18 @@ Tarkistaa, että käyttäjä voi onnistuneesti luoda tapahtuman järjestelmän l
             [
                 {
                     "id":
-                        {"tapahtumaId":10,"lipputyyppiId":1},
+                        {
+                            "tapahtumaId":10,"lipputyyppiId":1
+                        },
                     "nimi":"Normaali",
                     "kuvaus":"Normaali lippu",
                     "hinta":239.0
                 },
                 {
                     "id":
-                        {"tapahtumaId":10,"lipputyyppiId":2},
+                        {
+                            "tapahtumaId":10,"lipputyyppiId":2
+                        },
                     "nimi":"VIP",
                     "kuvaus":"VIP lippu",
                     "hinta":389.0
@@ -67,12 +71,8 @@ Tarkistaa, että käyttäjä voi onnistuneesti luoda tapahtuman järjestelmän l
         }
        ```
 
-3. **Tarkista tietokanta**
-   - Aja Postmanilla GET request varmistaaksesi, että data tallentui tietokantaan. 
-    Sovellus näyttää uuden tapahtuman id:n otsikossa, kun tapahtuma luodaan:
-    `/api/tapahtumat/{id}`
 
-4. **Tarkista näkyvyys sovelluksessa**
+3. **Tarkista näkyvyys sovelluksessa**
    - Siirry Hallintapaneeliin sovelluksen ylävalikosta.
    - Valitse "Tapahtumat - Kaikki tapahtumat"
    - Etsi tapahtuma listasta tai hae nimellä hakukentän avulla.
@@ -91,7 +91,6 @@ Tarkistaa, että käyttäjä voi onnistuneesti luoda tapahtuman järjestelmän l
   - admin/admin321
 
 ### Virhetilanteet
-- tapahtuma-ikkunassa ei voi asettaa negatiivista arvoa lippujen määrälle eikä tapahtumaa voi tehdä ilman yhtään valittua lippua. 
-    Virheilmoitusta ei tule, toimintoa ei saa suoritettua.
+- Jos jokin kenttä ei ole täytetty tapahtumaa lisättäessä, antaa sovellus kehotuksen "Please fill out this field.". 
 
     
