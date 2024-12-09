@@ -113,3 +113,18 @@ body {
     margin-top: 10px;
     font-weight: bold;
   }
+
+/* Aktiivinen sivu navigointi */
+.active-link {
+    position: relative;
+}
+
+.active-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; /* Adjust this value based on your design */
+    left: 0;
+    right: 0;
+    height: 2px; /* Adjust this value based on your design */
+    background-color: blue; /* Adjust this value based on your design */
+}
