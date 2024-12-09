@@ -6,6 +6,7 @@ import Tapahtumat from "./components/Tapahtumat";
 import Myyntitapahtuma from "./components/Myyntitapahtuma";
 import PrivateLayout from "./components/PrivateLayout";
 import UusiTapahtuma from "./components/UusiTapahtuma";
+import './css/App.css';
 
 const App = () => {
     return (

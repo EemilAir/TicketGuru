@@ -36,45 +36,56 @@ export default function Navigation() {
     }, [error]);
 
     return (
-        <Navbar bg="light" expand="md">
-            <Container>
-                <Navbar.Toggle aria-controls="navbarSupportedContent" />
-                <Navbar.Collapse id="navbarSupportedContent">
-                    <Nav.Link as={Link} to="/" className="my-2">Hallintapaneeli</Nav.Link>
-                    <Nav>
-                        <NavDropdown title="Tapahtumat" id="tapahtumat-dropdown">
-                            <NavDropdown.Item as={Link} to="/tapahtumat">Kaikki tapahtumat</NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/tapahtumat/uusi">Uusi tapahtuma</NavDropdown.Item>
-                        </NavDropdown>
-                    </Nav>
-                    <Nav className='me-auto'>
-                        <NavDropdown title="Myyntitapahtumat" id="myyntitapahtumat-dropdown">
-                            <NavDropdown.Item as={Link} to="/myyntitapahtumat">Kaikki myyntitapahtumat</NavDropdown.Item>
-                            <Form.Group className="mt-2 px-3">
-                                <InputGroup>
-                                    <Form.FloatingLabel controlId="floatingInput" label="Haku ID:llä">
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Haku myyntitapahtuma ID:llä"
-                                            value={myyntitapahtumaId}
-                                            onChange={(e) => setMyyntitapahtumaId(e.target.value)}
-                                        />
-                                    </Form.FloatingLabel>
-                                    <Button variant="secondary" onClick={handleSearch}>Hae</Button>
-                                </InputGroup>
-                                {error && <Form.Text className="text-danger">{error}</Form.Text>}
-                            </Form.Group>
-                        </NavDropdown>
-                    </Nav>
-                    <Nav>
-                        <NavDropdown title={<><i className="fa-regular fa-user"></i> {username}</>} id="user-dropdown">
-                            <NavDropdown.Item onClick={logout}>
-                                <i className="fa fa-sign-out" aria-hidden="true" style={{ color: "red" }}></i> Logout
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
+        <Navbar bg="light" expand="md" className="shadow-sm p-3 mb-5 bg-white rounded fixed-top">
+        <Container>
+            <Navbar.Brand className="fw-bold text-primary">
+                <i className="fa fa-ticket-alt me-2"></i>TicketGuru
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="navbarSupportedContent" />
+            <Navbar.Collapse id="navbarSupportedContent">
+                <Nav className="me-auto">
+                    <Nav.Link as={Link} to="/" className="me-3 text-secondary">
+                        <i className="fa fa-home me-1"></i>Hallintapaneeli
+                    </Nav.Link>
+                    <NavDropdown title={<><i className="fa fa-calendar-alt me-1"></i>Tapahtumat</>} id="tapahtumat-dropdown" className="me-3">
+                        <NavDropdown.Item as={Link} to="/tapahtumat">
+                            <i className="fa fa-list me-2"></i>Kaikki tapahtumat
+                        </NavDropdown.Item>
+                        <NavDropdown.Item as={Link} to="/tapahtumat/uusi">
+                            <i className="fa fa-plus me-2"></i>Uusi tapahtuma
+                        </NavDropdown.Item>
+                    </NavDropdown>
+                    <NavDropdown title={<><i className="fa fa-shopping-cart me-1"></i>Myyntitapahtumat</>} id="myyntitapahtumat-dropdown" className="me-3">
+                        <NavDropdown.Item as={Link} to="/myyntitapahtumat">
+                            <i className="fa fa-list me-2"></i>Kaikki myyntitapahtumat
+                        </NavDropdown.Item>
+                        <Form.Group className="mt-2 px-3">
+                            <InputGroup>
+                                <Form.FloatingLabel controlId="floatingInput" label="Haku ID:llä">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Haku myyntitapahtuma ID:llä"
+                                        value={myyntitapahtumaId}
+                                        onChange={(e) => setMyyntitapahtumaId(e.target.value)}
+                                    />
+                                </Form.FloatingLabel>
+                                <Button variant="secondary" onClick={handleSearch}>
+                                    <i className="fa fa-search"></i> Hae
+                                </Button>
+                            </InputGroup>
+                            {error && <Form.Text className="text-danger">{error}</Form.Text>}
+                        </Form.Group>
+                    </NavDropdown>
+                </Nav>
+                <Nav>
+                    <NavDropdown title={<><i className="fa-regular fa-user me-1"></i>{username}</>} id="user-dropdown">
+                        <NavDropdown.Item onClick={logout}>
+                            <i className="fa fa-sign-out-alt me-2" style={{ color: "red" }}></i>Logout
+                        </NavDropdown.Item>
+                    </NavDropdown>
+                </Nav>
+            </Navbar.Collapse>
+        </Container>
+    </Navbar>
     );
 }

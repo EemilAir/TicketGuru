@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/fi';
 import { AuthProvider } from './components/AuthContext.jsx';
 
+
 // Asetetaan dayjs käyttämään suomenkielistä localea
 dayjs.locale('fi');
 

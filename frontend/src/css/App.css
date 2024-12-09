@@ -4,6 +4,8 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f6f8;
+    padding-top: 80px;
+    margin-bottom: 50px;
 }
 
 /* Sovelluksen kontti */
