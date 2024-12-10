@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = import.meta.env.VITE_APP_DEV_API_URL + '/api/tapahtumat';
+const baseUrl = import.meta.env.VITE_APP_DEV_API_URL ? import.meta.env.VITE_APP_DEV_API_URL + '/api/tapahtumat' : '/api/tapahtumat';
 
 export const fetchTapahtumat = async () => {
     try {

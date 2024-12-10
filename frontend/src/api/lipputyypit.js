@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = import.meta.env.VITE_APP_DEV_API_URL + '/api/lipputyypit';
+const baseUrl = import.meta.env.VITE_APP_DEV_API_URL ? import.meta.env.VITE_APP_DEV_API_URL + '/api/lipputyypit' : '/api/lipputyypit';
 
 export const getLipputyypit = async () => {
     try {

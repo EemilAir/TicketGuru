@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = import.meta.env.VITE_APP_DEV_API_URL + '/api/auth';
+const baseUrl = import.meta.env.VITE_APP_DEV_API_URL ? import.meta.env.VITE_APP_DEV_API_URL + '/api/auth' : '/api/auth';
 
 export const checkAuth = async () => {
     try {
