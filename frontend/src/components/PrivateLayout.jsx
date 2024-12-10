@@ -6,7 +6,7 @@ const PrivateLayout = ({ children, header }) => {
     return (
         <div>
             <Navigation />
-            <Container>
+            <Container style={{marginTop:'100px'}}>
                 <Header header={header} />
                 <main>
                     {children}

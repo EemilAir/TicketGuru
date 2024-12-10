@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:8080/api/maksutavat";
+const baseUrl = import.meta.env.VITE_APP_DEV_API_URL + "/api/maksutavat";
 
 export const haeMaksutavat = async () => {
     try {

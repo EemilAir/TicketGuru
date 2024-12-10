@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import FormField from './FormField';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 export default function EditTapahtumaModal({ show, handleClose, tapahtuma, onEdit }) {
     const [nimi, setNimi] = useState(tapahtuma.nimi);
@@ -30,7 +30,7 @@ export default function EditTapahtumaModal({ show, handleClose, tapahtuma, onEdi
                 <Modal.Title>Muokkaa tapahtumaa</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit}>
                     <FormField label="Nimi" type="text" id="nimi" name="nimi" value={nimi} onChange={(e) => setNimi(e.target.value)} required />
                     <FormField label="Kuvaus" type="text" id="kuvaus" name="kuvaus" value={kuvaus} onChange={(e) => setKuvaus(e.target.value)} required />
                     <FormField label="Kategoria" type="text" id="kategoria" name="kategoria" value={kategoria} onChange={(e) => setKategoria(e.target.value)} required />
@@ -40,7 +40,7 @@ export default function EditTapahtumaModal({ show, handleClose, tapahtuma, onEdi
                     <Button variant="primary" type="submit">
                         Tallenna
                     </Button>
-                </form>
+                </Form>
             </Modal.Body>
         </Modal>
     );

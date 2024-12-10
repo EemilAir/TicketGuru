@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:8080/api/auth';
+const baseUrl = import.meta.env.VITE_APP_DEV_API_URL + '/api/auth';
 
 export const checkAuth = async () => {
     try {
@@ -22,7 +22,7 @@ export const login = async (username, password) => {
             },
             withCredentials: true
         });
-        return response;
+        return response.data;
     } catch (error) {
         throw new Error("Login failed:", error);
     }

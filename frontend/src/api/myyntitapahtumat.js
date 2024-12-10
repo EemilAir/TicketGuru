@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:8080/api/myyntitapahtumat';
+const baseUrl = import.meta.env.VITE_APP_DEV_API_URL + '/api/myyntitapahtumat';
 
 export const sellTickets = async (myyntitapahtuma) => {
     try {
@@ -37,3 +37,11 @@ export const fetchMyyntitapahtumat = async () => {
         return [];
     }
 };
+
+export const deleteMyyntitapahtuma = async (id) => {
+    try {
+        await axios.delete(`${baseUrl}/${id}`, { withCredentials: true });
+    } catch (error) {
+        console.error("Failed to delete myyntitapahtuma:", error);
+    }
+}
