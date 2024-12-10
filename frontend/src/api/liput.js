@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = import.meta.VITE_APP_DEV_API_URL + '/api/liput';
+const baseUrl = import.meta.env.VITE_APP_DEV_API_URL + '/api/liput';
 
 export const updateLipunTila = async (koodi, tila) => {
     try {

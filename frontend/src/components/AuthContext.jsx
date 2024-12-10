@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await login(username, password);
             setIsAuthenticated(true);
-            setUsername(response.data.username);
+            setUsername(response.username);
         } catch (error) {
             setIsAuthenticated(false);
             setUsername(null);
