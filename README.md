@@ -251,7 +251,7 @@ Projektissa käytettujen testien on tarkoitus testata sovelluksen tärkeimpien e
     - `MyyntitapahtumaRestControllerTest` testaa `MyyntitapahtumaRestController`-luokan endpointteja luomalla testimyyntitapahtuman, lähettämällä sen POST-pyynnöllä ja tarkastamalla, että luodun myyntitapahtuman tiedot tallentuvat oikein.
     - `MyyntitapahtumaIntegrationTest` testaa myyntitapahtuman luontia ja hakua tietokannasta, varmistaa että myyntitapahtuman tiedot tallentuvat, ja testaa myös vähän validointia (Myyntitapahtuman luonti epäonnistuu, jos kayttajaId on tyhjä).
 >
-- **End-to-end-testaus**:  
+- **End-to-end-testaus**: End-to-end testaus suoritettiin manuaalisesti ja dokumentoitiin [tänne](Testausdokumentit/end2end/).
 
 Tänne kirjataan myös lopuksi järjestelmän tunnetut ongelmat, joita ei ole korjattu.
 
