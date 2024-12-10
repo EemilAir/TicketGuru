@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Row, Col, Form, Spinner } from 'react-bootstrap';
 import { fetchTapahtumat, editTapahtuma, deleteTapahtuma } from '../api/tapahtumat';
 import { sellTickets } from '../api/myyntitapahtumat';
 import Tapahtuma from './Tapahtuma';
@@ -17,7 +18,6 @@ export default function Tapahtumat() {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showSellModal, setShowSellModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-
 
     useEffect(() => {
         const getTapahtumat = async () => {
@@ -85,11 +85,11 @@ export default function Tapahtumat() {
     );
 
     if (isLoading) {
-        return <p>Loading...</p>
+        return <Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner>;
     }
 
     if (tapahtumat.length === 0) {
-        return <p>No events found</p>
+        return <p>No events found</p>;
     }
 
     const handleShowEditModal = (tapahtuma) => {
@@ -127,38 +127,40 @@ export default function Tapahtumat() {
     };
 
     return (
-        <div className="container mt-4">
-            <div className="row mb-3">
-                <div className="col">
-                    <input
+        <>
+            <Row className="mb-3">
+                <Col>
+                    <Form.Control
                         type="text"
-                        className="form-control"
                         placeholder="Etsi nimellä"
                         value={search}
                         onChange={handleSearch}
                     />
-                </div>
-            </div>
-            <div className="row">
+                </Col>
+            </Row>
+            <Row>
                 {filteredTapahtumat.map(tapahtuma => (
-                    <div className="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex" key={tapahtuma.tapahtumaId}>
+                    <Col lg={3} md={4} sm={6} className="mb-4 d-flex" key={tapahtuma.tapahtumaId}>
                         <Tapahtuma
                             tapahtuma={tapahtuma}
                             openEditModal={() => handleShowEditModal(tapahtuma)}
                             openSellModal={() => handleShowSellModal(tapahtuma)}
                             openDeleteModal={() => handleShowDeleteModal(tapahtuma)}
                         />
-                    </div>
+                    </Col>
                 ))}
-            </div>
-            {showEditModal &&
+            </Row>
+            {
+                showEditModal &&
                 <EditTapahtumaModal
                     handleClose={handleCloseEditModal}
                     tapahtuma={selectedTapahtuma}
                     onEdit={handleEdit}
                     show={showEditModal}
-                />}
-            {showSellModal &&
+                />
+            }
+            {
+                showSellModal &&
                 <MyyntitapahtumaModal
                     handleClose={handleCloseSellModal}
                     tapahtuma={selectedTapahtuma}
@@ -166,7 +168,8 @@ export default function Tapahtumat() {
                     show={showSellModal}
                 />
             }
-            {showDeleteModal &&
+            {
+                showDeleteModal &&
                 <DeleteTapahtumaModal
                     tapahtuma={selectedTapahtuma}
                     show={showDeleteModal}
@@ -174,6 +177,6 @@ export default function Tapahtumat() {
                     handleDelete={handleDelete}
                 />
             }
-        </div>
+        </>
     );
 }

@@ -5,26 +5,20 @@ import { FaEdit } from 'react-icons/fa';
 export default function Lipputyyppi({ lipputyyppi, updateLipputyyppi, deleteLipputyyppi }) {
     const [nimi, setNimi] = useState(lipputyyppi.lipputyyppiNimi);
     const [kuvaus, setKuvaus] = useState(lipputyyppi.kuvaus);
-    const [isModified, setIsModified] = useState(false);
     const [isEditingNimi, setIsEditingNimi] = useState(false);
     const [isEditingKuvaus, setIsEditingKuvaus] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState(false);
 
     const handleNimiChange = (e) => {
-        const trimmedNimi = e.target.value.trim();
         setNimi(e.target.value);
-        setIsModified(trimmedNimi !== lipputyyppi.lipputyyppiNimi.trim() || kuvaus.trim() !== lipputyyppi.kuvaus.trim());
     };
 
     const handleKuvausChange = (e) => {
-        const trimmedKuvaus = e.target.value.trim();
         setKuvaus(e.target.value);
-        setIsModified(nimi.trim() !== lipputyyppi.lipputyyppiNimi.trim() || trimmedKuvaus !== lipputyyppi.kuvaus.trim());
     };
 
     const handleSave = () => {
         updateLipputyyppi(lipputyyppi.id, { lipputyyppiNimi: nimi.trim(), kuvaus: kuvaus.trim() });
-        setIsModified(false);
         setIsEditingNimi(false);
         setIsEditingKuvaus(false);
     };
@@ -32,6 +26,19 @@ export default function Lipputyyppi({ lipputyyppi, updateLipputyyppi, deleteLipp
     const handleDelete = () => {
         deleteLipputyyppi(lipputyyppi.id);
     };
+
+    const getClassName = (value, originalValue) => {
+        const trimmedValue = value.trim();
+        if (trimmedValue === '') {
+            return 'is-invalid';
+        }
+        if (trimmedValue !== originalValue.trim()) {
+            return 'is-valid';
+        }
+        return '';
+    };
+
+    const isModified = nimi.trim() !== lipputyyppi.lipputyyppiNimi.trim() || kuvaus.trim() !== lipputyyppi.kuvaus.trim();
 
     return (
         <Card className="h-100 d-flex flex-column">
@@ -46,11 +53,15 @@ export default function Lipputyyppi({ lipputyyppi, updateLipputyyppi, deleteLipp
                             type="text"
                             value={nimi}
                             onChange={handleNimiChange}
-                            onBlur={() => setIsEditingNimi(false)}
+                            onBlur={() => {
+                                if(nimi.trim() === '') setNimi(lipputyyppi.lipputyyppiNimi);
+                                setIsEditingNimi(false);
+                            }}
                             autoFocus
+                            className={getClassName(nimi, lipputyyppi.lipputyyppiNimi)}
                         />
                     ) : (
-                        <div onClick={() => setIsEditingNimi(true)}><FaEdit style={{cursor: 'pointer'}}/> {nimi}</div>
+                        <div onClick={() => setIsEditingNimi(true)}><FaEdit className="text-warning" style={{ cursor: 'pointer' }} /> {nimi}</div>
                     )}
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -60,11 +71,15 @@ export default function Lipputyyppi({ lipputyyppi, updateLipputyyppi, deleteLipp
                             type="text"
                             value={kuvaus}
                             onChange={handleKuvausChange}
-                            onBlur={() => setIsEditingKuvaus(false)}
+                            onBlur={() => {
+                                if(kuvaus.trim() === '') setKuvaus(lipputyyppi.kuvaus);
+                                setIsEditingKuvaus(false);
+                            }}
                             autoFocus
+                            className={getClassName(kuvaus, lipputyyppi.kuvaus)}
                         />
                     ) : (
-                        <div onClick={() => setIsEditingKuvaus(true)}><FaEdit style={{cursor: 'pointer'}}/> {kuvaus}</div>
+                        <div onClick={() => setIsEditingKuvaus(true)}><FaEdit className="text-warning" style={{ cursor: 'pointer' }} /> {kuvaus}</div>
                     )}
                 </Form.Group>
                 <div className="mt-auto">

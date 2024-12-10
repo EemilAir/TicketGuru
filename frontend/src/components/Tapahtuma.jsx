@@ -1,22 +1,23 @@
+import { Card, Button } from 'react-bootstrap';
 import { formatDate } from '../utils/formatDate';
 
 export default function Tapahtuma({ tapahtuma, openSellModal, openEditModal, openDeleteModal }) {
     return (
-        <div className="card h-100 mb-3">
-            <div className="card-body d-flex flex-column">
-                <h5 className="card-title">{tapahtuma.nimi}</h5>
-                <p className="card-text">{tapahtuma.kuvaus}</p>
-                <p className="card-text"><small className="text-muted">{tapahtuma.kategoria}</small></p>
-                <p className="card-text"><small className="text-muted">Aloituspvm: {formatDate(tapahtuma.aloituspvm)}</small></p>
-                <p className="card-text"><small className="text-muted">Lopetuspvm: {formatDate(tapahtuma.lopetuspvm)}</small></p>
-                <p className="card-text"><small className="text-muted">{tapahtuma.katuosoite}, {tapahtuma.osoite.postinumero} {tapahtuma.osoite.postitmp}</small></p>
-                <p className="card-text"><small className="text-muted">Lippuja jäljellä: {tapahtuma.lippujaJaljella}</small></p>
+        <Card className="h-100 mb-3">
+            <Card.Body className="d-flex flex-column">
+                <Card.Title>{tapahtuma.nimi}</Card.Title>
+                <Card.Text>{tapahtuma.kuvaus}</Card.Text>
+                <Card.Text><small className="text-muted">{tapahtuma.kategoria}</small></Card.Text>
+                <Card.Text><small className="text-muted">Aloituspvm: {formatDate(tapahtuma.aloituspvm)}</small></Card.Text>
+                <Card.Text><small className="text-muted">Lopetuspvm: {formatDate(tapahtuma.lopetuspvm)}</small></Card.Text>
+                <Card.Text><small className="text-muted">{tapahtuma.katuosoite}, {tapahtuma.osoite.postinumero} {tapahtuma.osoite.postitmp}</small></Card.Text>
+                <Card.Text><small className="text-muted">Lippuja jäljellä: {tapahtuma.lippujaJaljella}</small></Card.Text>
                 <div className="mt-auto">
-                    <button className="btn btn-success w-100 mb-2" onClick={openSellModal}>Myy lippuja</button>
-                    <button className="btn btn-warning w-100 mb-2" onClick={openEditModal}>Muokkaa</button>
-                    <button className="btn btn-danger w-100" onClick={openDeleteModal}>Poista</button>
+                    <Button variant="success" className="w-100 mb-2" onClick={openSellModal}>Myy lippuja</Button>
+                    <Button variant="warning" className="w-100 mb-2" onClick={openEditModal}>Muokkaa</Button>
+                    <Button variant="danger" className="w-100" onClick={openDeleteModal}>Poista</Button>
                 </div>
-            </div>
-        </div>
+            </Card.Body>
+        </Card>
     );
 }

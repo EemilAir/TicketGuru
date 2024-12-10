@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
-import { 
-    Navbar, 
-    Nav, 
-    NavDropdown, 
-    Container, 
-    Form, 
-    InputGroup, 
-    Button 
+import {
+    Navbar,
+    Nav,
+    NavDropdown,
+    Container,
+    Form,
+    InputGroup,
+    Button
 } from 'react-bootstrap';
 import { useAuth } from './AuthContext';
 import { fetchMyyntitapahtuma } from '../api/myyntitapahtumat';
-import { 
-    FaHome, 
-    FaCalendarAlt, 
-    FaList, 
-    FaPlus, 
+import {
+    FaHome,
+    FaCalendarAlt,
+    FaList,
+    FaPlus,
     FaTicketAlt
 } from "react-icons/fa";
 
@@ -51,7 +51,13 @@ export default function Navigation() {
         }
     }, [error]);
 
-    const isActive = (path) => location.pathname === path;
+    const isActive = (path) => {
+        return location.pathname === path;
+    };
+
+    const isDropdownActive = (paths) => {
+        return paths.some(path => isActive(path));
+    };
 
     return (
         <Navbar bg="light" expand="lg" className="shadow-sm p-3 mb-5 bg-white rounded fixed-top">
@@ -68,7 +74,7 @@ export default function Navigation() {
                         <NavDropdown
                             title={<><FaCalendarAlt /> Tapahtumat</>}
                             id="tapahtumat-dropdown"
-                            className={`me-3 ${isActive('/tapahtumat') || isActive('/tapahtumat/uusi') ? 'active-link' : ''}`}
+                            className={`me-3 ${isDropdownActive(['/tapahtumat', '/tapahtumat/uusi']) ? 'active-link' : ''}`}
                         >
                             <NavDropdown.Item as={Link} to="/tapahtumat" className={isActive('/tapahtumat') ? 'active' : ''}>
                                 <FaList /> Kaikki tapahtumat
@@ -105,7 +111,7 @@ export default function Navigation() {
                         <NavDropdown
                             title={<><FaTicketAlt /> Lipputyypit</>}
                             id="lipputyypit-dropdown"
-                            className={`me-3 ${isActive('/lipputyypit') ? 'active-link' : ''}`}
+                            className={`me-3 ${isDropdownActive(['/lipputyypit', '/lipputyypit/uusi']) ? 'active-link' : ''}`}
                         >
                             <NavDropdown.Item as={Link} to="/lipputyypit" className={isActive('/lipputyypit') ? 'active' : ''}>
                                 <FaList /> Kaikki lipputyypit
