@@ -1,8 +1,7 @@
 # RESTAPIDokumentaatio
 
-Nämä ovat TicketGuru projektin RestAPI:in dokumentaatiot. Täyttä URL:ää ei ole
-vielä tarjolla, joten projektin testi versio toimii paikallisesti laitteelta 
-portista 8080 'localhost:8080/'
+Nämä ovat TicketGuru projektin RestAPI:in dokumentaatiot. API toimii tällä hetkellä paikallisesti
+portissa 8080 `localhost:8080/`.
 
 ## Avoimet Endpointit
 
@@ -27,7 +26,6 @@ Endpointeilla voidaan hallita tapahtumien myyntejä ja niihin kuuluvia lippuja.
 * [Luo uusi myyntitapahtuma](myyntitapahtumat/post.md) : `POST /api/myyntitapahtumat/`
 * [Näytä myyntitapahtuma](myyntitapahtumat/pk/get.md) : `GET /api/myyntitapahtumat/id`
 * [Poista myyntitapahtuma](myyntitapahtumat/pk/delete.md) : `DELETE /api/myyntitapahtumat/id`
-
 * [Näytä myyntitapahtumaan kuuluvat liput](myyntitapahtumat/pk/myyntitapahtumanLiput/get.md) : `Get /api/myyntitapahtumat/id/liput`
 
 ## Liput
@@ -35,7 +33,7 @@ Endpointeilla voidaan hallita tapahtumien myyntejä ja niihin kuuluvia lippuja.
 Endpointilla voidaan hakea lippu sen koodilla ja muokata lipun tilaa.
 
 * [Näytä lippu koodin perusteella](liput/get.md) : `GET /api/liput?koodi={koodi}`
-* [Muokkaa lipun tila](liput/patch.md) : `PATCH /api/liput/id`
+* [Muokkaa lipun tila](liput/patch.md) : `PATCH /api/liput/{koodi}`
 
 ## Lipputyyppit
 
