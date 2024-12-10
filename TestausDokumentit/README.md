@@ -9,6 +9,7 @@ Testauksen pääasialliset tavoitteet ovat:
 - Varmistaa, että kaikki komponentit toimivat oikein.
 - Testata API-rajapinnat ja niiden palauttamat HTTP-vastaukset.
 - Varmistaa, että liiketoimintalogiikka ja validoinnit toimivat oikein.
+- Varmistaa, että sovellus toimii oikein käyttäjän näkökulmasta.
 
 ## Sisällysluettelo
 
@@ -18,6 +19,10 @@ Testauksen pääasialliset tavoitteet ovat:
 2. Entityt
     2.1 [MyyntitapahtumaTestit](entityt/MyyntitapahtumaTestit.md)
     2.2 [TapahtumaTestit](entityt/TapahtumaTestit.md)
+2. End-to-end
+    3.1 [MyyntitapahtumaE2ETestit](end2end/MyyntitapahtumaE2ETestit.md)
+    3.2 [TapahtumaE2ETestit](end2end/TapahtumaE2ETestit.md)
+    3.3 [LipputyyppiE2ETestit](end2end/LipputyyppiE2ETestit.md)
 
 
 **Tärkeimmät testityökalut ja -menetelmät:**

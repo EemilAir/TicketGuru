@@ -42,14 +42,4 @@ public class LippuRestController {
         LippuResponseDTO updatedLippu = lippuService.paivitaLipunTila(koodi, dto);
         return ResponseEntity.ok(updatedLippu);
     }
-
-    @CrossOrigin
-    @GetMapping("/{koodi}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<LippuResponseDTO> paivitaLipunTilaQR(@PathVariable("koodi") String koodi, @RequestParam("tila") int tila) {
-        LippuPatchDTO dto = new LippuPatchDTO();
-        dto.setTila(tila);
-        LippuResponseDTO responseDTO = lippuService.paivitaLipunTila(koodi, dto);
-        return ResponseEntity.ok(responseDTO);
-    }
 }

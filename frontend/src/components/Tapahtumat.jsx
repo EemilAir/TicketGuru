@@ -6,6 +6,7 @@ import { sellTickets } from '../api/myyntitapahtumat';
 import Tapahtuma from './Tapahtuma';
 import EditTapahtumaModal from './EditTapahtumaModal';
 import MyyntitapahtumaModal from './MyyntitapahtumaModal';
+import PrintAllTicketsModal from './PrintAllTicketsModal';
 import DeleteTapahtumaModal from './DeleteTapahtumaModal';
 
 export default function Tapahtumat() {
@@ -17,6 +18,7 @@ export default function Tapahtumat() {
     const [search, setSearch] = useState('');
     const [showEditModal, setShowEditModal] = useState(false);
     const [showSellModal, setShowSellModal] = useState(false);
+    const [showSellAllModal, setShowSellAllModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     useEffect(() => {
@@ -93,6 +95,7 @@ export default function Tapahtumat() {
     }
 
     const handleShowEditModal = (tapahtuma) => {
+        setShowSellAllModal(false);
         setShowSellModal(false);
         setShowEditModal(true);
         setSelectedTapahtuma(tapahtuma);
@@ -104,6 +107,7 @@ export default function Tapahtumat() {
     };
 
     const handleShowSellModal = (tapahtuma) => {
+        setShowSellAllModal(false);
         setShowEditModal(false);
         setShowSellModal(true);
         setSelectedTapahtuma(tapahtuma);
@@ -114,9 +118,22 @@ export default function Tapahtumat() {
         setSelectedTapahtuma(null);
     };
 
+    const handleShowSellAllModal = (tapahtuma) => {
+        setShowSellModal(false);
+        setShowEditModal(false);
+        setShowSellAllModal(true);
+        setSelectedTapahtuma(tapahtuma);
+    };
+
+    const handleCloseSellAllModal = () => {
+        setShowSellAllModal(false);
+        setSelectedTapahtuma(null);
+    };
+
     const handleShowDeleteModal = (tapahtuma) => {
         setShowSellModal(false);
         setShowEditModal(false);
+        setShowSellAllModal(false);
         setShowDeleteModal(true);
         setSelectedTapahtuma(tapahtuma);
     }
@@ -145,6 +162,7 @@ export default function Tapahtumat() {
                             tapahtuma={tapahtuma}
                             openEditModal={() => handleShowEditModal(tapahtuma)}
                             openSellModal={() => handleShowSellModal(tapahtuma)}
+                            openSellAllModal={() => handleShowSellAllModal(tapahtuma)}
                             openDeleteModal={() => handleShowDeleteModal(tapahtuma)}
                         />
                     </Col>
@@ -166,6 +184,15 @@ export default function Tapahtumat() {
                     tapahtuma={selectedTapahtuma}
                     onSell={handleSell}
                     show={showSellModal}
+                />
+            }
+            {
+                showSellAllModal &&
+                <PrintAllTicketsModal
+                    handleClose={handleCloseSellAllModal}
+                    tapahtuma={selectedTapahtuma}
+                    onSell={handleSell}
+                    show={showSellAllModal}
                 />
             }
             {

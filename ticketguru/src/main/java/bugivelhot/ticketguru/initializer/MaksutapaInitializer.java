@@ -20,6 +20,7 @@ public class MaksutapaInitializer {
         maksutapaService.luoJaTallennaMaksutapa("Credit");
         maksutapaService.luoJaTallennaMaksutapa("MobilePay");
         maksutapaService.luoJaTallennaMaksutapa("PayPal");
+        maksutapaService.luoJaTallennaMaksutapa("Ovella");
     }
 
 }
