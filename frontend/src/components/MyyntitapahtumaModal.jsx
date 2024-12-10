@@ -131,7 +131,7 @@ export default function MyyntitapahtumaModal({ show, handleClose, tapahtuma, onS
                         name="maksutapaId"
                         value={myyntitapahtuma.maksutapaId}
                         onChange={(e) => setMyyntitapahtuma({ ...myyntitapahtuma, maksutapaId: e.target.value })}
-                        options={maksutavat}
+                        options={maksutavat.filter(option => option.maksutapaNimi !== 'Ovella')}
                         optionKey={(option) => option.maksutapaId}
                         optionValue={(option) => option.maksutapaId}
                         optionLabel={(option) => option.maksutapaNimi}

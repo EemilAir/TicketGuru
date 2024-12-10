@@ -1,6 +1,6 @@
 import { formatDate } from '../utils/formatDate';
 
-export default function Tapahtuma({ tapahtuma, openSellModal, openEditModal, openDeleteModal }) {
+export default function Tapahtuma({ tapahtuma, openSellModal, openEditModal, openSellAllModal, openDeleteModal }) {
     return (
         <div className="card h-100 mb-3">
             <div className="card-body d-flex flex-column">
@@ -14,6 +14,7 @@ export default function Tapahtuma({ tapahtuma, openSellModal, openEditModal, ope
                 <div className="mt-auto">
                     <button className="btn btn-success w-100 mb-2" onClick={openSellModal}>Myy lippuja</button>
                     <button className="btn btn-warning w-100 mb-2" onClick={openEditModal}>Muokkaa</button>
+                    <button className="btn btn-primary w-100 mb-2" onClick={openSellAllModal}>Tulosta kaikki</button>
                     <button className="btn btn-danger w-100" onClick={openDeleteModal}>Poista</button>
                 </div>
             </div>
