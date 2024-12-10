@@ -4,23 +4,25 @@ Tiimi: Jere Holopainen, Miikka Vartiainen, Jami Norja, Eemil Airaksinen, Anton A
 
 ## Johdanto
 
-**TicketGuru** on lipunmyyntijärjestelmä, joka on suunniteltu lipputoimiston käyttöön. Järjestelmä mahdollistaa lippujen myymisen, hallinnan ja tulostamisen myyntipisteessä, sekä lipputarkistuksen tapahtumapaikalla. Tulevaisuudessa järjestelmään voidaan lisätä verkkokauppa, joka mahdollistaa lipun ostamisen verkossa.
+**TicketGuru** on lipunmyyntijärjestelmä, joka on suunniteltu lipputoimiston käyttöön. Järjestelmä mahdollistaa lippujen myymisen, hallinnan ja tulostamisen myyntipisteessä, sekä lipputarkistuksen tapahtumapaikalla. Lisäksi järjestelmä mahdollistaa tapahtumien hallinnan. Tulevaisuudessa järjestelmään voidaan lisätä verkkokauppa, joka mahdollistaa lipun ostamisen verkossa.
 
 ### Toteutus- ja toimintaympäristö
 - **Palvelinpuolen ratkaisut ja teknologiat:**
     - Palvelinpuoli toteutetaan **Spring Boot** -kehystä käyttäen
-    - **Tietokannan suunnittelu UML-Kaaviota käyttäen**
-    - **REST API** *
-    - **Rajapinta ja olioiden väliset yhteydet JPA:ta käyttäen**
-    - **Vastauskoodit ja virhetilanteiden käsittely** *
-    - **Autentikointi ja auktorisointi** *
-    - **Tietokanta MySQL:n avulla ja julkaisu** *
+    - **Tietokannan suunnittelu**: UML-kaaviot
+    - **REST API**: Spring Boot RESTful web services
+    - **ORM**: JPA (Java Persistence API) Hibernate
+    - **Tietokanta**: MySQL
+    - **Vastauskoodit ja virhetilanteiden käsittely**: Mukautetut HTTP-vastauskoodit ja poikkeusten käsittely
+    - **Autentikointi ja auktorisointi**: Spring Security
+    - **Yksikkötestaus ja integraatiotestaus**: JUnit, Spring Boot Test, MockMvc ja Mockito
+    - **Julkaisu**: Rahti (Rahti.csc.fi)
 
 - **Käyttöliittymäratkaisut ja teknologiat:**
     - Järjestelmä suunnitellaan **desktop-laitteille**, mutta se on responsiivinen, jolloin se toimii myös tabletilla ja mobiililaitteilla. 
     - **Web-ohjelmointi ReactJS-kirjastoa apuna käyttäen**
-    
-`NOTE: [tähdellä (*) merkittyjen kohtien tarkemmat tiedot lisätään kurssin edetessä.]`
+    - **Rakennustyökalu**: Vite
+    - **HTTP-kutsut**: Axios
 
 ### Projektin lopputulos
 
@@ -103,7 +105,7 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | kayttaja_id       | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Käyttäjän tunniste                                                                              |
-> | kayttajanimi           | VARCHAR(50) NOT NULL                                               | Käyttäjän käyttäjätunnus                                                                               |
+> | kayttajanimi           | VARCHAR(25) NOT NULL                                               | Käyttäjän käyttäjätunnus                                                                               |
 > | sposti          | VARCHAR(100) NOT NULL                                               | Käyttäjän sähköposti                                                                              |
 > | salasanaHash      | VARCHAR(255) NOT NULL                                                               | Käyttäjän salasana                                                                           |
 > | kayttajarooli         | VARCHAR(50) NOT NULL                                               | Käyttäjän rooli                                                                         |
@@ -116,7 +118,7 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | myyntipiste_id    | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Myyntipisteen tunniste                                                                          |
-> | myyntipiste  | VARCHAR(100) NOT NULL                                                | Lipun myyntipiste                                                                              |
+> | myyntipisteNimi  | VARCHAR(100) NOT NULL                                                | Lipun myyntipiste                                                                              |
 > | katuosoite        | VARCHAR(100) NOT NULL                                              | Myyntipisteen katuosoite                                                                        |
 > | osoite_id         | INT NOT NULL FOREIGN KEY REFERENCES osoitteet(osoite_id)           | postinumero ja postitoimipaikka, viittaus osoitetietoihin [Osoitteet](#osoitteet)-taulussa      |
 
@@ -129,7 +131,7 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > | tapahtuma_id      | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Tapahtuman tunniste                                                                             |
 > | nimi              | VARCHAR(100) NOT NULL                                              | Tapahtuman nimi                                                                                 |
 > | kuvaus            | TEXT                                              | Tapahtuman kuvaus                                                                               |
-> | kategoria            | VARCHAR(255) NOT NULL                                              | Tapahtuman kategoria                                                                               |
+> | kategoria            | VARCHAR(75) NOT NULL                                              | Tapahtuman kategoria                                                                               |
 > | alkupvm        | DATE NOT NULL                                                              | Tapahtuman aloituspäivämäärä                                                                           |
 > | loppupvm        | DATE NOT NULL                                                       | Tapahtuman lopetuspäivämäärä                                                                           |
 > | katuosoite        | VARCHAR(100)                                                       | Tapahtuman katuosoite                                                                           |
@@ -154,9 +156,9 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | lippu_id          | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Lipun tunniste                                                                                  |
 > | myyntiaika        | TIMESTAMP NOT NULL                                                 | Lipun myyntiaika                                                                                |
-> | koodi             | VARCHAR(255) NOT NULL                                              | Lipun koodi                                                                                     |
+> | koodi             | VARCHAR(100) NOT NULL                                              | Lipun koodi                                                                                     |
 > | luontiaika        | TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP                       | Lipun luontiaika                                                                                |
-> | lipun_tila             | VARCHAR(10)                                              | Lipun tila                                                                                     |
+> | lipun_tila             | CHAR(1)                                              | Lipun tila                                                                                     |
 > | tapahtuma_id      | INT NOT NULL FOREIGN KEY REFERENCES tapahtumat(tapahtuma_id)       | Tapahtumatiedot, viittaus tapahtumatietoihin [Tapahtumat](#tapahtumat)-taulussa                 |
 > | myyntitapahtuma_id      | INT NOT NULL FOREIGN KEY REFERENCES myyntitapahtumat(myyntitapahtuma_id)       | Myyntitapahtumat, viittaus myyntitapahtumiin [Myyntitapahtumat](#myyntitapahtumat)-taulussa                 |
 
@@ -167,7 +169,7 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | maksutapa_id      | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Maksutavan tunniste                                                                             |
-> | maksutapa    | VARCHAR(50) NOT NULL                                             | Lipun maksutapa                                                                                 |
+> | maksutapaNimi    | VARCHAR(20) NOT NULL                                             | Lipun maksutapa                                                                                 |
 
 ---
 
@@ -185,7 +187,7 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > | Kenttä            | Tyyppi                                                             | Kuvaus                                                                                          |
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
 > | lipputyyppi_id    | INT PRIMARY KEY NOT NULL AUTO_INCREMENT                            | Lipputyypin tunniste                                                                            |
-> | lipputyyppi       | VARCHAR(50) NOT NULL                                               | Lipputyypin nimi                                                                                |
+> | lipputyyppiNimi       | VARCHAR(100) NOT NULL                                               | Lipputyypin nimi                                                                                |
 > | kuvaus            | VARCHAR(255)                                                       | Lipputyypin kuvaus                                                                              |
 
 ---
@@ -194,7 +196,7 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > _Tapahtuman_lipputyypit-taulu sisältää tiedon kyseisen tapahtuman eri lipuista ja niiden hinnoista. Taulu mahdollistaa lippujen hinnoittelun tapahtumaa kohden._
 > | Kenttä            | Tyyppi                                                             | Kuvaus
 > |-------------------|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------ |
-> | lipputyyppi_id, tapahtuma_id           | INT PRIMARY KEY NOT NULL                            | Tapahtuman lipputyypin tunniste                                                                                  |
+> | TapahtumanLipputyyppi_id(lipputyyppi_id, tapahtuma_id)           | INT PRIMARY KEY NOT NULL                            | Tapahtuman lipputyypin tunniste                                                                                  |
 > | lipputyyppi_id      | INT NOT NULL FOREIGN KEY REFERENCES lipputyypit(lipputyyppi_id)       | Lipputyyppi, viittaus lipputyyppiin [Lipputyypit](#lipputyypit)-taulussa                              |
 > | tapahtuma_id      | INT NOT NULL FOREIGN KEY REFERENCES tapahtumat(tapahtuma_id)       | Tapahtuma, viittaus tapahtumaan [Tapahtumat](#tapahtumat)-taulussa                              |
 > | hinta       | DECIMAL(10, 2) NOT NULL                                               | Tapahtuman lipputyypin hinta                                                                                |
@@ -209,7 +211,6 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 > | maksupvm         | DATETIME NOT NULL                                               | Lippujen ostopäivämäärä
 > | summa           | DECIMAL(10,2) NOT NULL                           | Lippujen yhteissumma
 > | maksutapa_id      | INT NOT NULL FOREIGN KEY REFERENCES maksutavat(maksutapa_id)       | Maksutapa, viittaus maksutapaan [Maksutavat](#maksutavat)-taulussa                              |
-> | myyntikanava_id   | INT NOT NULL FOREIGN KEY REFERENCES myyntikanavat(myyntikanava_id) | Myyntikanava, viittaus myyntikanavaan [Myyntikanavat](#myyntikanavat)-taulussa                  |
 > | myyja_id       | INT NOT NULL FOREIGN KEY REFERENCES kayttajat(kayttaja_id)         | Myyjän käyttäjätiedot, viittaus käyttäjään [Käyttäjät](#kayttajat)-taulussa                     |
 
 </details>
@@ -237,12 +238,24 @@ Tämän lisäksi
 
 ## Testaus
 
-Tässä kohdin selvitetään, miten ohjelmiston oikea toiminta varmistetaan
-testaamalla projektin aikana: millaisia testauksia tehdään ja missä vaiheessa.
-Testauksen tarkemmat sisällöt ja testisuoritusten tulosten raportit kirjataan
-erillisiin dokumentteihin.
+Projektissa käytettujen testien on tarkoitus testata sovelluksen tärkeimpien elementtien toimintaa ja varmistaa ohjelmiston oikea toiminta. **Yksikkötesteillä** on varmistettu yksittäisten komponenttien ja luokkien toiminta erillään muista järjestelmän osista. **Integraatiotesteillä** on testattu useiden komponenttien toimintaa yhdessä ja varmistettu niiden yhteistoiminnan sujuvuus. **End-to-end** testauksella on varmistettu koko järjestelmän oikeanlainen toiminta käyttäjän näkökulmasta. Alla listattuna projektiin tehtyjä testejä:
 
-Tänne kirjataan myös lopuksi järjestelmän tunnetut ongelmat, joita ei ole korjattu.
+- **Yksikkötestaus**: Yksikkötestauksessa on käytetty JUnit kirjastoa automaattisten ja eristettyjen testitapauksien toteuttamiseksi
+    
+    - `TapahtumaTest` testaa, että `Tapahtuma`-luokan attribuutit luodaan ja päivittyvät oikein ja että validointisäännöt toimivat (esim. nimi ei voi olla alle 3 merkkiä pitkä).
+    - `MyyntitapahtumaTest` testaa, että `Myyntitapahtuma`-luokan attribuutit luodaan ja päivittyvät oikein ja että validointisäännöt toimivat (esim. summa ei voi olla negatiivinen).
+>
+- **Integraatiotestaus**: Integraatiotestauksessa on käytetty Spring Boot Test- ja MockMvc-kirjastoja mahdollistamaan useamman eri komponentin yhteisen toiminnan testaamisen.
+ 
+    - `TapahtumaRestControllerTest` testaa `TapahtumaRestController`-luokan endpointteja ja samalla testaa eri käyttäjäroolien toimintaa. (esim. ADMIN-roolilla pystyy poistamaan tapahtuman, mutta USER-roolilla ei pysty).
+    - `MyyntitapahtumaRestControllerTest` testaa `MyyntitapahtumaRestController`-luokan endpointteja luomalla testimyyntitapahtuman, lähettämällä sen POST-pyynnöllä ja tarkastamalla, että luodun myyntitapahtuman tiedot tallentuvat oikein.
+    - `MyyntitapahtumaIntegrationTest` testaa myyntitapahtuman luontia ja hakua tietokannasta, varmistaa että myyntitapahtuman tiedot tallentuvat, ja testaa myös vähän validointia (Myyntitapahtuman luonti epäonnistuu, jos kayttajaId on tyhjä).
+>
+- **End-to-end-testaus**: End-to-end-testaus on tehty manuaalisesti sovelluksessa testaamalla sovelluksen toimivuutta käyttäjän näkökulmasta.
+
+    - `MyyntitapahtumaE2ETestit` testaa, että käyttäjä voi onnistuneesti luoda myyntitapahtuman, data tallentuu tietokantaan ja uusi myyntitapahtuma löytyy sovelluksessa myyntitapahtumien alta.
+    - `TapahtumaE2ETestit` testaa, että käyttäjä voi onnistuneesti luoda uuden tapahtuman, data tallentuu tietokantaan ja uusi tapahtuma löytyy sovelluksessa tapahtumien alta.
+    - `LipputyyppiE2ETestit` testaa, että käyttäjä voi onnistuneesti luoda uuden lipputyypin, data tallentuu tietokantaan ja uusi lipputyyppi löytyy sovelluksessa lipputyyppien alta. Testaa myös lipputyypin poistamisen, ja sen tallentumisen tietokantaan.
 
 ## Asennustiedot
 

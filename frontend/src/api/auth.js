@@ -1,27 +1,37 @@
-import { setToken, setUsername } from '../utils/storage.js';
+import axios from 'axios';
 
-const api_url = import.meta.env.VITE_APP_API_URL;
+const baseUrl = import.meta.env.VITE_APP_DEV_API_URL + '/api/auth';
 
-async function login(username, password){
-    const response = await fetch(`${api_url}/api/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-            "kayttajatunnus": username, 
-            "salasana": password 
-        })
-    });
-
-    const json = await response.json();
-
-    if(response.ok){
-        setToken(json.jwt);
-        setUsername(username);
-    } else {
-        throw new Error(json.message);
+export const checkAuth = async () => {
+    try {
+        const response = await axios.get(`${baseUrl}/check-auth`, { withCredentials: true });
+        return response.data;
+    } catch (error) {
+        throw new Error("Failed to check authentication", error);
     }
 }
 
-export { login };
+export const login = async (username, password) => {
+    try {
+        const response = await axios.post(`${baseUrl}/login`, {
+            username,
+            password
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error("Login failed:", error);
+    }
+};
+
+export const logout = async () => {
+    try {
+        await axios.post(`${baseUrl}/logout`, {}, { withCredentials: true });
+    } catch (error) {
+        console.error("Logout failed:", error);
+    }
+}

@@ -6,7 +6,7 @@ portista 8080 'localhost:8080/'
 
 ## Avoimet Endpointit
 
-Avoimet endpointit eivät vaadi authentikaatiota (avoimia tullaan siirtämään suljettuihin!)
+Avoimet endpointit vaativat joko USER tai ADMIN oikeudet
 
 ## Tapahtumiin kuuluvat
 
@@ -16,7 +16,7 @@ luomista, poistamista, sekä muokaamista.
 * [Näytä tapahtumat](tapahtumat/get.md) : `GET /api/tapahtumat/`
 * [Luo tapahtuma](tapahtumat/post.md) : `POST /api/tapahtumat/`
 * [Näytä tapahtuma](tapahtumat/pk/get.md) : `GET /api/tapahtumat/id`
-* [Muuta tapahtumaa](tapahtumat/pk/put.md) : `PUT /api/tapahtumat/id`
+* [Muokkaa tapahtumaa](tapahtumat/pk/patch.md) : `PATCH /api/tapahtumat/id`
 * [Poista tapahtuma](tapahtumat/pk/delete.md) : `DELETE /api/tapahtumat/id`
 
 ## Myyntitapahtumiin kuuluvat
@@ -26,8 +26,19 @@ Myyntitapahtumilla voidaan luoda hallita tapahtumien myyntejä ja niihin kuuluvi
 * [Näytä kaikki myyntitapahtumat](myyntitapahtumat/get.md) : `GET /api/myyntitapahtumat/`
 * [Luo uusi myyntitapahtuma](myyntitapahtumat/post.md) : `POST /api/myyntitapahtumat/`
 * [Näytä myyntitapahtuma](myyntitapahtumat/pk/get.md) : `GET /api/myyntitapahtumat/id`
-* [Poista myyntitapahtuma](myyntitapahtumat/pk/delete.md) : `DELETE /api/myyntitapahtumat/`
+* [Poista myyntitapahtuma](myyntitapahtumat/pk/delete.md) : `DELETE /api/myyntitapahtumat/id`
+
+* [Näytä myyntitapahtumaan kuuluvat liput](myyntitapahtumat/pk/myyntitapahtumanLiput/get.md) : `Get /api/myyntitapahtumat/id/liput`
 
 ## Lippuihin kuuluvat
 
-* [Näytä myyntitapahtumaan kuuluvat liput](myyntitapahtumat/pk/liput/get.md) : `Get /api/myyntitapahtumat/id/liput`
+* [Näytä lippu koodin perusteella](liput/get.md) : `GET /api/liput?koodi={koodi}`
+* [Muokkaa lipun tila](liput/patch.md) : `PATCH /api/liput/id`
+
+## Lipputyyppeihin kuuluvat
+
+* [Näytä kaikki lipputyypit](lipputyypit/get.md) : `GET /api/lipputyypit/`
+* [Luo uusi lipputyyppi](lipputyypit/post.md) : `POST /api/lipputyypit/`
+* [Näytä lipputyyppi](lipputyypit/pk/get.md) : `GET /api/lipputyypit/id`
+* [Muokkaa lipputyyppiä](lipputyypit/pk/patch.md) : `PATCH /api/lipputyypit/id`
+* [Poista lipputyyppi](lipputyypit/pk/delete.md) : `DELETE /api/lipputyypit/id`

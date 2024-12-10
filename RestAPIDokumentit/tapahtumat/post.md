@@ -6,93 +6,85 @@ Luo uusi tapahtuma
 
 **Metodi** : `POST`
 
-**Autentikointi vaaditaan** : EI
-
-**Oikeudet vaaditaan** : Ei
+**Oikeudet vaaditaan** : ADMIN
 
 **Reunaehdot**
 
-Tapahtumalla on oltava id, nimi, aloitus- ja lopetuspvm, katuosoite sekä osoite id
+Tapahtumalla on oltava nimi, kategoria, aloitus- ja lopetuspvm, katuosoite, LippujaJaljella, osoiteId sekä lipputyypit
 
 ```json
 {
-    "tapahtumaId": 4,
-    "nimi": "Tapahtuma 4",
-    "aloituspvm": "2024-11-01T19:33:59.697881",
-    "lopetuspvm": "2024-11-02T19:33:59.697881",
-    "katuosoite": "Osoite 4",
-    "osoite": {
-            "osoiteId": 4,
-            "postinumero": "00400",
-            "postitmp": "Turku"
+    "nimi": "Provinssi 2025",
+    "kategoria": "Festivaali",
+    "aloituspvm": "2025-06-25T12:00:00",
+    "lopetuspvm": "2025-06-27T23:00:00",
+    "katuosoite": "Törnäväntie 20",
+    "lippujaJaljella": 2500,
+    "osoiteId": 5,
+    "lipputyypit": [
+        {
+            "id": 1,
+            "hinta": 35.0
         },
+        {
+            "id": 2,
+            "hinta": 70.0
+        }
+    ]
 }
 ```
 
 ## Onnistunut vastaus
 
-**Ehto** : Tapahtuman luominen onnistui
+**Ehto** : Tapahtuman luominen onnistui.
 
 **Koodi** : `201 CREATED`
 
-**Sisältöesimerkki**
-
-Tapahtuma, jolle annetaan id:ksi 4 ja johon on täytetty kaikki kentät.
+**Sisältöesimerkit** :
 
 ```json
 {
-    "tapahtumaId": 4,
-    "nimi": "Tapahtuma 4",
-    "kuvaus": "Kuvaus 4",
-    "kategoria": "Kategoria 4",
-    "aloituspvm": "2024-11-01T19:33:59.697881",
-    "lopetuspvm": "2024-11-02T19:33:59.697881",
-    "katuosoite": "Osoite 4",
-    "lippujaJaljella": 400,
-    "osoite": {
-            "osoiteId": 4,
-            "postinumero": "00400",
-            "postitmp": "Turku"
+    "nimi": "Provinssi 2025",
+    "kuvaus": "Provinssi 2025 -festivaali",
+    "kategoria": "Musiikki",
+    "aloituspvm": "2024-12-01T18:00:00",
+    "lopetuspvm": "2024-12-01T22:00:00",
+    "katuosoite": "Törnäväntie 20",
+    "osoiteId": 3,
+    "lippujaJaljella": 200,
+    "lipputyypit": [
+        {
+            "id": 1,
+            "hinta": 50.0
         },
+        {
+            "id": 2,
+            "hinta": 100.0
+        }
+    ]
 }
+
 ```
-
-
-
 
 ## Epäonnistunut vastaus
 
-**Ehto** : Jos tapahtuma on jo olemassa tapahtumissa
-
-**Koodi** : `409 CONFLICT`
-
-**Sisältö** : `{}`
-
-
-
-### Tai
-
-**Ehto** : Jos kenttiä puuttuu
+**Ehto** : Jos vaadittuja parametreja puuttuu.
 
 **Koodi** : `400 BAD REQUEST`
 
-**Sisältöesimerkki**
+**Sisältöesimerkit** :
 
-Tapahtuma, josta puuttuu id
+Tapahtuma, josta puuttuu parametri nimi.
 
 ```json
 {
-    "nimi": "Tapahtuma 5",
-    "kuvaus": "Kuvaus 5",
-    "kategoria": "Kategoria 5",
-    "aloituspvm": "2024-11-02T19:33:59.697881",
-    "lopetuspvm": "2024-11-03T19:33:59.697881",
-    "katuosoite": "Osoite 5",
-    "lippujaJaljella": 500,
-    "osoite": {
-            "osoiteId": 5,
-            "postinumero": "00500",
-            "postitmp": "Kuopio"
-        },
+    "viesti": "Validaatiovirhe. Tarkista syöteparametrit.",
+    "aikaleima": "2024-11-23T22:20:29.3080732",
+    "tilakoodi": 400,
+    "tila": "Bad Request",
+    "polku": "uri=/api/tapahtumat/",
+    "virheet": {
+        "nimi": "Tapahtuman nimi ei voi olla tyhjä"
+    }
 }
 ```

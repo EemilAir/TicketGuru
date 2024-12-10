@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 // Tämä entiteetti vastaa tietokantataulua "tapahtuman_lipputyypit". 
 // Taulussa on indeksi "idx_tapahtuma_lipputyyppi", joka kattaa sarakkeet "tapahtuma_id" ja "lipputyyppi_id". 
@@ -38,7 +38,7 @@ public class TapahtumanLipputyyppi {
     @JoinColumn(name = "lipputyyppi_id", nullable = false) // Määrittää, että lipputyyppi_id on osa yhdistettyä pääavainta
     private Lipputyyppi lipputyyppi;
 
-    @Positive(message = "Hinnan täytyy olla positiivinen")
+    @PositiveOrZero(message = "Hinnan täytyy olla positiivinen")
     private double hinta;
 
     // konstruktorit

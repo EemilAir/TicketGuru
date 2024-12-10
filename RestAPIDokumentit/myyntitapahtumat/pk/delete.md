@@ -1,18 +1,17 @@
 # Myyntitapahtuman poistaminen
 
-Poistaa yksittäisen myyntitapahtuman
+Poistaa yksittäisen myyntitapahtuman.
 
-**URL** : `/api/myyntitapahtumat/:pk/`
-
-**URL parametrit** : `pk=[integer]`, missä `pk` on myyntitapahtuman ID tietokannassa.
+**URL** : `/api/myyntitapahtumat/{id}`
 
 **Metodi** : `DELETE`
 
-**Autentikointi vaaditaan** : EI TOISTAISEKSI
+**Oikeudet vaaditaan** : ADMIN tai USER
 
-**Oikeudet vaaditaan** : EI TOISTAISEKSI
+**Query-parametrit:** 
 
-**Data** : `{}`
+`id` (pakollinen): Myyntitapahtuman yksilöivä arvo.
+
 
 ## Onnistunut Vastaus
 
@@ -20,7 +19,8 @@ Poistaa yksittäisen myyntitapahtuman
 
 **Koodi** : `204 NO CONTENT`
 
-**Sisältö** : `{}`
+**Sisältöesimerkit** : 
+`{}`
 
 ## Epäonnistunut vastaus
 
@@ -28,8 +28,36 @@ Poistaa yksittäisen myyntitapahtuman
 
 **Koodi** : `404 NOT FOUND`
 
-**Sisältö** : `{}`
+**Sisältöesimerkit** : 
 
-## Huomautukset
+```json
+{
+    "viesti": "Myyntitapahtumaa ei löydy ID:llä 999",
+    "aikaleima": "2024-11-23T21:57:08.8181558",
+    "tilakoodi": 404,
+    "tila": "Not Found",
+    "polku": "uri=/api/myyntitapahtumat/999",
+    "virheet": {}
+}
+```
 
-* Oikeudet ja autentikointi lisätään myöhemmin
+### Tai
+
+**Ehto** : Jos myyntitapahtuman id on väärässä muodossa
+
+**Koodi** : `400 BAD REQUEST`
+
+**Sisältöesimerkit** :
+
+Kun yritetään poistaa myyntitapahtumaa id:llä "d".
+
+```json
+{
+    "viesti": "Virheellinen arvo 'd' parametrille 'id'. Odotettu tyyppi on 'Long'",
+    "aikaleima": "2024-11-23T22:22:22.8253805",
+    "tilakoodi": 400,
+    "tila": "Bad Request",
+    "polku": "uri=/api/myyntitapahtumat/d",
+    "virheet": {}
+}
+```

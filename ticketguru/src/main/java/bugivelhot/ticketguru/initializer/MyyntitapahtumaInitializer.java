@@ -87,6 +87,7 @@ public class MyyntitapahtumaInitializer {
         myyntitapahtuma1.setKayttajaId(myyja1.getKayttajaId()); // Asetetaan myyjän id
         myyntitapahtuma1.setMaksutapaId(kateinen.getMaksutapaId()); // Asetetaan maksutavaksi "käteinen" ID
         myyntitapahtuma1.setLiput(lippuLista1); // Asetetaan liput myyntitapahtumaan
+        myyntitapahtuma1.setTapahtumaId(tapahtuma1.getTapahtumaId()); // Asetetaan tapahtumaan id
 
         // Tallennetaan myyntitapahtuma 1
         myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtuma1);
@@ -111,6 +112,7 @@ public class MyyntitapahtumaInitializer {
         myyntitapahtuma2.setKayttajaId(myyja2.getKayttajaId());
         myyntitapahtuma2.setMaksutapaId(debit.getMaksutapaId());
         myyntitapahtuma2.setLiput(lippuLista2);
+        myyntitapahtuma2.setTapahtumaId(tapahtuma2.getTapahtumaId()); // Asetetaan tapahtumaan id
 
         // Tallennetaan myyntitapahtuma 2
         myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtuma2);
@@ -135,6 +137,7 @@ public class MyyntitapahtumaInitializer {
         myyntitapahtuma3.setKayttajaId(myyja3.getKayttajaId());
         myyntitapahtuma3.setMaksutapaId(kateinen.getMaksutapaId());
         myyntitapahtuma3.setLiput(lippuLista3);
+        myyntitapahtuma3.setTapahtumaId(tapahtuma3.getTapahtumaId()); // Asetetaan tapahtumaan id
 
         // Tallennetaan myyntitapahtuma 3
         myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtuma3);
@@ -165,6 +168,7 @@ public class MyyntitapahtumaInitializer {
         myyntitapahtuma4.setKayttajaId(myyja4.getKayttajaId());
         myyntitapahtuma4.setMaksutapaId(mobilepay.getMaksutapaId());
         myyntitapahtuma4.setLiput(lippuLista4);
+        myyntitapahtuma4.setTapahtumaId(tapahtuma4.getTapahtumaId()); // Asetetaan tapahtumaan id
 
         // Tallennetaan myyntitapahtuma 4
         myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtuma4);
@@ -189,6 +193,7 @@ public class MyyntitapahtumaInitializer {
         myyntitapahtuma5.setKayttajaId(myyja5.getKayttajaId());
         myyntitapahtuma5.setMaksutapaId(paypal.getMaksutapaId());
         myyntitapahtuma5.setLiput(lippuLista5);
+        myyntitapahtuma5.setTapahtumaId(tapahtuma5.getTapahtumaId()); // Asetetaan tapahtumaan id
 
         // Tallennetaan myyntitapahtuma 5
         myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtuma5);
@@ -213,6 +218,7 @@ public class MyyntitapahtumaInitializer {
         myyntitapahtuma6.setKayttajaId(myyja6.getKayttajaId());
         myyntitapahtuma6.setMaksutapaId(debit.getMaksutapaId());
         myyntitapahtuma6.setLiput(lippuLista6);
+        myyntitapahtuma6.setTapahtumaId(tapahtuma6.getTapahtumaId()); // Asetetaan tapahtumaan id
 
         // Tallennetaan myyntitapahtuma 6
         myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtuma6);
@@ -237,6 +243,7 @@ public class MyyntitapahtumaInitializer {
         myyntitapahtuma7.setKayttajaId(myyja6.getKayttajaId());
         myyntitapahtuma7.setMaksutapaId(mobilepay.getMaksutapaId());
         myyntitapahtuma7.setLiput(lippuLista7);
+        myyntitapahtuma7.setTapahtumaId(tapahtuma7.getTapahtumaId()); // Asetetaan tapahtumaan id
 
         // Tallennetaan myyntitapahtuma 7
         myyntitapahtumaService.luoMyyntitapahtumaJaLiput(myyntitapahtuma7);

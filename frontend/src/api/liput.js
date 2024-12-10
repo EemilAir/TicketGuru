@@ -1,60 +1,20 @@
-const apiUrl = import.meta.env.VITE_APP_API_URL;
+import axios from 'axios';
 
-import { getToken } from '../utils/storage';
+const baseUrl = import.meta.env.VITE_APP_DEV_API_URL + '/api/liput';
 
-export async function fetchLiput() {
-    const response = await fetch(apiUrl + '/api/liput', {
-        method: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + getToken()
-        }
-    });
-
-    const json = await response.json();
-
-    if (!response.ok) {
-        throw new Error(json.message);
+export const updateLipunTila = async (koodi, tila) => {
+    try {
+        console.log(koodi, tila);
+        const response = await axios.patch(
+            `${baseUrl}/${koodi}`,
+            JSON.stringify({ tila }),
+            {
+                withCredentials: true,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        return response.data;
+    } catch (error) {
+        console.error("Failed to update ticket:", error);
+        return null;
     }
-
-    return json;
-}
-
-export async function fetchLippuById(id){
-    const response = await fetch(apiUrl + '/api/liput/' + id, {
-        method: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + getToken()
-        }
-    });
-
-    const json = await response.json();
-
-    if (!response.ok) {
-        throw new Error(json.message);
-    }
-
-    return json;
-}
-
-export async function editLippu(lippu){
-    const id = lippu.lippuId;
-    const used = lippu.kaytetty;
-
-    const fetchConfig = {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + getToken()
-        },
-        body: JSON.stringify({ kaytetty: !used }),
-    }
-
-    const response = await fetch(apiUrl + '/api/liput/' + id, fetchConfig);
-    const json = await response.json();
-
-    if(!response.ok){
-        throw new Error(json.message);
-    }
-
-    return json;
 }

@@ -1,0 +1,85 @@
+.lippu {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.3s ease;
+    max-width: 300px; /* Määrittää kortin maksimileveyden */
+    overflow: hidden; /* Estää sisällön ylivuodon kortista */
+
+    border-left: 10px solid #20ca31; /* Vihreä paksumpi reunus vasemmalle */
+    opacity: 1;
+}
+
+.lippu:hover {
+    transform: translateY(-5px);
+}
+
+.lippu .lippu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.lippu .lippu-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+.lippu .lippu-details {
+    font-size: 0.9em;
+    color: #666;
+    line-height: 1.4;
+    max-height: 250px; /* Määritä maksimi korkeus lisätiedoille */
+    overflow-y: auto; /* Lisää pystysuuntainen rullaus, jos sisältö on liian pitkä */
+}
+
+.lippu button {
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.lippu button:hover {
+    background-color: #218838;
+}
+
+.lippu pre {
+    white-space: pre-wrap; /* Mahdollistaa rivinvaihdon sisällön mukaisesti */
+    word-wrap: break-word;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.lippu.used {
+    border-left: 10px solid #e66262; /* Punainen paksumpi reunus vasemmalle */
+    background-color: #fff; /* Pitää taustan valkoisena */
+    opacity: 1;
+}
+
+.lippu button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.lippu .qr-code {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.lippu-extra-details {
+    margin-top: 10px;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }

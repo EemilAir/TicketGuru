@@ -3,6 +3,7 @@ package bugivelhot.ticketguru.service;
 import bugivelhot.ticketguru.model.Maksutapa;
 import bugivelhot.ticketguru.repository.MaksutapaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -30,5 +31,9 @@ public class MaksutapaService {
 
     public Maksutapa haeMaksutapaNimella(String maksutapaNimi) {
         return maksutapaRepository.findByMaksutapaNimiContainingIgnoreCase(maksutapaNimi).get();
+    }
+
+    public List<Maksutapa> haeKaikkiMaksutavat() {
+        return maksutapaRepository.findAll();
     }
 }

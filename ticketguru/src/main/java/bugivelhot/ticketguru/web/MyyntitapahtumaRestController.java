@@ -27,17 +27,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/api/myyntitapahtumat/")
+@RequestMapping("/api/myyntitapahtumat")
 public class MyyntitapahtumaRestController {
 
-    @Autowired
-    private MyyntitapahtumaService myyntitapahtumaService;
+    private final MyyntitapahtumaService myyntitapahtumaService;
+    private final MyyntitapahtumaRepository myyntitapahtumaRepository;
+    private final LippuRepository lippuRepository;
 
-    @Autowired
-    MyyntitapahtumaRepository myyntitapahtumaRepository;
+    public MyyntitapahtumaRestController(MyyntitapahtumaService myyntitapahtumaService,
+            MyyntitapahtumaRepository myyntitapahtumaRepository, LippuRepository lippuRepository) {
+        this.myyntitapahtumaService = myyntitapahtumaService;
+        this.myyntitapahtumaRepository = myyntitapahtumaRepository;
+        this.lippuRepository = lippuRepository;
+    }
 
-    @Autowired
-    LippuRepository lippuRepository;
 
     /*
      * ESIMERKKI POST /api/myyntitapahtumat/
@@ -57,7 +60,7 @@ public class MyyntitapahtumaRestController {
     // Statuskoodit: 201 CREATED
     // 400 Bad Request (jos jokin kenttä puuttuu tai on väärässä muodossa)
     // 401/403 (ei oikeuksia)
-    @PostMapping
+    @PostMapping({ "", "/" })
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<Object> luoMyyntitapahtuma(@Valid @RequestBody MyyntitapahtumaJaLiputDTO dto) {
         // luodaan responseDTO, joka sisältää vain oleelliset maksutapahtuman tiedot
@@ -70,7 +73,7 @@ public class MyyntitapahtumaRestController {
     // Haku kaikille myyntitapahtuman lipuille ID:llä
     // http://localhost:8080/api/myyntitapahtumat/1/liput
     // Statuskoodit: 200 OK, 400 Bad Request (ID väärässä muodossa), 404 Not Found
-    @GetMapping("/{myyntitapahtumaId}/liput")
+    @GetMapping({"/{myyntitapahtumaId}/liput", "/{myyntitapahtumaId}/liput/"})
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public List<Lippu> getLiputByMyyntitapahtumaId(@PathVariable Long myyntitapahtumaId) {
         Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(myyntitapahtumaId)
@@ -82,7 +85,7 @@ public class MyyntitapahtumaRestController {
     // Haetaan myyntitapahtuma ID:llä
     // http://localhost:8080/api/myyntitapahtumat/1
     // Statuskoodit: 200 OK, 400 Bad Request (ID väärässä muodossa), 404 Not Found
-    @GetMapping("{id}")
+    @GetMapping({"/{id}", "/{id}/"})
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<MyyntitapahtumaResponseDTO> haeMyyntitapahtuma(@PathVariable("id") Long id) {
         Myyntitapahtuma myyntitapahtuma = myyntitapahtumaRepository.findById(id)
@@ -99,7 +102,7 @@ public class MyyntitapahtumaRestController {
     // Statuskoodit: 200 OK
     // 404 Not Found
     // 400 Bad Request (jos summa, maksutapa tai käyttäjänimi on väärässä muodossa)
-    @GetMapping
+    @GetMapping({ "", "/" })
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<List<MyyntitapahtumaResponseDTO>> haeKaikkiMyyntitapahtumat(
             @RequestParam(required = false) String summa,
@@ -129,7 +132,7 @@ public class MyyntitapahtumaRestController {
     // Statuskoodit: 204 No Content (poisto onnistui)
     // 401/403 (ei oikeuksia)
     // 404 Not Found (jos tapahtumaa ei löydy)
-    @DeleteMapping("{id}")
+    @DeleteMapping({"/{id}", "/{id}/"})
     @PreAuthorize("hasRole('ADMIN', 'USER')")
     public ResponseEntity<Void> poistaMyyntiTapahtuma(@PathVariable("id") Long id) {
 

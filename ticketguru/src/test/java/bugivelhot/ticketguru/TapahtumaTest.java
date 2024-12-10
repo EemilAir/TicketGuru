@@ -79,4 +79,16 @@ public class TapahtumaTest {
         assertEquals("Tapahtuman nimi ei voi olla tyhjä", violation.getMessage());
     }
 
+    // Testataan, että tapahtuman-olio ei hyväksy kolmea merkkiä lyhempää nimeä
+    @Test
+    public void shouldNotAcceptTooShortNimi() {
+        tapahtuma.setNimi("Ta");
+
+        Set<ConstraintViolation<Tapahtuma>> violations = validator.validate(tapahtuma);
+        assertFalse(violations.isEmpty());
+
+        ConstraintViolation<Tapahtuma> violation = violations.iterator().next();
+        assertEquals("Tapahtuman nimi voi olla korkeintaan 100 merkkiä pitkä ja 3 merkkiä lyhyt", violation.getMessage());
+    }
+
 }

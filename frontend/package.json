@@ -10,9 +10,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/runtime": "^7.26.0",
     "axios": "^1.7.7",
+    "dayjs": "^1.11.13",
+    "frontend": "file:",
+    "qrcode": "^1.5.4",
+    "qrcode-generator": "^1.4.4",
+    "qrcode.react": "^4.1.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-bootstrap": "^2.10.6",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.4.0",
+    "react-qr-code": "^2.0.15",
+    "react-qr-scanner": "^1.0.0-alpha.11",
+    "react-router": "^7.0.1",
+    "react-spinners": "^0.15.0",
+    "react-to-print": "^3.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

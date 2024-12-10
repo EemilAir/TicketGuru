@@ -35,4 +35,8 @@ public class KayttajaService {
     public Kayttaja haeKayttajaNimella(String kayttajanimi) {
         return kayttajaRepository.findByKayttajanimiContainingIgnoreCase(kayttajanimi).get();
     }
+
+    public Kayttaja haeKayttajaIdlla(Long kayttajaId) {
+        return kayttajaRepository.findById(kayttajaId).get();
+    }
 }

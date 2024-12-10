@@ -1,10 +1,17 @@
 package bugivelhot.ticketguru;
 
 import bugivelhot.ticketguru.model.Myyntitapahtuma;
+import bugivelhot.ticketguru.model.Tapahtuma;
 import bugivelhot.ticketguru.model.Maksutapa;
 import bugivelhot.ticketguru.model.Kayttaja;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import java.util.Set;
 
 import java.time.LocalDateTime;
 
@@ -15,9 +22,13 @@ public class MyyntitapahtumaTest {
     private Myyntitapahtuma myyntitapahtuma;
     private Maksutapa maksutapa;
     private Kayttaja kayttaja;
+    private Validator validator;
 
     @BeforeEach
     public void setUp() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+
         maksutapa = new Maksutapa();
         maksutapa.setMaksutapaNimi("Käteinen");
 
@@ -55,4 +66,29 @@ public class MyyntitapahtumaTest {
         assertEquals("Debit", myyntitapahtuma.getMaksutapa().getMaksutapaNimi());
         assertEquals("myyja2", myyntitapahtuma.getKayttaja().getKayttajanimi());
     }
+
+    // Testataan, että myyntitapahtuman summa ei voi olla negatiivinen
+    @Test
+    public void shouldNotAcceptNegativeSumma() {
+        myyntitapahtuma.setSumma(-100.0);
+
+        Set<ConstraintViolation<Myyntitapahtuma>> violations = validator.validate(myyntitapahtuma);
+        assertFalse(violations.isEmpty());
+
+        ConstraintViolation<Myyntitapahtuma> violation = violations.iterator().next();
+        assertEquals("Summan pitää olla positiivinen luku", violation.getMessage());
+    }
+
+    // Testataan, että myyntitapahtuman-olio ei hyväksy null-arvoa maksupvm:lle
+    @Test
+    public void shouldNotAcceptNullMaksupvm() {
+        myyntitapahtuma.setMaksupvm(null);
+    
+        Set<ConstraintViolation<Myyntitapahtuma>> violations = validator.validate(myyntitapahtuma);
+        assertFalse(violations.isEmpty());
+
+        ConstraintViolation<Myyntitapahtuma> violation = violations.iterator().next();
+        assertEquals("Maksupvm ei voi olla tyhjä", violation.getMessage());
+    }
+
 }

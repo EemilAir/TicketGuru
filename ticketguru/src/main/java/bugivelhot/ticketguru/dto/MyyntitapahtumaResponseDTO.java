@@ -9,6 +9,7 @@ public class MyyntitapahtumaResponseDTO {
     private String maksutapa;
     private LocalDateTime maksupvm;
     private Long kayttajaId;
+    private Long tapahtumaId;
 
     // Lista myyntitapahtuman lipuista. Liput sisältävät vain oleelliset tiedot
     private List<LippuResponseDTO> liput;
@@ -54,6 +55,14 @@ public class MyyntitapahtumaResponseDTO {
         this.kayttajaId = kayttajaId;
     }
 
+    public Long getTapahtumaId() {
+        return tapahtumaId;
+    }
+
+    public void setTapahtumaId(Long tapahtumaId) {
+        this.tapahtumaId = tapahtumaId;
+    }
+
     public List<LippuResponseDTO> getLiput() {
         return liput;
     }
@@ -61,6 +70,5 @@ public class MyyntitapahtumaResponseDTO {
     public void setLiput(List<LippuResponseDTO> liput) {
         this.liput = liput;
     }
-    
 
 }

@@ -1,6 +1,5 @@
 package bugivelhot.ticketguru.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,21 +22,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/api/liput")
 public class LippuRestController {
 
-    @Autowired
-    private LippuService lippuService;
+    private final LippuService lippuService;
+
+    public LippuRestController(LippuService lippuService) {
+        this.lippuService = lippuService;
+    }
 
     @CrossOrigin
-    @GetMapping
+    @GetMapping({"/", ""})
     public ResponseEntity<LippuTapahtumaResponseDTO> haeLippuKoodilla(@RequestParam("koodi") String koodi) {
         LippuTapahtumaResponseDTO responseDTO = lippuService.haeLippuKoodilla(koodi);
         return ResponseEntity.ok(responseDTO);
     }
 
     @CrossOrigin
-    @PatchMapping("/{lippuId}")
+    @PatchMapping({"/{koodi}", "/{koodi}/"})
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<LippuResponseDTO> paivitaLipunTila(@PathVariable Long lippuId, @RequestBody LippuPatchDTO dto) {
-        LippuResponseDTO updatedLippu = lippuService.paivitaLipunTila(lippuId, dto);
+    public ResponseEntity<LippuResponseDTO> paivitaLipunTila(@PathVariable("koodi") String koodi, @RequestBody LippuPatchDTO dto) {
+        LippuResponseDTO updatedLippu = lippuService.paivitaLipunTila(koodi, dto);
         return ResponseEntity.ok(updatedLippu);
     }
 }
