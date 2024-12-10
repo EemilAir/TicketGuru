@@ -1,20 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { formatDate } from '../utils/formatDate';
 import { generateQRCode } from '../utils/qrcode';
-import QRCode from 'react-qr-code';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function Lippu({ lippu, handleLipunTila }) {
-    const [qrCodeUrl, setQrCodeUrl] = useState('');
-
-    useEffect(() => {
-        const generateQrCode = async () => {
-            const url = generateQRCode(lippu);
-            setQrCodeUrl(url);
-        };
-        generateQrCode();
-    }, [lippu]);
-
     const printLippu = (lippu) => {
         const printContent = `
         <html>
@@ -50,7 +39,7 @@ export default function Lippu({ lippu, handleLipunTila }) {
                 <p><strong>Tapahtuma ID:</strong> ${lippu.tapahtumaId}</p>
                 <p><strong>Tila:</strong> ${lippu.tila === 0 ? 'Käytetty' : 'Käyttämätön'}</p>
                 <p><strong>Käyttöaika:</strong> ${lippu.kayttoaika ? formatDate(lippu.kayttoaika) : '-'}</p>
-                <img src="${qrCodeUrl}" alt="QR Code" />
+                <img src='${generateQRCode(lippu)}' alt='QR-koodi' />
             </div>
         </body>
         </html>
@@ -59,7 +48,9 @@ export default function Lippu({ lippu, handleLipunTila }) {
         const printWindow = window.open('', '', 'height=600,width=800');
         printWindow.document.write(printContent);
         printWindow.document.close();
+        printWindow.focus();
         printWindow.print();
+        printWindow.close();
     };
 
     return (
@@ -75,9 +66,7 @@ export default function Lippu({ lippu, handleLipunTila }) {
                 <Card.Text>
                     <strong>Käyttöaika:</strong> {lippu.kayttoaika ? formatDate(lippu.kayttoaika) : '-'}
                 </Card.Text>
-                <div className="d-flex justify-content-center align-items-center mb-3">
-                    <QRCode value={qrCodeUrl} size={128} />
-                </div>
+                <QRCodeSVG value={lippu.koodi} />
                 <div className="mt-3">
                     <Button variant="primary" className="w-100" onClick={() => handleLipunTila(lippu.koodi, lippu.tila === 0 ? 1 : 0)}>
                         {lippu.tila === 0 ? 'Merkitse käyttämättömäksi' : 'Merkitse käytetyksi'}

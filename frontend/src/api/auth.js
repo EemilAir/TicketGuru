@@ -22,7 +22,7 @@ export const login = async (username, password) => {
             },
             withCredentials: true
         });
-        return response;
+        return response.data;
     } catch (error) {
         throw new Error("Login failed:", error);
     }

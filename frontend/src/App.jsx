@@ -44,20 +44,20 @@ const App = () => {
                         </PrivateLayout>
                     }
                 />
+                 <Route path="/myyntitapahtumat"
+                    element={
+                        <PrivateLayout header="Myyntitapahtumat">
+                            <PrivateRoute>
+                                <Myyntitapahtumat />
+                            </PrivateRoute>
+                        </PrivateLayout>
+                    }
+                />
                 <Route path="/myyntitapahtumat/:id"
                     element={
                         <PrivateLayout>
                             <PrivateRoute>
                                 <Myyntitapahtuma />
-                            </PrivateRoute>
-                        </PrivateLayout>
-                    }
-                />
-                <Route path="/myyntitapahtumat"
-                    element={
-                        <PrivateLayout header="Myyntitapahtumat">
-                            <PrivateRoute>
-                                <Myyntitapahtumat />
                             </PrivateRoute>
                         </PrivateLayout>
                     }
