@@ -32,7 +32,7 @@ Lipputyypillä on oltava nimi ja kuvaus.
 {
 
   "lipputyyppiNimi": "Peruslippu",
-  "kuvaus": "Normaali pääsylippu tapahtumaan",
+  "kuvaus": "Normaali pääsylippu tapahtumaan"
 }
 
 
