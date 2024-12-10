@@ -35,7 +35,7 @@ export default function Dashboard() {
 
     return (
         <Row className="mb-4 d-flex align-items-stretch">
-            <Col xs={12} md={6} lg={4}>
+            <Col xs={12} md={6} lg={4} className='mb-3'>
                 <Card className="h-100">
                     <Card.Body className="d-flex flex-column">
                         <Card.Title>Tapahtumat</Card.Title>
@@ -47,7 +47,7 @@ export default function Dashboard() {
                     </Card.Body>
                 </Card>
             </Col>
-            <Col xs={12} md={6} lg={4}>
+            <Col xs={12} md={6} lg={4} className='mb-3'>
                 <Card className="h-100">
                     <Card.Body className="d-flex flex-column">
                         <Card.Title>Myyntitapahtumat</Card.Title>
@@ -72,14 +72,15 @@ export default function Dashboard() {
                     </Card.Body>
                 </Card>
             </Col>
-            <Col xs={12} md={6} lg={4}>
+            <Col xs={12} md={6} lg={4} className='mb-3'>
                 <Card className="h-100">
                     <Card.Body className="d-flex flex-column">
                         <Card.Title>Lipputyypit</Card.Title>
                         <Card.Text>
                             Hallinnoi lipputyyppejä.
                         </Card.Text>
-                        <Button variant="primary" as={Link} to="/lipputyypit/uusi">Uusi lipputyyppi</Button>
+                        <Button variant="primary" as={Link} to="/lipputyypit" className='mb-2'>Kaikki lipputyypit</Button>
+                        <Button variant="secondary" as={Link} to="/lipputyypit/uusi">Uusi lipputyyppi</Button>
                     </Card.Body>
                 </Card>
             </Col>

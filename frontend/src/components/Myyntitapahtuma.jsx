@@ -116,11 +116,11 @@ export default function Myyntitapahtuma() {
                         <h1>Myyntitapahtuma: {myyntitapahtuma.myyntitapahtumaId}</h1>
                     </Card.Header>
                     <Card.Body>
-                        <p><strong>Summa:</strong> {myyntitapahtuma.summa} €</p>
-                        <p><strong>Maksutapa:</strong> {myyntitapahtuma.maksutapa}</p>
-                        <p><strong>Maksupäivämäärä:</strong> {formatDate(myyntitapahtuma.maksupvm)}</p>
-                        <p><strong>Käyttäjä ID:</strong> {myyntitapahtuma.kayttajaId}</p>
-                        <p><strong>Tapahtuma ID:</strong> {myyntitapahtuma.tapahtumaId}</p>
+                        <Card.Text><strong>Summa:</strong> {myyntitapahtuma.summa} €</Card.Text>
+                        <Card.Text><strong>Maksutapa:</strong> {myyntitapahtuma.maksutapa}</Card.Text>
+                        <Card.Text><strong>Maksupäivämäärä:</strong> {formatDate(myyntitapahtuma.maksupvm)}</Card.Text>
+                        <Card.Text><strong>Käyttäjä ID:</strong> {myyntitapahtuma.kayttajaId}</Card.Text>
+                        <Card.Text><strong>Tapahtuma ID:</strong> {myyntitapahtuma.tapahtumaId}</Card.Text>
                         <Liput liput={myyntitapahtuma.liput} handleLipunTila={handleLipunTila} />
                         <Button variant="secondary" className="mt-2" onClick={() => printMyyntitapahtuma(myyntitapahtuma)}>
                             Tulosta myyntitapahtuma
