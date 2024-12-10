@@ -37,3 +37,11 @@ export const fetchMyyntitapahtumat = async () => {
         return [];
     }
 };
+
+export const deleteMyyntitapahtuma = async (id) => {
+    try {
+        await axios.delete(`${baseUrl}/${id}`, { withCredentials: true });
+    } catch (error) {
+        console.error("Failed to delete myyntitapahtuma:", error);
+    }
+}

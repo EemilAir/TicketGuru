@@ -33,7 +33,7 @@ export default function Myyntitapahtumat() {
         <Row>
             {myyntitapahtumat.map(myyntitapahtuma => (
                 <Col lg={4} md={6} sm={12} className="mb-4 d-flex" key={myyntitapahtuma.myyntitapahtumaId}>
-                    <Myyntitapahtuma myyntitapahtuma={myyntitapahtuma} showLiput={false} />
+                    <Myyntitapahtuma myyntitapahtuma={myyntitapahtuma} setMyyntitapahtumat={setMyyntitapahtumat} />
                 </Col>
             ))}
         </Row>

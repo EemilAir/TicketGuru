@@ -19,22 +19,20 @@ export const getMyyntitapahtumaPrintHtml = (myyntitapahtuma) => {
                 margin-bottom: 10px;
                 border-radius: 5px;
                 background-color: #fff;
-                width: 200px;
-                height: 300px;
             }
             .lippu {
-                border: 1px solid #ddd;
+                border: 3px solid #ddd;
                 padding: 10px;
                 margin-bottom: 10px;
                 border-radius: 5px;
                 background-color: #fff;
-                width: 200px;
-                height: 300px;
+                margin-bottom: 50px;
+                page-break-inside: avoid;
             }
             .lippu img {
                 display: block;
                 margin-top: 10px;
-                width: 150px; 
+                width: 250px; 
             }
         </style>
         </head>

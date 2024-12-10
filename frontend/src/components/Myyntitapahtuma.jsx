@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router';
-import { Card, Spinner, Button, Badge } from 'react-bootstrap';
+import { Card, Spinner, Button, Badge, Row, Col } from 'react-bootstrap';
 import Liput from './Liput';
-import { fetchMyyntitapahtuma } from '../api/myyntitapahtumat';
+import { fetchMyyntitapahtuma, deleteMyyntitapahtuma } from '../api/myyntitapahtumat';
 import { formatDate } from '../utils/formatDate';
 import { updateLipunTila } from '../api/liput';
 import QRCode from 'qrcode';
@@ -14,7 +14,7 @@ import {
 } from 'react-icons/fa';
 import { getMyyntitapahtumaPrintHtml } from '../utils/getMyyntitapahtumaPrintHtml';
 
-export default function Myyntitapahtuma({ myyntitapahtuma }) {
+export default function Myyntitapahtuma({ myyntitapahtuma, setMyyntitapahtumat }) {
     const { id } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
@@ -24,6 +24,7 @@ export default function Myyntitapahtuma({ myyntitapahtuma }) {
     const [qrCodes, setQrCodes] = useState({});
     const [printHtml, setPrintHtml] = useState('');
     const [isPrintReady, setIsPrintReady] = useState(false);
+    const [confirmDelete, setConfirmDelete] = useState(false);
 
     const isDetailView = location.pathname.includes(`/myyntitapahtumat/${id}`);
 
@@ -98,6 +99,19 @@ export default function Myyntitapahtuma({ myyntitapahtuma }) {
         printWindow.close();
     };
 
+    const handleDelete = async () => {
+        try {
+            await deleteMyyntitapahtuma(myyntitapahtumaData.myyntitapahtumaId);
+            if (setMyyntitapahtumat) {
+                setMyyntitapahtumat(prev => prev.filter(myyntitapahtuma => myyntitapahtuma.myyntitapahtumaId !== myyntitapahtumaData.myyntitapahtumaId));
+            } else {
+                navigate('/myyntitapahtumat');
+            }
+        } catch (error) {
+            console.error('Error deleting myyntitapahtuma:', error);
+        }
+    }
+
     if (isLoading) {
         return <Spinner animation="border" />;
     }
@@ -140,10 +154,30 @@ export default function Myyntitapahtuma({ myyntitapahtuma }) {
                 <Button
                     variant="secondary"
                     onClick={printMyyntitapahtuma}
+                    className="mb-2"
                 >
                     Tulosta myyntitapahtuma
                 </Button>
+                {confirmDelete ? (
+                    <Row>
+                        <hr className='mt-2' />
+                        <Col xs={12} md={6} className="mb-2">
+                            <Button variant="danger" className="w-100" onClick={handleDelete}>
+                                Poista
+                            </Button>
+                        </Col>
+                        <Col xs={12} md={6} className="">
+                            <Button variant="secondary" className="w-100" onClick={() => setConfirmDelete(false)}>
+                                Peruuta
+                            </Button>
+                        </Col>
+                    </Row>
+                ) : (
+                    <Button variant="danger" onClick={() => setConfirmDelete(true)}>
+                        Poista myyntitapahtuma
+                    </Button>
+                )}
             </Card.Body>
-        </Card>
+        </Card >
     );
 }
