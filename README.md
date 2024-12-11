@@ -12,15 +12,15 @@ Tiimi: Jere Holopainen, Miikka Vartiainen, Jami Norja, Eemil Airaksinen, Anton A
     - **Tietokannan suunnittelu**: UML-kaaviot
     - **REST API**: Spring Boot RESTful web services
     - **ORM**: JPA (Java Persistence API) Hibernate
-    - **Tietokanta**: MySQL
+    - **Tietokanta**: MySQL ja testaamiseen H2
     - **Vastauskoodit ja virhetilanteiden käsittely**: Mukautetut HTTP-vastauskoodit ja poikkeusten käsittely
-    - **Autentikointi ja auktorisointi**: Spring Security
+    - **Autentikointi ja auktorisointi**: Spring Security ja Basic Authentication
     - **Yksikkötestaus ja integraatiotestaus**: JUnit, Spring Boot Test, MockMvc ja Mockito
     - **Julkaisu**: Rahti (Rahti.csc.fi)
 
 - **Käyttöliittymäratkaisut ja teknologiat:**
     - Järjestelmä suunnitellaan **desktop-laitteille**, mutta se on responsiivinen, jolloin se toimii myös tabletilla ja mobiililaitteilla. 
-    - **Web-ohjelmointi ReactJS-kirjastoa apuna käyttäen**
+    - **Web-ohjelmointi ReactJS-kirjastoa apuna käyttäen (React Bootstrap, qrcode.react)**
     - **Rakennustyökalu**: Vite
     - **HTTP-kutsut**: Axios
 
@@ -217,24 +217,47 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 
 ## Tekninen kuvaus
 
-Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
-ratkaisut, esim.
+#### Järjestelmän komponentit
 
--   Missä mikäkin järjestelmän komponentti ajetaan (tietokone, palvelinohjelma)
-    ja komponenttien väliset yhteydet (vaikkapa tähän tyyliin:
-    https://security.ufl.edu/it-workers/risk-assessment/creating-an-information-systemdata-flow-diagram/)
--   Palvelintoteutuksen yleiskuvaus: teknologiat, deployment-ratkaisut yms.
--   Keskeisten rajapintojen kuvaukset, esimerkit REST-rajapinta. Tarvittaessa voidaan rajapinnan käyttöä täsmentää
-    UML-sekvenssikaavioilla.
--   Toteutuksen yleisiä ratkaisuja, esim. turvallisuus.
+- **Frontend**:
+    - Teknologia: ReactJS, rakennettu Vite-työkalulla.
+    - Sijainti: Käyttäjän selaimessa.
+    - Kommunikoi backendin kanssa Axiosilla tekemällä HTTP-kutsuja REST-rajapintaan.
+- **Backend**:
+    - Teknologia: Spring Boot.
+    - Sijainti: Palvelinympäristö (Rahti/CSC tai local).
+    - Hoitaa liiketoimintalogiikan, tietokantayhteydet ja RESTful-rajapintojen tarjoamisen.
+    - Turvallisuus: Spring Security -pohjainen autentikointi ja auktorisointi.
+- **Tietokanta**:
+    - Teknologia: MySQL.
+    - Sijainti: Rahti-palvelinympäristössä tai local
+- **Kommunikaatio**:
+    - Frontend ja backend kommunikoivat JSON-pohjaisten HTTP-kutsujen kautta.
+    - Backend käyttää JPA:ta ja Hibernateä tietokantakyselyiden ja objektien välisten yhteyksien hallintaan.
 
-Tämän lisäksi
+#### Arkkitehtuurinen yleiskuvaus
 
--   ohjelmakoodin tulee olla kommentoitua
--   luokkien, metodien ja muuttujien tulee olla kuvaavasti nimettyjä ja noudattaa
-    johdonmukaisia nimeämiskäytäntöjä
--   ohjelmiston pitää olla organisoitu komponentteihin niin, että turhalta toistolta
-    vältytään
+Sovellus on toteutettu kerrosarkkitehtuurilla:
+- **Web-kerros** vastaanottaa HTTP-pyynnöt ja välittää ne palvelukerrokseen.
+- **Palvelukerros (service)** käsittelee liiketoimintalogiikan ja kommunikoi tietokerroksen.
+- **Tietokerros (repository)** vastaa tietojen hakemisesta ja tallentamisesta tietokantaan.
+
+Kerrokset on erotettu toisistaan käyttämällä Data Transfer Objecteja (DTO), jotka siirtävät vain tarpeellisen datan kerrosten välillä ja API:n kautta.
+- **DTO-luokat**: Näitä käytetään minimoimaan siirrettävä tieto. Esimerkiksi:
+        - `LippuPatchDTO`: Sisältää vain tiedot lipun tilan päivittämiseen.
+        - `LippuResponseDTO`: Palauttaa vastauksessa vain tarvittavat lipun tiedot.
+        - `TapahtumaDTO`: Vastaa sisään tulevaa tietoa ja toimii tietojen siirrossa palvelukerrokseen.
+
+Tämä rakenne selkeyttää vastuiden jakoa eri kerrosten välillä ja mahdollistaa järjestelmän helpon laajennettavuuden. REST-rajapinnan kuvaukset on dokumentoitu erikseen.
+
+#### Käyttäjähallinta ja tietoturva
+Sovelluksen autentikointi ja auktorisointi toteutetaan Spring Securityn avulla. Käyttäjätiedot määritetään toistaiseksi kovakoodattuna WebSecurityConfig-luokan `userDetailsService()`-metodiin, ja salasanat tallennetaan hajautettuina käyttämällä BCrypt-algoritmia.
+
+Autentikointi tapahtuu "TicketGuru"-realmissa, ja virheellinen tunnistautuminen palauttaa HTTP 401 Unauthorized -vastauksen. Salasanojen tarkistamiseen käytetään `BCryptPasswordEncoder`-komponenttia.
+
+Käyttöoikeudet perustuvat käyttäjän rooliin `(ADMIN tai USER)`, jotka määrittävät resurssien ja toimintojen käyttömahdollisuudet. ADMIN-rooli oikeuttaa järjestelmän hallintaan, kun taas USER-rooli rajaa käyttöoikeudet perustoimintoihin. Resurssien suojaus on määritelty URL-pohjaisesti ja tarkennettu REST API:n dokumentaatiossa.
+
+CSRF-suojaus on poistettu, sillä sovellus käyttää API-pohjaista kommunikointia. CORS-konfiguraatio sallii pyynnöt paikallisista kehitysympäristöistä (http://localhost:5173 ja http://localhost:8080) ja tukee Basic Auth -tunnistautumista
 
 ## Testaus
 
