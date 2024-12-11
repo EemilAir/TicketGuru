@@ -2,12 +2,18 @@ package bugivelhot.ticketguru.web;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import bugivelhot.ticketguru.service.LipputyyppiService;
+import jakarta.validation.Valid;
 import bugivelhot.ticketguru.dto.LipputyyppiDTO;
 import bugivelhot.ticketguru.dto.LipputyyppiResponseDTO;
+import bugivelhot.ticketguru.dto.TapahtumaDTO;
+import bugivelhot.ticketguru.dto.TapahtumaResponseDTO;
+import bugivelhot.ticketguru.model.Lipputyyppi;
+import bugivelhot.ticketguru.repository.LipputyyppiRepository;
 
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
@@ -17,15 +23,29 @@ public class LipputyyppiRestController {
 
     private final LipputyyppiService lipputyyppiService;
 
-    public LipputyyppiRestController(LipputyyppiService lipputyyppiService) {
+    private final LipputyyppiRepository lipputyyppiRepository;
+
+    public LipputyyppiRestController(LipputyyppiService lipputyyppiService, LipputyyppiRepository lipputyyppiRepository) {
         this.lipputyyppiService = lipputyyppiService;
+        this.lipputyyppiRepository = lipputyyppiRepository;
     }
 
+    // GET: http://localhost:8080/api/lipputyypit
     @GetMapping({ "/", "" })
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<List<LipputyyppiResponseDTO>> haeKaikkiLipputyypit() {
         List<LipputyyppiResponseDTO> lipputyypit = lipputyyppiService.haeKaikkiLipputyypit();
         return ResponseEntity.ok(lipputyypit);
+    }
+
+    // GET http://localhost:8080/api/lipputyypit/{id}
+    @GetMapping({ "/{id}", "/{id}/" })
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<LipputyyppiResponseDTO> haeLipputyyppi(@PathVariable("id") Long id) {
+        Lipputyyppi lipputyyppi = lipputyyppiRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Lipputyyppiä ei löytynyt ID:llä " + id)); // 404 Not
+                                                                                                        // Found
+    return ResponseEntity.ok(lipputyyppiService.convertToResponse(lipputyyppi)); // 200 OK
     }
 
     // POST: http://localhost:8080/api/lipputyypit

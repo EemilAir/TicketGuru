@@ -33,7 +33,7 @@ Endpointeilla voidaan hallita tapahtumien myyntejä ja niihin kuuluvia lippuja.
 Endpointilla voidaan hakea lippu sen koodilla ja muokata lipun tilaa.
 
 * [Näytä lippu koodin perusteella](liput/get.md) : `GET /api/liput?koodi={koodi}`
-* [Muokkaa lipun tila](liput/patch.md) : `PATCH /api/liput/{koodi}`
+* [Muokkaa lipun tila](liput/patch.md) : `PATCH /api/liput/{koodi}` 
 
 ## Lipputyyppit
 
