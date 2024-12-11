@@ -244,9 +244,9 @@ Sovellus on toteutettu kerrosarkkitehtuurilla:
 
 Kerrokset on erotettu toisistaan käyttämällä Data Transfer Objecteja (DTO), jotka siirtävät vain tarpeellisen datan kerrosten välillä ja API:n kautta.
 - **DTO-luokat**: Näitä käytetään minimoimaan siirrettävä tieto. Esimerkiksi:
-        - `LippuPatchDTO`: Sisältää vain tiedot lipun tilan päivittämiseen.
-        - `LippuResponseDTO`: Palauttaa vastauksessa vain tarvittavat lipun tiedot.
-        - `TapahtumaDTO`: Vastaa sisään tulevaa tietoa ja toimii tietojen siirrossa palvelukerrokseen.
+        - LippuPatchDTO: Sisältää vain tiedot lipun tilan päivittämiseen.
+        - LippuResponseDTO: Palauttaa vastauksessa vain tarvittavat lipun tiedot.
+        - TapahtumaDTO: Vastaa sisään tulevaa tietoa ja toimii tietojen siirrossa palvelukerrokseen.
 
 Tämä rakenne selkeyttää vastuiden jakoa eri kerrosten välillä ja mahdollistaa järjestelmän helpon laajennettavuuden. REST-rajapinnan kuvaukset on dokumentoitu erikseen.
 
