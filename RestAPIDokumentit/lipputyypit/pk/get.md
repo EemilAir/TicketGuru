@@ -34,7 +34,7 @@ Lipputyyppi, jonka id on 1 ja jolle on tallennettu tiedot.
 
 **Sisältöesimerkit** :
 
->Lipputyyppi, jonka id on 99 ja jolle ei ole tallennettu tietoja.
+Lipputyyppi, jonka id on 99 ja jolle ei ole tallennettu tietoja.
 
 ```json
 {
