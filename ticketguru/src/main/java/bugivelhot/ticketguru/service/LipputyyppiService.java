@@ -66,7 +66,7 @@ public class LipputyyppiService {
         }
     }
 
-    private LipputyyppiResponseDTO convertToResponse(Lipputyyppi lipputyyppi) {
+    public LipputyyppiResponseDTO convertToResponse(Lipputyyppi lipputyyppi) {
         LipputyyppiResponseDTO response = new LipputyyppiResponseDTO();
         response.setId(lipputyyppi.getLipputyyppiId());
         response.setLipputyyppiNimi(lipputyyppi.getLipputyyppiNimi());

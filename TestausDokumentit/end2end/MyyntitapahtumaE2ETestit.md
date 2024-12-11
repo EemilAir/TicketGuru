@@ -72,5 +72,3 @@ Tarkistaa, että käyttäjä voi onnistuneesti luoda myyntitapahtuman järjestel
 ### Virhetilanteet
 - Myyntitapahtuma-ikkunassa ei voi asettaa negatiivista arvoa lippujen määrälle eikä myyntitapahtumaa voi tehdä ilman yhtään valittua lippua. 
     Virheilmoitusta ei tule, toimintoa ei saa suoritettua.
-
-    

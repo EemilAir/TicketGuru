@@ -2,7 +2,7 @@
 
 Päivitä lipun tila käytetyksi tai käytetyn peruutus.
 
-**URL** : `/api/liput/{id}`
+**URL** : `/api/liput/{koodi}`
 
 **Metodi** : `PATCH`
 
@@ -75,11 +75,11 @@ Lipun tila arvoksi on annettu 2
 
 **Sisältöesimerkit** :
 
-Kun yritetään hakea lippua id:llä 9999.
+Kun yritetään hakea lippua id:llä 1234x.
 
 ```json
 {
-    "viesti": "Lippua ei löytynyt ID:llä 9999",
+    "viesti": "Lippua ei löytynyt ID:llä 1234x",
     "aikaleima": "2024-11-26T23:33:01.1406661",
     "tilakoodi": 404,
     "tila": "Not Found",
