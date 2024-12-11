@@ -259,23 +259,64 @@ Projektissa käytettujen testien on tarkoitus testata sovelluksen tärkeimpien e
 
 ## Asennustiedot
 
-Järjestelmän asennus on syytä dokumentoida kahdesta näkökulmasta:
+Alla on vaiheittainen ohje kehitysympäristön rakentamiseen. 
 
--   järjestelmän kehitysympäristö: miten järjestelmän kehitysympäristön saisi
-    rakennettua johonkin toiseen koneeseen
+### a. Tarvittavat työkalut
 
--   järjestelmän asentaminen tuotantoympäristöön: miten järjestelmän saisi
-    asennettua johonkin uuteen ympäristöön.
+- Java JDK
+- Maven
+- Node.js ja npm (React-sovelluksen ajamiseen ja riippuvuuksien hallintaan)
+- MySQL
+- IDE (esim. Visual Studio Code)
 
-Asennusohjeesta tulisi ainakin käydä ilmi, miten käytettävä tietokanta ja
-käyttäjät tulee ohjelmistoa asentaessa määritellä (käytettävä tietokanta,
-käyttäjätunnus, salasana, tietokannan luonti yms.).
+### b. Kehitysympäristön asennus
 
+1. Java ja Mavenin asentaminen
+    - Lataa ja asenna JDK. Asenna myös tarvittaessa Maven.
+
+    Asennusohjeet:
+    - JDK: https://adoptopenjdk.net/
+    - Maven: https://maven.apache.org/download.cgi
+
+2. Node.js ja npm
+    Asenna Node.js ja npm Node.js [virallisilta sivuilta](https://nodejs.org/en), jotta voit käyttää Reactin kehitystyökaluja.
+
+3. MySQL:n asennus 
+    Asenna MySQL paikallisesti: MySQL [asennusohjeet](https://dev.mysql.com/downloads/installer/)
+
+4. Sovelluksen lähdekoodin lataaminen
+    Lataa sovelluksen lähdekoodi GitHubista:
+
+        git clone https://github.com/EemilAir/TicketGuru
+    
+5. MySQL-tietokannan luominen
+    Avaa MySQL Workbench ja luo uusi Schema eli tietokanta nimellä ticketguru.
+
+6. Spring Bootin + tietokannan konfigurointi
+    Avaa `application.properties` ja määrittele MySQL-yhteys:
+
+    ```
+    spring.datasource.url=jdbc:mysql://localhost:3306/ticketguru
+    spring.datasource.username=${DB_USER}
+    spring.datasource.password=${DB_PASSWORD}
+    spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+7.  Tietokannan ympäristömuuttujien asettaminen
+    Määrittele `application.properties` tiedostossa olevat DB_USER ja DB_PASSWORD käyttöjärjestelmän ympäristömuuttujiksi 
+    ja aseta niiden arvot vastaamaan MySQL:n asennuksen yhteydessä vastaavia arvoja. Voit myös asettaa arvot `application.properties`
+    tiedostoon manuaalisesti.
+
+8. Siirry sovelluksen frontend-kansioon, asenna tarvittavat riippuvuudet ja käynnistä React-sovellus:
+    ```
+    npm install
+    npm run dev
+9. Spring Bootin käynnistäminen
+    Spring bootin (backendin) voi käynnistää runnaamalla `TicketguruApplication.java`-tiedosto suoraan IDE:ssä
+    tai komentorivin kautta projektin juurihakemistosta:
+    ```
+    ./mvnw spring-boot:run
 ## Käynnistys- ja käyttöohje
 
-Tyypillisesti tässä riittää kertoa ohjelman käynnistykseen tarvittava URL sekä
-mahdolliset kirjautumiseen tarvittavat tunnukset. Jos järjestelmän
-käynnistämiseen tai käyttöön liittyy joitain muita toimenpiteitä tai toimintajärjestykseen liittyviä asioita, nekin kerrotaan tässä yhteydessä.
-
-Usko tai älä, tulet tarvitsemaan tätä itsekin, kun tauon jälkeen palaat
-järjestelmän pariin !
+Ohjelma suoritetaan tällä hetkellä paikallisesti. Kun asennukset on tehty, REST API:in pääsee osoitteessa
+`localhost:8080/api/` ja itse sovelluksen käyttöliittymään osoitteessa `localhost:5173/`. Tunnukset ovat:
+- `admin/admin321`
+- `pekka/pekka321`
