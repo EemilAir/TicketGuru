@@ -217,7 +217,7 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 
 ## Tekninen kuvaus
 
-#### Järjestelmän komponentit
+### Järjestelmän komponentit
 
 - **Frontend**:
     - Teknologia: ReactJS, rakennettu Vite-työkalulla.
@@ -235,7 +235,7 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
     - Frontend ja backend kommunikoivat JSON-pohjaisten HTTP-kutsujen kautta.
     - Backend käyttää JPA:ta ja Hibernateä tietokantakyselyiden ja objektien välisten yhteyksien hallintaan.
 
-#### Arkkitehtuurinen yleiskuvaus
+### Arkkitehtuurinen yleiskuvaus
 
 Sovellus on toteutettu kerrosarkkitehtuurilla:
 - **Web-kerros** vastaanottaa HTTP-pyynnöt ja välittää ne palvelukerrokseen.
@@ -250,7 +250,7 @@ Kerrokset on erotettu toisistaan käyttämällä Data Transfer Objecteja (DTO), 
 
 Tämä rakenne selkeyttää vastuiden jakoa eri kerrosten välillä ja mahdollistaa järjestelmän helpon laajennettavuuden. REST-rajapinnan kuvaukset on dokumentoitu erikseen.
 
-#### Käyttäjähallinta ja tietoturva
+### Käyttäjähallinta ja tietoturva
 Sovelluksen autentikointi ja auktorisointi toteutetaan Spring Securityn avulla. Käyttäjätiedot määritetään toistaiseksi kovakoodattuna WebSecurityConfig-luokan `userDetailsService()`-metodiin, ja salasanat tallennetaan hajautettuina käyttämällä BCrypt-algoritmia.
 
 Autentikointi tapahtuu "TicketGuru"-realmissa, ja virheellinen tunnistautuminen palauttaa HTTP 401 Unauthorized -vastauksen. Salasanojen tarkistamiseen käytetään `BCryptPasswordEncoder`-komponenttia.
