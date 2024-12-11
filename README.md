@@ -12,15 +12,15 @@ Tiimi: Jere Holopainen, Miikka Vartiainen, Jami Norja, Eemil Airaksinen, Anton A
     - **Tietokannan suunnittelu**: UML-kaaviot
     - **REST API**: Spring Boot RESTful web services
     - **ORM**: JPA (Java Persistence API) Hibernate
-    - **Tietokanta**: MySQL
+    - **Tietokanta**: MySQL ja testaamiseen H2
     - **Vastauskoodit ja virhetilanteiden käsittely**: Mukautetut HTTP-vastauskoodit ja poikkeusten käsittely
-    - **Autentikointi ja auktorisointi**: Spring Security
+    - **Autentikointi ja auktorisointi**: Spring Security ja Basic Authentication
     - **Yksikkötestaus ja integraatiotestaus**: JUnit, Spring Boot Test, MockMvc ja Mockito
     - **Julkaisu**: Rahti (Rahti.csc.fi)
 
 - **Käyttöliittymäratkaisut ja teknologiat:**
     - Järjestelmä suunnitellaan **desktop-laitteille**, mutta se on responsiivinen, jolloin se toimii myös tabletilla ja mobiililaitteilla. 
-    - **Web-ohjelmointi ReactJS-kirjastoa apuna käyttäen**
+    - **Web-ohjelmointi ReactJS-kirjastoa apuna käyttäen (React Bootstrap, qrcode.react)**
     - **Rakennustyökalu**: Vite
     - **HTTP-kutsut**: Axios
 
@@ -217,24 +217,47 @@ Näistä rooleista on muodostettu käyttäjätarinoita, joiden avulla pystytää
 
 ## Tekninen kuvaus
 
-Teknisessä kuvauksessa esitetään järjestelmän toteutuksen suunnittelussa tehdyt tekniset
-ratkaisut, esim.
+### Järjestelmän komponentit
 
--   Missä mikäkin järjestelmän komponentti ajetaan (tietokone, palvelinohjelma)
-    ja komponenttien väliset yhteydet (vaikkapa tähän tyyliin:
-    https://security.ufl.edu/it-workers/risk-assessment/creating-an-information-systemdata-flow-diagram/)
--   Palvelintoteutuksen yleiskuvaus: teknologiat, deployment-ratkaisut yms.
--   Keskeisten rajapintojen kuvaukset, esimerkit REST-rajapinta. Tarvittaessa voidaan rajapinnan käyttöä täsmentää
-    UML-sekvenssikaavioilla.
--   Toteutuksen yleisiä ratkaisuja, esim. turvallisuus.
+- **Frontend**:
+    - Teknologia: ReactJS, rakennettu Vite-työkalulla.
+    - Sijainti: Käyttäjän selaimessa.
+    - Kommunikoi backendin kanssa Axiosilla tekemällä HTTP-kutsuja REST-rajapintaan.
+- **Backend**:
+    - Teknologia: Spring Boot.
+    - Sijainti: Palvelinympäristö (Rahti/CSC tai local).
+    - Hoitaa liiketoimintalogiikan, tietokantayhteydet ja RESTful-rajapintojen tarjoamisen.
+    - Turvallisuus: Spring Security -pohjainen autentikointi ja auktorisointi.
+- **Tietokanta**:
+    - Teknologia: MySQL.
+    - Sijainti: Rahti-palvelinympäristössä tai local
+- **Kommunikaatio**:
+    - Frontend ja backend kommunikoivat JSON-pohjaisten HTTP-kutsujen kautta.
+    - Backend käyttää JPA:ta ja Hibernateä tietokantakyselyiden ja objektien välisten yhteyksien hallintaan.
 
-Tämän lisäksi
+### Arkkitehtuurinen yleiskuvaus
 
--   ohjelmakoodin tulee olla kommentoitua
--   luokkien, metodien ja muuttujien tulee olla kuvaavasti nimettyjä ja noudattaa
-    johdonmukaisia nimeämiskäytäntöjä
--   ohjelmiston pitää olla organisoitu komponentteihin niin, että turhalta toistolta
-    vältytään
+Sovellus on toteutettu kerrosarkkitehtuurilla:
+- **Web-kerros** vastaanottaa HTTP-pyynnöt ja välittää ne palvelukerrokseen.
+- **Palvelukerros (service)** käsittelee liiketoimintalogiikan ja kommunikoi tietokerroksen.
+- **Tietokerros (repository)** vastaa tietojen hakemisesta ja tallentamisesta tietokantaan.
+
+Kerrokset on erotettu toisistaan käyttämällä Data Transfer Objecteja (DTO), jotka siirtävät vain tarpeellisen datan kerrosten välillä ja API:n kautta.
+- **DTO-luokat**: Näitä käytetään minimoimaan siirrettävä tieto. Esimerkiksi:
+        - `LippuPatchDTO`: Sisältää vain tiedot lipun tilan päivittämiseen.
+        - `LippuResponseDTO`: Palauttaa vastauksessa vain tarvittavat lipun tiedot.
+        - `TapahtumaDTO`: Vastaa sisään tulevaa tietoa ja toimii tietojen siirrossa palvelukerrokseen.
+
+Tämä rakenne selkeyttää vastuiden jakoa eri kerrosten välillä ja mahdollistaa järjestelmän helpon laajennettavuuden. REST-rajapinnan kuvaukset on dokumentoitu erikseen.
+
+### Käyttäjähallinta ja tietoturva
+Sovelluksen autentikointi ja auktorisointi toteutetaan Spring Securityn avulla. Käyttäjätiedot määritetään toistaiseksi kovakoodattuna WebSecurityConfig-luokan `userDetailsService()`-metodiin, ja salasanat tallennetaan hajautettuina käyttämällä BCrypt-algoritmia.
+
+Autentikointi tapahtuu "TicketGuru"-realmissa, ja virheellinen tunnistautuminen palauttaa HTTP 401 Unauthorized -vastauksen. Salasanojen tarkistamiseen käytetään `BCryptPasswordEncoder`-komponenttia.
+
+Käyttöoikeudet perustuvat käyttäjän rooliin `(ADMIN tai USER)`, jotka määrittävät resurssien ja toimintojen käyttömahdollisuudet. ADMIN-rooli oikeuttaa järjestelmän hallintaan, kun taas USER-rooli rajaa käyttöoikeudet perustoimintoihin. Resurssien suojaus on määritelty URL-pohjaisesti ja tarkennettu REST API:n dokumentaatiossa.
+
+CSRF-suojaus on poistettu, sillä sovellus käyttää API-pohjaista kommunikointia. CORS-konfiguraatio sallii pyynnöt paikallisista kehitysympäristöistä (http://localhost:5173 ja http://localhost:8080) ja tukee Basic Auth -tunnistautumista
 
 ## Testaus
 
@@ -259,23 +282,64 @@ Projektissa käytettujen testien on tarkoitus testata sovelluksen tärkeimpien e
 
 ## Asennustiedot
 
-Järjestelmän asennus on syytä dokumentoida kahdesta näkökulmasta:
+Alla on vaiheittainen ohje kehitysympäristön rakentamiseen. 
 
--   järjestelmän kehitysympäristö: miten järjestelmän kehitysympäristön saisi
-    rakennettua johonkin toiseen koneeseen
+### a. Tarvittavat työkalut
 
--   järjestelmän asentaminen tuotantoympäristöön: miten järjestelmän saisi
-    asennettua johonkin uuteen ympäristöön.
+- Java JDK
+- Maven
+- Node.js ja npm (React-sovelluksen ajamiseen ja riippuvuuksien hallintaan)
+- MySQL
+- IDE (esim. Visual Studio Code)
 
-Asennusohjeesta tulisi ainakin käydä ilmi, miten käytettävä tietokanta ja
-käyttäjät tulee ohjelmistoa asentaessa määritellä (käytettävä tietokanta,
-käyttäjätunnus, salasana, tietokannan luonti yms.).
+### b. Kehitysympäristön asennus
 
+1. Java ja Mavenin asentaminen
+    - Lataa ja asenna JDK. Asenna myös tarvittaessa Maven.
+
+    Asennusohjeet:
+    - JDK: https://adoptopenjdk.net/
+    - Maven: https://maven.apache.org/download.cgi
+
+2. Node.js ja npm
+    Asenna Node.js ja npm Node.js [virallisilta sivuilta](https://nodejs.org/en), jotta voit käyttää Reactin kehitystyökaluja.
+
+3. MySQL:n asennus 
+    Asenna MySQL paikallisesti: MySQL [asennusohjeet](https://dev.mysql.com/downloads/installer/)
+
+4. Sovelluksen lähdekoodin lataaminen
+    Lataa sovelluksen lähdekoodi GitHubista:
+
+        git clone https://github.com/EemilAir/TicketGuru
+    
+5. MySQL-tietokannan luominen
+    Avaa MySQL Workbench ja luo uusi Schema eli tietokanta nimellä ticketguru.
+
+6. Spring Bootin + tietokannan konfigurointi
+    Avaa `application.properties` ja määrittele MySQL-yhteys:
+
+    ```
+    spring.datasource.url=jdbc:mysql://localhost:3306/ticketguru
+    spring.datasource.username=${DB_USER}
+    spring.datasource.password=${DB_PASSWORD}
+    spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+7.  Tietokannan ympäristömuuttujien asettaminen
+    Määrittele `application.properties` tiedostossa olevat DB_USER ja DB_PASSWORD käyttöjärjestelmän ympäristömuuttujiksi 
+    ja aseta niiden arvot vastaamaan MySQL:n asennuksen yhteydessä vastaavia arvoja. Voit myös asettaa arvot `application.properties`
+    tiedostoon manuaalisesti.
+
+8. Siirry sovelluksen frontend-kansioon, asenna tarvittavat riippuvuudet ja käynnistä React-sovellus:
+    ```
+    npm install
+    npm run dev
+9. Spring Bootin käynnistäminen
+    Spring bootin (backendin) voi käynnistää runnaamalla `TicketguruApplication.java`-tiedosto suoraan IDE:ssä
+    tai komentorivin kautta projektin juurihakemistosta:
+    ```
+    ./mvnw spring-boot:run
 ## Käynnistys- ja käyttöohje
 
-Tyypillisesti tässä riittää kertoa ohjelman käynnistykseen tarvittava URL sekä
-mahdolliset kirjautumiseen tarvittavat tunnukset. Jos järjestelmän
-käynnistämiseen tai käyttöön liittyy joitain muita toimenpiteitä tai toimintajärjestykseen liittyviä asioita, nekin kerrotaan tässä yhteydessä.
-
-Usko tai älä, tulet tarvitsemaan tätä itsekin, kun tauon jälkeen palaat
-järjestelmän pariin !
+Ohjelma suoritetaan tällä hetkellä paikallisesti. Kun asennukset on tehty, REST API:in pääsee osoitteessa
+`localhost:8080/api/` ja itse sovelluksen käyttöliittymään osoitteessa `localhost:5173/`. Tunnukset ovat:
+- `admin/admin321`
+- `pekka/pekka321`
